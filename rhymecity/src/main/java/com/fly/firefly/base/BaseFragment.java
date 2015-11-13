@@ -1,22 +1,31 @@
 package com.fly.firefly.base;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
+
+import com.fly.firefly.utils.DropDownItem;
+import com.fly.firefly.utils.DropMenuAdapter;
+import com.fly.firefly.utils.SharedPrefManager;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -24,6 +33,55 @@ public class BaseFragment extends Fragment {
 
 	protected com.fly.firefly.base.AQuery aq;
 	protected SharedPreferences pref;
+	int indexForState = -1;
+	private String selected;
+	private SharedPrefManager prefManager;
+
+	/*Global PoPup*/
+	public void popupSelection(final ArrayList array,Activity act,final TextView txt){
+
+			prefManager = new SharedPrefManager(act);
+
+			Log.e("Popup Alert", "True");
+			final ArrayList<DropDownItem> a = array;
+			DropMenuAdapter dropState = new DropMenuAdapter(act);
+			dropState.setItems(a);
+
+				AlertDialog.Builder alertStateCode = new AlertDialog.Builder(act);
+
+				alertStateCode.setSingleChoiceItems(dropState, indexForState, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						//aq.id(R.id.txtStateCodeReg).text(array.get(which).getText());
+						String selected = a.get(which).getText();
+						txt.setText(selected);
+						//prefManager.setSelectedPopupSelection(selected);
+
+						//selected = a.get(which).getText();
+						indexForState = which;
+
+						dialog.dismiss();
+					}
+				});
+
+		//Utils.hideKeyboard(getActivity(), v);
+				AlertDialog mDialog = alertStateCode.create();
+				mDialog.show();
+
+		WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+				lp.copyFrom(mDialog.getWindow().getAttributes());
+				lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+				lp.height = 600;
+				mDialog.getWindow().setAttributes(lp);
+		//Log.e("selected",selected);
+	}
+
+	public String getSelectedPopupSelection(Activity act){
+		HashMap<String, String> init = prefManager.getSelectedPopupSelection();
+		String selectedValue = init.get(SharedPrefManager.SELECTED);
+		return selectedValue;
+	}
 
 	/*Return month in alphabet*/
 	public String getMonthAlphabet(int month) {

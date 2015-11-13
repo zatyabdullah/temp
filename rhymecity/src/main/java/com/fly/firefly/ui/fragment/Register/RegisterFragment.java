@@ -68,7 +68,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
     @InjectView(R.id.registerContinueButton) Button registerContinueButton;
     @InjectView(R.id.txtCity) EditText txtCity;
-    @InjectView(R.id.txtCity) TextView txtTitle;
+    @InjectView(R.id.txtTitle) TextView txtTitle;
 
 
 
@@ -80,7 +80,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     private int year;
     private int fragmentContainerId;
     private SharedPrefManager pref;
-
+    private int month_number;
+    private DatePickerObj date;
+    private ArrayList<DropDownItem> titleList;
+    private String selectedTitle;
     public static RegisterFragment newInstance() {
 
         RegisterFragment fragment = new RegisterFragment();
@@ -107,6 +110,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         pref = new SharedPrefManager(getActivity());
         countrys = new ArrayList<DropDownItem>();
         state = new ArrayList<DropDownItem>();
+        titleList = new ArrayList<DropDownItem>();
+
 
 
         /*Add Country To DropDown List*/
@@ -125,11 +130,16 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
         for(int x = 0 ; x < 20 ; x++) {
             DropDownItem itemCountry = new DropDownItem();
-            itemCountry.setText(Integer.toString(x)+"State");
+            itemCountry.setText(Integer.toString(x) + "State");
             itemCountry.setCode(Integer.toString(x));
             itemCountry.setTag("State");
+            itemCountry.setId(x);
             state.add(itemCountry);
+            titleList.add(itemCountry);
+
         }
+
+
 
          /*Switch register info block*/
         editTextCountry.setOnClickListener(new View.OnClickListener() {
@@ -142,7 +152,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         editTextState.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCountrySelector(getActivity(),state);
+                showCountrySelector(getActivity(), state);
             }
         });
 
@@ -150,8 +160,19 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             @Override
             public void onClick(View v) {
                 showTimePickerDialog(view);
+
             }
         });
+
+        txtTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Log.e("Clicked", "Ok");
+               popupSelection(titleList, getActivity(),txtTitle);
+               //selectedTitle = getSelectedPopupSelection(getActivity());
+            }
+        });
+
 
         /*Initial indicator*/
         imageRegisterIndicator.setBackgroundResource(R.drawable.register_account_focus);
@@ -188,102 +209,12 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         registerContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showHiddenBlock(currentPage+1);
+               // Log.e("selectedTitle",selectedTitle);
+                //showHiddenBlock(currentPage+1);
             }
         });
 
-        /*Onclick Register - > Validate -> Send to server*/
-        registerContinueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-                String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
-
-                RegisterObj regObj = new RegisterObj();
-                /*regObj.setRegisterUsername(txtUsername.getText().toString());
-                regObj.setRegisterFirstname(txtFirstName.getText().toString());
-                regObj.setRegisterLastname(txtLastName.getText().toString());
-                regObj.setRegisterDOB(txtRegisterDatePicker.getText().toString());
-                regObj.setRegisterAddressLine1(txtAddressLine1.getText().toString());
-                regObj.setRegisterAddressLine2(txtAddressLine2.getText().toString());
-                regObj.setRegisterPassword(txtPassword.getText().toString());
-                regObj.setRegisterConfirmPassword(txtConfirmPassword.getText().toString());
-                regObj.setRegisterAlternatePhone(editTextAlternatePhone.getText().toString());
-                regObj.setRegisterMobilePhone(editTextMobilePhone.getText().toString());
-                regObj.setRegisterCountry(editTextCountry.getText().toString());
-                regObj.setRegisterState(editTextState.getText().toString());
-                regObj.setRegisterFax(editTextFax.getText().toString());*/
-
-                /*regObj.setUsername(txtUsername.getText().toString());
-                regObj.setFirst_name(txtFirstName.getText().toString());
-                regObj.setLast_name(txtLastName.getText().toString());
-                regObj.setDob(txtRegisterDatePicker.getText().toString());
-                regObj.setAddress(txtAddressLine1.getText().toString());
-                //regObj.setRegisterAddressLine2(txtAddressLine2.getText().toString());
-                regObj.setPassword(txtPassword.getText().toString());
-                regObj.setConfirm_password(txtConfirmPassword.getText().toString());
-                regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
-                regObj.setMobile_phone(editTextMobilePhone.getText().toString());
-                regObj.setCountry(editTextCountry.getText().toString());
-                regObj.setState(editTextState.getText().toString());
-                regObj.setFax(editTextFax.getText().toString());*/
-
-                regObj.setUsername(txtUsername.getText().toString());
-                regObj.setFirst_name(txtFirstName.getText().toString());
-                regObj.setLast_name(txtLastName.getText().toString());
-                regObj.setPassword(txtPassword.getText().toString());
-                regObj.setTitle(txtTitle.getText().toString());
-                regObj.setDob(txtRegisterDatePicker.getText().toString());
-                Log.e("Date",txtRegisterDatePicker.getText().toString());
-                regObj.setAddress_1(txtAddressLine1.getText().toString());
-                regObj.setAddress_2(txtAddressLine2.getText().toString());
-                regObj.setAddress_3(txtAddressLine2.getText().toString());
-                //regObj.setRegisterAddressLine2(txtAddressLine2.getText().toString());
-                regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
-                regObj.setMobile_phone(editTextMobilePhone.getText().toString());
-                regObj.setCountry("MY");
-                regObj.setState("SL");
-                regObj.setCity(txtCity.getText().toString());
-                regObj.setPostcode(editTextPostcode.getText().toString());
-                regObj.setFax(editTextFax.getText().toString());
-                regObj.setSignature(signatureFromLocal);
-
-                /*regObj.setUsername("ateh_imal900@yahoo.com");
-                regObj.setFirst_name("Imala");
-                regObj.setLast_name("Pashaa");
-                regObj.setPassword("12345678Ab");
-                regObj.setTitle("MR");
-                regObj.setDob("2015-01-20");
-                regObj.setAddress_1("hehehe1");
-                regObj.setAddress_2("hehehe2");
-                regObj.setAddress_3("hehehe3");
-                //regObj.setRegisterAddressLine2(txtAddressLine2.getText().toString());
-                regObj.setAlternate_phone("0193321122");
-                regObj.setMobile_phone("01933212122");
-                regObj.setCountry("MY");
-                regObj.setState("SL");
-                regObj.setCity("Klang");
-                regObj.setPostcode("42000");
-                regObj.setFax("01291231232");
-                regObj.setSignature(signatureFromLocal);*/
-
-               /* Log.e("RegisterAddress1", regObj.getRegisterAddressLine1());
-                Log.e("RegisterAddress2",regObj.getRegisterAddressLine2());
-                Log.e("Phone2",regObj.getRegisterAlternatePhone());
-                Log.e("ConfirmPassword",regObj.getRegisterConfirmPassword());
-                Log.e("Country",regObj.getRegisterCountry());
-                Log.e("Dob",regObj.getRegisterDOB());
-                Log.e("Fax",regObj.getRegisterFax());
-                Log.e("FirstName",regObj.getRegisterFirstname());
-                Log.e("LastName",regObj.getRegisterLastname());
-                Log.e("Fax",regObj.getRegisterFax());
-                Log.e("Phone1",regObj.getRegisterMobilePhone());
-                Log.e("State",regObj.getRegisterState()); */
-
-                //presenter.onRequestRegister(regObj);
-            }
-        });
         return view;
     }
 
@@ -335,9 +266,9 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
                // }
            }else{
 
-               DatePickerObj date = (DatePickerObj)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
+               date = (DatePickerObj)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
                String month =  getMonthAlphabet(date.getMonth());
-
+               month_number = date.getMonth();
                Log.e("Date Picker",Integer.toString(date.getMonth()));
                txtRegisterDatePicker.setText(date.getDay()+" "+month+" "+date.getYear());
         }
@@ -367,11 +298,46 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         }
         else if(page == 4){
             Log.e("READY FOR VALIDATION","TRUE");
+            //validate();
+            requestRegister();
+
         }
         else {
             getActivity().finish();
         }
 
+    }
+
+    public void requestRegister(){
+
+        HashMap<String, String> init = pref.getSignatureFromLocalStorage();
+        String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
+
+        RegisterObj regObj = new RegisterObj();
+
+        //Reconstruct DOB
+        String dob = date.getYear()+"-"+date.getMonth()+"-"+date.getDay();
+
+        regObj.setUsername(txtUsername.getText().toString());
+        regObj.setFirst_name(txtFirstName.getText().toString());
+        regObj.setLast_name(txtLastName.getText().toString());
+        regObj.setPassword(txtPassword.getText().toString());
+        regObj.setTitle(txtTitle.getText().toString());
+        regObj.setDob(txtRegisterDatePicker.getText().toString());
+        Log.e("Date",dob+" "+month_number);
+        regObj.setAddress_1(txtAddressLine1.getText().toString());
+        regObj.setAddress_2(txtAddressLine2.getText().toString());
+        regObj.setAddress_3(txtAddressLine2.getText().toString());
+        regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
+        regObj.setMobile_phone(editTextMobilePhone.getText().toString());
+        regObj.setCountry("MY");
+        regObj.setState("SL");
+        regObj.setCity(txtCity.getText().toString());
+        regObj.setPostcode(editTextPostcode.getText().toString());
+        regObj.setFax(editTextFax.getText().toString());
+        regObj.setSignature(signatureFromLocal);
+
+        //presenter.onRequestRegister(regObj);
     }
 
     /*Set all block visibility to - GONE*/

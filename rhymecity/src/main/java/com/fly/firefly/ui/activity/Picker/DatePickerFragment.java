@@ -43,9 +43,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         // Do something with the date chosen by the user
 
         datePickerObj.setYear(year);
-        datePickerObj.setMonth(month);
+        datePickerObj.setMonth(month+1);
         datePickerObj.setDay(day);
-
         Log.e("Month", Integer.toString(datePickerObj.getMonth()));
 
         sendResult(datePickerObj);

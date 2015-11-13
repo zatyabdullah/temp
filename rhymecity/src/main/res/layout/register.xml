@@ -321,6 +321,7 @@
                                             android:paddingBottom="8dp"
                                             android:text="MR"
                                             android:hint="@string/register_title"
+                                            android:clickable="true"
                                             android:textSize="@dimen/font16sp"
                                             android:textColorHint="@color/loginFontTxt"
                                             android:id="@+id/txtTitle" />

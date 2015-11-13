@@ -9,6 +9,8 @@ import java.util.HashMap;
 public class SharedPrefManager {
     private static final String PREF_NAME = "AndroidHivePref";
     public static final String SIGNATURE = "SIGNATURE";
+    public static final String SELECTED = "SELECTED";
+
 
 
 
@@ -23,27 +25,42 @@ public class SharedPrefManager {
         _prefsEditor = _sharedPrefs.edit();
     }
 
-
-
+    /*Return Signature Value*/
     public HashMap<String, String> getSignatureFromLocalStorage() {
         HashMap<String, String> init = new HashMap<String, String>();
         init.put(SIGNATURE, _sharedPrefs.getString(SIGNATURE, null));
         return init;
     }
 
+    /*Return Selected Value*/
+    public HashMap<String, String> getSelectedPopupSelection() {
+        HashMap<String, String> init = new HashMap<String, String>();
+        init.put(SELECTED, _sharedPrefs.getString(SELECTED, null));
+        return init;
+    }
 
-
+    /*Set Signature Value*/
     public void setSignatureToLocalStorage(String signature) {
         _prefsEditor.putString(SIGNATURE, signature);
         _prefsEditor.apply();
     }
 
+    /*Set Selected Value*/
+    public void setSelectedPopupSelection(String signature) {
+        _prefsEditor.putString(SELECTED, signature);
+        _prefsEditor.apply();
+    }
 
+    /*Clear Signature Value*/
     public void clearSignatureFromLocalStorage() {
-
         // Clearing Siganture
         _sharedPrefs.edit().remove(SIGNATURE).apply();
+    }
 
+    /*Clear Selected Value*/
+    public void clearSelectedPopupSelection() {
+        // Clearing Selected
+        _sharedPrefs.edit().remove(SELECTED).apply();
     }
 
 }
