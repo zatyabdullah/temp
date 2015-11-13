@@ -168,7 +168,7 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         getActivity().startActivity(loginPage);
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
-                .setAction("Share")
+                .setAction("Click Book Flight")
                 .build());
 
     }

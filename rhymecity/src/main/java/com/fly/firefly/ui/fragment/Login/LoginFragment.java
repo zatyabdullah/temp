@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
 import com.fly.firefly.api.obj.LoginReceive;
@@ -22,6 +23,8 @@ import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.presenter.LoginPresenter;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import javax.inject.Inject;
 
@@ -30,6 +33,7 @@ import butterknife.InjectView;
 
 public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView {
 
+    private Tracker mTracker;
     @Inject
     LoginPresenter presenter;
 
@@ -70,6 +74,12 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         View view = inflater.inflate(R.layout.login, container, false);
         ButterKnife.inject(this, view);
+
+        // [START shared_tracker]
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
+        mTracker = application.getDefaultTracker();
+        // [END shared_tracker]
 
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,12 +128,20 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     {
         Intent loginPage = new Intent(getActivity(), RegisterActivity.class);
         getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click register page")
+                .build());
     }
 
     public void goBookingPage()
     {
         Intent loginPage = new Intent(getActivity(), SearchFlightActivity.class);
         getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click booking page")
+                .build());
     }
 
 
@@ -176,6 +194,9 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     public void onResume() {
         super.onResume();
         presenter.onResume();
+        Log.i("Page Name", "Setting screen name: " + "Login Page");
+        mTracker.setScreenName("Login" + "B");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

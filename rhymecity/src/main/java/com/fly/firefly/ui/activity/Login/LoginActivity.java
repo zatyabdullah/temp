@@ -2,11 +2,15 @@ package com.fly.firefly.ui.activity.Login;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
+import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.R;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.fragment.Login.LoginFragment;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.ButterKnife;
 
@@ -15,7 +19,7 @@ import butterknife.ButterKnife;
 public class LoginActivity extends MainFragmentActivity implements FragmentContainerActivity {
 
     //@InjectView(R.id.btnLogin) Button btnLogin;
-
+    private Tracker mTracker;
     private FragmentManager fragmentManager;
 
     @Override
@@ -26,7 +30,24 @@ public class LoginActivity extends MainFragmentActivity implements FragmentConta
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, LoginFragment.newInstance()).commit();
 
+        // [START shared_tracker]
+        // Obtain the shared Tracker instance.
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        // [END shared_tracker]
+
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // presenter.onResume();
+        Log.i("Page Name", "Setting screen name: " + "Login Page");
+        mTracker.setScreenName("Login" + "B");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
 
     @Override
     public int getFragmentContainerId() {
