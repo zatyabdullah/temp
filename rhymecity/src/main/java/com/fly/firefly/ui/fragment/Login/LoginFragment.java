@@ -91,8 +91,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBookingPage();
-                //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+                //goBookingPage();
+                loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
             }
         });
 

@@ -25,6 +25,7 @@ import com.fly.firefly.utils.SharedPrefManager;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -36,6 +37,7 @@ public class BaseFragment extends Fragment {
 	int indexForState = -1;
 	private String selected;
 	private SharedPrefManager prefManager;
+	private static Country obj = new Country();
 
 	/*Global PoPup*/
 	public void popupSelection(final ArrayList array,Activity act,final TextView txt){
@@ -89,23 +91,22 @@ public class BaseFragment extends Fragment {
 	}
 
 	/*Get All Country From OS*/
-	public static ArrayList<Country> getCountry()
+	public static ArrayList<String> getCountry()
 	{
 		Locale[] locales = Locale.getAvailableLocales();
-		Country obj = new Country();
+		ArrayList<String> countries = new ArrayList<String>();
 
-		ArrayList<Country> countries = new ArrayList<Country>();
 		for (Locale locale : locales) {
 			String country = locale.getDisplayCountry();
 			String countryCode = locale.getCountry();
 
+
 			if (country.trim().length()>0 && !countries.contains(country)) {
-				obj.setCountryCode(countryCode);
-				obj.setCountryName(country);
-				countries.add(obj);
+				countries.add(country+"-"+countryCode);
 			}
 		}
-		//Collections.sort(countries);
+
+		Collections.sort(countries);
 		return countries;
 	}
 
