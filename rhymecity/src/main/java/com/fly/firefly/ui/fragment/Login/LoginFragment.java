@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
@@ -25,14 +26,29 @@ import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.presenter.LoginPresenter;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
+import com.mobsandgeeks.saripaar.annotation.Password;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView {
+public class LoginFragment extends BaseFragment
+        implements LoginPresenter.LoginView,Validator.ValidationListener {
 
+
+    // Validator Attributes
+    private Validator mValidator;
     private Tracker mTracker;
     @Inject
     LoginPresenter presenter;
@@ -44,9 +60,17 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @InjectView(R.id.txtForgotPassword)
     TextView txtForgotPassword;
 
+    @NotEmpty(sequence = 1)
+    @Email(sequence =2)
+    @Order(1)
     @InjectView(R.id.txtLoginEmail)
     EditText txtLoginEmail;
 
+
+    @NotEmpty(sequence = 1)
+    @Length(sequence = 2, min = 6, message = "Must at least 6 character")
+    @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
+    @Order(2)
     @InjectView(R.id.txtLoginPassword)
     EditText txtLoginPassword;
 
@@ -67,6 +91,9 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FireFlyApplication.get(getActivity()).createScopedGraph(new LoginModule(this)).inject(this);
+        // Validator
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
     }
 
     @Override
@@ -91,7 +118,10 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goBookingPage();
+
+                //Validate form
+                mValidator.validate();
+                //goBookingPage();
                 //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
             }
         });
@@ -161,7 +191,31 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         }
 
 
+    }
 
+    //Validator Result//
+    @Override
+    public void onValidationSucceeded() {
+        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
+        Crouton.makeText(getActivity(), "Login Success", Style.CONFIRM).show();
+        loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getActivity());
+
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /*Popup Forgot Password*/
