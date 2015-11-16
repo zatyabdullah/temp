@@ -18,13 +18,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fly.firefly.ui.object.Country;
 import com.fly.firefly.utils.DropDownItem;
 import com.fly.firefly.utils.DropMenuAdapter;
 import com.fly.firefly.utils.SharedPrefManager;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -89,19 +89,23 @@ public class BaseFragment extends Fragment {
 	}
 
 	/*Get All Country From OS*/
-	public static ArrayList<String> getCountry()
+	public static ArrayList<Country> getCountry()
 	{
 		Locale[] locales = Locale.getAvailableLocales();
-		ArrayList<String> countries = new ArrayList<String>();
+		Country obj = new Country();
+
+		ArrayList<Country> countries = new ArrayList<Country>();
 		for (Locale locale : locales) {
 			String country = locale.getDisplayCountry();
 			String countryCode = locale.getCountry();
 
 			if (country.trim().length()>0 && !countries.contains(country)) {
-				countries.add(country+"-"+countryCode);
+				obj.setCountryCode(countryCode);
+				obj.setCountryName(country);
+				countries.add(obj);
 			}
 		}
-		Collections.sort(countries);
+		//Collections.sort(countries);
 		return countries;
 	}
 

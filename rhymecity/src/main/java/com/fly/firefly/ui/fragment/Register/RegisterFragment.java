@@ -23,6 +23,7 @@ import com.fly.firefly.ui.activity.Login.LoginActivity;
 import com.fly.firefly.ui.activity.Picker.CountryListDialogFragment;
 import com.fly.firefly.ui.activity.Picker.DatePickerFragment;
 import com.fly.firefly.ui.module.RegisterModule;
+import com.fly.firefly.ui.object.Country;
 import com.fly.firefly.ui.object.DatePickerObj;
 import com.fly.firefly.ui.object.RegisterObj;
 import com.fly.firefly.ui.presenter.RegisterPresenter;
@@ -115,14 +116,14 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
 
         /*Add Country To DropDown List*/
-        ArrayList<String> countries = new ArrayList<String>();
+        ArrayList<Country> countries = new ArrayList<Country>();
         countries = BaseFragment.getCountry();
         int b = 1;
-        for (String country : countries) {
+        for (Country country : countries) {
 
                 DropDownItem itemCountry = new DropDownItem();
-                itemCountry.setText(country);
-                itemCountry.setCode(Integer.toString(b));
+                itemCountry.setText(country.getCountryName());
+                itemCountry.setCode(country.getCountryCode());
                 itemCountry.setTag("Country");
                 countrys.add(itemCountry);
          }
@@ -138,8 +139,6 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             titleList.add(itemCountry);
 
         }
-
-
 
          /*Switch register info block*/
         editTextCountry.setOnClickListener(new View.OnClickListener() {
@@ -256,6 +255,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
                if (selectedCountry.getTag() == "Country") {
                    editTextCountry.setText(selectedCountry.getText());
+                   //selectedCountryCode = selectedCountry.getCode();
+                   Log.e("Selected Country",selectedCountry.getCode());
                } else {
                    editTextState.setText(selectedCountry.getText());
                }

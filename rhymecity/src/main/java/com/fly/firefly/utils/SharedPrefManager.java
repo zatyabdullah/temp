@@ -10,7 +10,7 @@ public class SharedPrefManager {
     private static final String PREF_NAME = "AndroidHivePref";
     public static final String SIGNATURE = "SIGNATURE";
     public static final String SELECTED = "SELECTED";
-
+   // public static final String SELECTED = "SELECTED";
 
 
 
@@ -45,7 +45,8 @@ public class SharedPrefManager {
         _prefsEditor.apply();
     }
 
-    /*Set Selected Value*/
+
+    /*Set Airport Value*/
     public void setSelectedPopupSelection(String signature) {
         _prefsEditor.putString(SELECTED, signature);
         _prefsEditor.apply();

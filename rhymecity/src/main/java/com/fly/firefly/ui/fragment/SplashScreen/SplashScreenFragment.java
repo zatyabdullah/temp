@@ -92,7 +92,6 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
         String signature = obj.getObj().getSignature();
         Log.e("signature", signature);
         //Save Signature to local storage
-        pref.setSignatureToLocalStorage(signature);
 
         //Redirect to homepage after success loading splashscreen
         Intent home = new Intent(getActivity(), HomeActivity.class);

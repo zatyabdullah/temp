@@ -664,6 +664,17 @@
 
         <!-- HOMEPAGE FIREFLY -->
 
+
+
+        <!-- State -->
+        <string-array name="state">
+                <item>Selangor-SL</item>
+                <item>Pahang-PHG</item>
+                <item>Johor-JHR</item>
+                <item>Kedah-KDH</item>
+                <item>Penang-PEN</item>
+        </string-array>
+
         <string name="app_name">Firefly</string>
         <string name="welcome_to_firefly">Welcome to Firefly</string>
         <string name="beyond_convenience">Beyond Convenience</string>

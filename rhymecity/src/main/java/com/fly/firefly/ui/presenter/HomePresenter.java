@@ -6,6 +6,7 @@ import com.fly.firefly.rhymes.RhymesRequestedEvent;
 import com.fly.firefly.ui.object.AirportObj;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
+import com.fly.firefly.utils.SharedPrefManager;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -18,6 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class HomePresenter {
+
+    private SharedPrefManager pref;
 
     public interface HomeView {
 
@@ -68,6 +71,8 @@ public class HomePresenter {
     public void onSuccessSendDeviceInformation(DeviceInfoSuccess event) {
 
         //Log.e("Signature", event.getSignature());
+        //pref = new SharedPrefManager(MainFragmentActivity.getContext());
+        //pref.setAirPortAvailability(Airport);
 
         ArrayList<AirportObj> customObjList = new ArrayList<>();
         //Log.e("x",customObjList.get(1).getLocation());
@@ -90,6 +95,8 @@ public class HomePresenter {
             /*create json object*/
             JSONObject row = (JSONObject) json.opt(i);
             Log.e("x", row.optString("location"));
+            //Save to pref
+
             /*insert data into db - function located at MainFragmentActivity*/
        }
 
