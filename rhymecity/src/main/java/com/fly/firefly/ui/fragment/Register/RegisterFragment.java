@@ -24,7 +24,6 @@ import com.fly.firefly.ui.activity.Login.LoginActivity;
 import com.fly.firefly.ui.activity.Picker.CountryListDialogFragment;
 import com.fly.firefly.ui.activity.Picker.DatePickerFragment;
 import com.fly.firefly.ui.module.RegisterModule;
-import com.fly.firefly.ui.object.Country;
 import com.fly.firefly.ui.object.DatePickerObj;
 import com.fly.firefly.ui.object.RegisterObj;
 import com.fly.firefly.ui.presenter.RegisterPresenter;
@@ -109,6 +108,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     private DatePickerObj date;
     private ArrayList<DropDownItem> titleList;
     private String selectedTitle;
+    String[] state_val;
+    private String selectedState;
+    private String selectedCountryCode;
+
     public static RegisterFragment newInstance() {
 
         RegisterFragment fragment = new RegisterFragment();
@@ -144,23 +147,42 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
 
         /*Add Country To DropDown List*/
-        ArrayList<Country> countries = new ArrayList<Country>();
+        ArrayList<String> countries = new ArrayList<String>();
         countries = BaseFragment.getCountry();
-        int b = 1;
-        for (Country country : countries) {
 
-                DropDownItem itemCountry = new DropDownItem();
-                itemCountry.setText(country.getCountryName());
-                itemCountry.setCode(country.getCountryCode());
-                itemCountry.setTag("Country");
-                countrys.add(itemCountry);
+        int b = 1;
+
+        for (String country : countries) {
+            int y = 1;
+
+             /*Split data*/
+            String[] parts = country.split("-");
+            String state_name = parts[0];
+            String state_code = parts[1];
+
+            DropDownItem itemCountry = new DropDownItem();
+            itemCountry.setText(state_name+" "+state_code);
+            itemCountry.setCode(state_code);
+            itemCountry.setTag("Country");
+            itemCountry.setId(y);
+            countrys.add(itemCountry);
+
+            y++;
+
          }
 
+        /* Get State From Local String*/
+        state_val = getResources().getStringArray(R.array.state);
+        for(int x = 0 ; x < state_val.length ; x++) {
 
-        for(int x = 0 ; x < 20 ; x++) {
+            /*Split data*/
+            String[] parts = state_val[x].split("-");
+            String state_name = parts[0];
+            String state_code = parts[1];
+
             DropDownItem itemCountry = new DropDownItem();
-            itemCountry.setText(Integer.toString(x) + "State");
-            itemCountry.setCode(Integer.toString(x));
+            itemCountry.setText(state_name);
+            itemCountry.setCode(state_code);
             itemCountry.setTag("State");
             itemCountry.setId(x);
             state.add(itemCountry);
@@ -239,7 +261,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
                 //Validate form
                 mValidator.validate();
                // Log.e("selectedTitle",selectedTitle);
-                //showHiddenBlock(currentPage+1);
+                showHiddenBlock(currentPage+1);
             }
         });
 
@@ -285,10 +307,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
                if (selectedCountry.getTag() == "Country") {
                    editTextCountry.setText(selectedCountry.getText());
-                   //selectedCountryCode = selectedCountry.getCode();
-                   Log.e("Selected Country",selectedCountry.getCode());
+                   selectedCountryCode = selectedCountry.getCode();
                } else {
                    editTextState.setText(selectedCountry.getText());
+                   selectedState = selectedCountry.getCode();
                }
 
                // } else if (requestCode == 0) {
@@ -353,22 +375,24 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         regObj.setFirst_name(txtFirstName.getText().toString());
         regObj.setLast_name(txtLastName.getText().toString());
         regObj.setPassword(txtPassword.getText().toString());
-        regObj.setTitle(txtTitle.getText().toString());
-        regObj.setDob(txtRegisterDatePicker.getText().toString());
-        Log.e("Date",dob+" "+month_number);
+        //regObj.setTitle(txtTitle.getText().toString());
+        regObj.setTitle("MR");
+        regObj.setDob(dob);
         regObj.setAddress_1(txtAddressLine1.getText().toString());
         regObj.setAddress_2(txtAddressLine2.getText().toString());
         regObj.setAddress_3(txtAddressLine2.getText().toString());
         regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
         regObj.setMobile_phone(editTextMobilePhone.getText().toString());
-        regObj.setCountry("MY");
-        regObj.setState("SL");
+        regObj.setCountry(selectedState);
+        regObj.setState(selectedCountryCode);
+        //Log.e("State",selectedState);
+        //Log.e("Country", selectedCountryCode);
         regObj.setCity(txtCity.getText().toString());
         regObj.setPostcode(editTextPostcode.getText().toString());
         regObj.setFax(editTextFax.getText().toString());
         regObj.setSignature(signatureFromLocal);
 
-        //presenter.onRequestRegister(regObj);
+        presenter.onRequestRegister(regObj);
     }
 
     /*Set all block visibility to - GONE*/
@@ -396,8 +420,11 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             getActivity().startActivity(home);
             getActivity().finish();
 
-        } else {
+        } else if(obj.getStatus() == "success"){
             Log.e("Messages", obj.getUserObj().getMessage());
+        }else
+        {
+            
         }
     }
 

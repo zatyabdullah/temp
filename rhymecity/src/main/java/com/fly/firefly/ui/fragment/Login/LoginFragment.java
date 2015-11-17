@@ -29,10 +29,8 @@ import com.google.android.gms.analytics.Tracker;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
-import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
-import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.List;
 
@@ -60,14 +58,14 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     TextView txtForgotPassword;
 
     @NotEmpty(sequence = 1)
-    @Email(sequence =2)
+    @Email(sequence = 2)
     @Order(1)
     @InjectView(R.id.txtLoginEmail) EditText txtLoginEmail;
 
 
-   @NotEmpty(sequence = 1)
-    @Length(sequence = 2, min = 6, message = "Must at least 6 character")
-    @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
+    @NotEmpty(sequence = 1)
+    //@Length(sequence = 2, min = 6, message = "Must at least 6 character")
+    //@Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
     @Order(2)
     @InjectView(R.id.txtLoginPassword) EditText txtLoginPassword;
 
@@ -91,8 +89,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         // Validator
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
-        mValidator.setValidationMode(Validator.Mode.IMMEDIATE);
-      //  Validator.registerAnnotation(required.class);
+        mValidator.setValidationMode(Validator.Mode.BURST);
     }
 
     @Override
@@ -119,6 +116,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //goBookingPage();
+                // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
 
                 //Validate form
                 mValidator.validate();
@@ -177,44 +176,46 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
 
     @Override
-    public void loginSuccess(LoginReceive obj) {
-
+    public void onLoginSuccess(LoginReceive obj) {
 
         if (obj.getStatus() == "Success") {
-
-            Log.e("username", "HERE");
-            Log.e("obj", obj.getUserInfo().getUsername());
-
+            goBookingPage();
         }else{
-            Log.e("obj", obj.getMessage());
-            Log.e("Login", "Error");
-
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
-
-
     }
 
-    //Validator Result//
+    /*IF Login Failed*/
+    @Override
+    public void onLoginFailed(String obj) {
+
+        Crouton.makeText(getActivity(), obj, Style.ALERT).show();
+    }
+
+    /* Validation Success - Start send data to server */
     @Override
     public void onValidationSucceeded() {
         // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
-        Crouton.makeText(getActivity(), "Login Success", Style.CONFIRM).show();
         loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
-
 
     }
 
+    /* Validation Failed - Toast Error */
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
+
         for (ValidationError error : errors) {
             View view = error.getView();
+
+            /* Split Error Message. Display first sequence only */
             String message = error.getCollatedErrorMessage(getActivity());
+            String splitErrorMsg[] = message.split("\\r?\\n");
 
             // Display error messages
             if (view instanceof EditText) {
-                ((EditText) view).setError(message);
+               ((EditText) view).setError(splitErrorMsg[0]);
             } else {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+               Toast.makeText(getActivity(), splitErrorMsg[0], Toast.LENGTH_LONG).show();
             }
         }
     }

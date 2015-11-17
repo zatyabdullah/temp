@@ -120,7 +120,8 @@
                                 android:hint="@string/login_enter_email"
                                 android:textSize="@dimen/font17sp"
                                 android:textColorHint="@color/loginFontTxt"
-                                android:id="@+id/txtLoginEmail" />
+                                android:id="@+id/txtLoginEmail"
+                                android:tag="tagLoginEmail"/>
 
                         </LinearLayout>
 
@@ -139,7 +140,8 @@
                                 android:hint="@string/login_enter_password"
                                 android:textSize="@dimen/font17sp"
                                 android:textColorHint="@color/loginFontTxt"
-                                android:id="@+id/txtLoginPassword" />
+                                android:id="@+id/txtLoginPassword"
+                                android:tag="tagLoginPassword"/>
 
                         </LinearLayout>
 

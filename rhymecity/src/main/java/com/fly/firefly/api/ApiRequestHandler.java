@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.fly.firefly.MainFragmentActivity;
+import com.fly.firefly.api.obj.FailedConnectToServer;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
@@ -45,6 +46,7 @@ public class ApiRequestHandler {
             @Override
             public void success(LoginReceive rhymesResponse, Response response) {
 
+               Log.e("Success","OK");
                bus.post(new LoginReceive(rhymesResponse));
                loading(false);
             }
@@ -52,8 +54,8 @@ public class ApiRequestHandler {
             @Override
             public void failure(RetrofitError error) {
 
+                bus.post(new FailedConnectToServer("Unable to connect to server"));
                 loading(false);
-                //bus.post(new RhymesFailureEvent(rhymesResponse));
             }
 
         });

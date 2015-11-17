@@ -40,7 +40,7 @@ public class CountryListDialogAdapter extends BaseAdapter implements Filterable 
 
     @Override
     public long getItemId(int position) {
-        return Long.parseLong(countries.get(position).getCode());
+        return countries.get(position).getId();
     }
 
     @Override
