@@ -345,25 +345,24 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         regObj.setFirst_name(txtFirstName.getText().toString());
         regObj.setLast_name(txtLastName.getText().toString());
         regObj.setPassword(txtPassword.getText().toString());
-        regObj.setTitle(txtTitle.getText().toString());
+        //regObj.setTitle(txtTitle.getText().toString());
+        regObj.setTitle("MR");
         regObj.setDob(dob);
-
         regObj.setAddress_1(txtAddressLine1.getText().toString());
         regObj.setAddress_2(txtAddressLine2.getText().toString());
         regObj.setAddress_3(txtAddressLine2.getText().toString());
         regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
         regObj.setMobile_phone(editTextMobilePhone.getText().toString());
-        //regObj.setCountry("MY");
-        //regObj.setState("SL");
-        Log.e("State",selectedState);
-        Log.e("Country",selectedCountryCode);
-
+        regObj.setCountry(selectedState);
+        regObj.setState(selectedCountryCode);
+        //Log.e("State",selectedState);
+        //Log.e("Country", selectedCountryCode);
         regObj.setCity(txtCity.getText().toString());
         regObj.setPostcode(editTextPostcode.getText().toString());
         regObj.setFax(editTextFax.getText().toString());
         regObj.setSignature(signatureFromLocal);
 
-        //presenter.onRequestRegister(regObj);
+        presenter.onRequestRegister(regObj);
     }
 
     /*Set all block visibility to - GONE*/
@@ -391,8 +390,11 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             getActivity().startActivity(home);
             getActivity().finish();
 
-        } else {
+        } else if(obj.getStatus() == "success"){
             Log.e("Messages", obj.getUserObj().getMessage());
+        }else
+        {
+            
         }
     }
 

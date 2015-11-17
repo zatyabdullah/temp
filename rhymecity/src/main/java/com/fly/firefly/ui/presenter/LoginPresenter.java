@@ -2,6 +2,7 @@ package com.fly.firefly.ui.presenter;
 
 import android.util.Log;
 
+import com.fly.firefly.api.obj.FailedConnectToServer;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.squareup.otto.Bus;
@@ -11,7 +12,9 @@ public class LoginPresenter {
 
     public interface LoginView {
 
-        void loginSuccess(LoginReceive obj);
+        void onLoginSuccess(LoginReceive obj);
+        void onLoginFailed(String dumm);
+
 
     }
 
@@ -40,7 +43,14 @@ public class LoginPresenter {
     public void onUserSuccessLogin(LoginReceive event) {
 
         /*Save Session And Redirect To Homepage*/
-        view.loginSuccess(event.getUserObj());
+        view.onLoginSuccess(event.getUserObj());
+    }
+
+    @Subscribe
+    public void onUserSuccessLogin(FailedConnectToServer event) {
+
+        /*Save Session And Redirect To Homepage*/
+        view.onLoginFailed(event.getDummy());
     }
 
 }

@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
@@ -19,20 +20,32 @@ import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
-import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
+import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.presenter.LoginPresenter;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Order;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView {
+public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView,Validator.ValidationListener {
 
+
+    // Validator Attributes
+    private Validator mValidator;
     private Tracker mTracker;
     @Inject
     LoginPresenter presenter;
@@ -44,9 +57,17 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @InjectView(R.id.txtForgotPassword)
     TextView txtForgotPassword;
 
+    @NotEmpty(sequence = 1)
+    @Email(sequence = 2)
+    @Order(1)
     @InjectView(R.id.txtLoginEmail)
     EditText txtLoginEmail;
 
+
+    @NotEmpty(sequence = 1)
+    //@Length(sequence = 2, min = 6, message = "Must at least 6 character")
+    //@Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
+    @Order(2)
     @InjectView(R.id.txtLoginPassword)
     EditText txtLoginPassword;
 
@@ -67,6 +88,10 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FireFlyApplication.get(getActivity()).createScopedGraph(new LoginModule(this)).inject(this);
+        // Validator
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+        mValidator.setValidationMode(Validator.Mode.BURST);
     }
 
     @Override
@@ -92,7 +117,12 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
             @Override
             public void onClick(View v) {
                 //goBookingPage();
-                loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+                // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+
+                //Validate form
+                mValidator.validate();
+                //goBookingPage();
+                //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
             }
         });
 
@@ -146,22 +176,48 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
 
     @Override
-    public void loginSuccess(LoginReceive obj) {
-
+    public void onLoginSuccess(LoginReceive obj) {
 
         if (obj.getStatus() == "Success") {
-
-            Log.e("username", "HERE");
-            Log.e("obj", obj.getUserInfo().getUsername());
-
+            goBookingPage();
         }else{
-            Log.e("obj", obj.getMessage());
-            Log.e("Login", "Error");
-
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
+    }
 
+    /*IF Login Failed*/
+    @Override
+    public void onLoginFailed(String obj) {
 
+        Crouton.makeText(getActivity(), obj, Style.ALERT).show();
+    }
 
+    /* Validation Success - Start send data to server */
+    @Override
+    public void onValidationSucceeded() {
+        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
+        loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+
+    }
+
+    /* Validation Failed - Toast Error */
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+
+        for (ValidationError error : errors) {
+            View view = error.getView();
+
+            /* Split Error Message. Display first sequence only */
+            String message = error.getCollatedErrorMessage(getActivity());
+            String splitErrorMsg[] = message.split("\\r?\\n");
+
+            // Display error messages
+            if (view instanceof EditText) {
+               ((EditText) view).setError(splitErrorMsg[0]);
+            } else {
+               Toast.makeText(getActivity(), splitErrorMsg[0], Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     /*Popup Forgot Password*/
