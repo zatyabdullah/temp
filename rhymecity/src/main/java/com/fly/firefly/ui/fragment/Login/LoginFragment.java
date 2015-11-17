@@ -60,16 +60,14 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @NotEmpty(sequence = 1)
     @Email(sequence = 2)
     @Order(1)
-    @InjectView(R.id.txtLoginEmail)
-    EditText txtLoginEmail;
+    @InjectView(R.id.txtLoginEmail) EditText txtLoginEmail;
 
 
     @NotEmpty(sequence = 1)
     //@Length(sequence = 2, min = 6, message = "Must at least 6 character")
     //@Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
     @Order(2)
-    @InjectView(R.id.txtLoginPassword)
-    EditText txtLoginPassword;
+    @InjectView(R.id.txtLoginPassword) EditText txtLoginPassword;
 
     AlertDialog dialog;
 
@@ -99,6 +97,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         View view = inflater.inflate(R.layout.login, container, false);
         ButterKnife.inject(this, view);
+
+
 
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
