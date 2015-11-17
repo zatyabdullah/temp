@@ -39,6 +39,7 @@ import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,14 +85,15 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @NotEmpty(sequence = 1)@Order(4)@InjectView(R.id.txtLastName)EditText txtLastName;
     @NotEmpty(sequence = 1)@Order(5) @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
     @Optional @Order(6)@InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
-    @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
-    @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
-    @InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
-    @InjectView(R.id.editTextFax) EditText editTextFax;
+    @Order(7)@InjectView(R.id.editTextPostcode)EditText editTextPostcode;
+    
+    @Order(8)@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+    @Order(9)@InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
+    @Order(10) @InjectView(R.id.editTextFax) EditText editTextFax;
 
     @InjectView(R.id.registerContinueButton) Button registerContinueButton;
-    @InjectView(R.id.txtCity) EditText txtCity;
-    @InjectView(R.id.txtTitle) TextView txtTitle;
+    @Order(11) @NotEmpty @InjectView(R.id.txtCity) EditText txtCity;
+    @Order(12)@NotEmpty @InjectView(R.id.txtTitle) TextView txtTitle;
 
 
 
