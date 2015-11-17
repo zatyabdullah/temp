@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
@@ -29,17 +30,31 @@ import com.fly.firefly.ui.object.RegisterObj;
 import com.fly.firefly.ui.presenter.RegisterPresenter;
 import com.fly.firefly.utils.DropDownItem;
 import com.fly.firefly.utils.SharedPrefManager;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
+import com.mobsandgeeks.saripaar.annotation.Length;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
+import com.mobsandgeeks.saripaar.annotation.Optional;
+import com.mobsandgeeks.saripaar.annotation.Order;
+import com.mobsandgeeks.saripaar.annotation.Password;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class RegisterFragment extends BaseFragment implements RegisterPresenter.RegisterView {
+public class RegisterFragment extends BaseFragment implements RegisterPresenter.RegisterView,Validator.ValidationListener {
 
+
+    // Validator Attributes
+    private Validator mValidator;
     @Inject
     RegisterPresenter presenter;
 
@@ -54,14 +69,21 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.imageViewRegisterIndicator) ImageView imageRegisterIndicator;
     @InjectView(R.id.editTextCountry) TextView editTextCountry;
     @InjectView(R.id.editTextState) TextView editTextState;
+
+    @NotEmpty(sequence = 1)
+    @Order(1)
     @InjectView(R.id.txtUsername) EditText txtUsername;
+    @NotEmpty(sequence = 1)
+    @Length(sequence = 2, min = 6, message = "Must at least 6 character")
+    @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
+    @Order(2)
     @InjectView(R.id.txtPassword) EditText txtPassword;
-    @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
-    @InjectView(R.id.txtFirstName) EditText txtFirstName;
+    @ConfirmPassword @Order(3) @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
+    @NotEmpty @Order(3)@InjectView(R.id.txtFirstName) EditText txtFirstName;
     @InjectView(R.id.txtRegisterDatePicker) TextView txtRegisterDatePicker;
-    @InjectView(R.id.txtLastName)EditText txtLastName;
-    @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
-    @InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
+    @NotEmpty(sequence = 1)@Order(4)@InjectView(R.id.txtLastName)EditText txtLastName;
+    @NotEmpty(sequence = 1)@Order(5) @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
+    @Optional @Order(6)@InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
     @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
     @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
     @InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
@@ -99,6 +121,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FireFlyApplication.get(getActivity()).createScopedGraph(new RegisterModule(this)).inject(this);
+        // Validator
+        mValidator = new Validator(this);
+        mValidator.setValidationListener(this);
+        mValidator.setValidationMode(Validator.Mode.IMMEDIATE);
     }
 
     @Override
@@ -208,6 +234,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         registerContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Validate form
+                mValidator.validate();
                // Log.e("selectedTitle",selectedTitle);
                 //showHiddenBlock(currentPage+1);
             }
@@ -244,7 +272,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       Log.e("enter here","ok");
+       Log.e("enter here", "ok");
        if (resultCode != Activity.RESULT_OK) {
            return;
         } else {
@@ -370,6 +398,33 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             Log.e("Messages", obj.getUserObj().getMessage());
         }
     }
+
+
+    //Validator Result//
+    @Override
+    public void onValidationSucceeded() {
+        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
+        Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
+       // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+
+
+    }
+
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(getActivity());
+
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

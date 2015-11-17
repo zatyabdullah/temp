@@ -20,9 +20,9 @@ import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
-import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
+import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.presenter.LoginPresenter;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -43,8 +43,7 @@ import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
-public class LoginFragment extends BaseFragment
-        implements LoginPresenter.LoginView,Validator.ValidationListener {
+public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView,Validator.ValidationListener {
 
 
     // Validator Attributes
@@ -63,16 +62,14 @@ public class LoginFragment extends BaseFragment
     @NotEmpty(sequence = 1)
     @Email(sequence =2)
     @Order(1)
-    @InjectView(R.id.txtLoginEmail)
-    EditText txtLoginEmail;
+    @InjectView(R.id.txtLoginEmail) EditText txtLoginEmail;
 
 
-    @NotEmpty(sequence = 1)
+   @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6, message = "Must at least 6 character")
     @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
     @Order(2)
-    @InjectView(R.id.txtLoginPassword)
-    EditText txtLoginPassword;
+    @InjectView(R.id.txtLoginPassword) EditText txtLoginPassword;
 
     AlertDialog dialog;
 
@@ -94,6 +91,8 @@ public class LoginFragment extends BaseFragment
         // Validator
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
+        mValidator.setValidationMode(Validator.Mode.IMMEDIATE);
+      //  Validator.registerAnnotation(required.class);
     }
 
     @Override
@@ -101,6 +100,8 @@ public class LoginFragment extends BaseFragment
 
         View view = inflater.inflate(R.layout.login, container, false);
         ButterKnife.inject(this, view);
+
+
 
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
