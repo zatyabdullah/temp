@@ -141,13 +141,13 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         LoginRequest data = new LoginRequest();
 
         /* Dummy Data For Testing - Imal */
-        data.setUsername("zhariffadam00@me-tech.com.my");
-        data.setPassword("P@$$w0rd");
+       // data.setUsername("zhariffadam00@me-tech.com.my");
+       // data.setPassword("P@$$w0rd");
 
-        /*
+
             data.setUsername(username);
             data.setPassword(password);
-        */
+
 
         presenter.loginFunction(data);
     }
@@ -178,11 +178,14 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @Override
     public void onLoginSuccess(LoginReceive obj) {
 
-        if (obj.getStatus() == "Success") {
-            goBookingPage();
-        }else{
-            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
-        }
+        Log.e("ABC",obj.getStatus());
+        //if (obj.getStatus().equals("success")) {
+       ///     goBookingPage();
+       // }else{
+        //    Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
+        //}
+
+
     }
 
     /*IF Login Failed*/

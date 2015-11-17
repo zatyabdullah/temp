@@ -66,38 +66,56 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.registerContactInfoBlock) LinearLayout registerContactBlock;
 
     @InjectView(R.id.imageViewRegisterIndicator) ImageView imageRegisterIndicator;
-    @InjectView(R.id.editTextCountry) TextView editTextCountry;
+    @Order(13) @NotEmpty @InjectView(R.id.editTextCountry) TextView editTextCountry;
     @InjectView(R.id.editTextState) TextView editTextState;
 
     @NotEmpty(sequence = 1)
     @Order(1)
     @InjectView(R.id.txtUsername) EditText txtUsername;
 
+    @Order(2)
     @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6, message = "Must at least 6 character")
     @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
-    @Order(2)
     @InjectView(R.id.txtPassword) EditText txtPassword;
 
-    @ConfirmPassword @Order(3) @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
-    @NotEmpty @Order(3)@InjectView(R.id.txtFirstName) EditText txtFirstName;
-    @InjectView(R.id.txtRegisterDatePicker) TextView txtRegisterDatePicker;
+    @Order(3)
+    @ConfirmPassword
+    @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
 
-    @NotEmpty(sequence = 1)@Order(4)@InjectView(R.id.txtLastName)EditText txtLastName;
-    @NotEmpty(sequence = 1)@Order(5) @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
+    @Order(4) @NotEmpty @InjectView(R.id.txtFirstName)
+    EditText txtFirstName;
 
-    @Optional @Order(6)@InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
-    @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
+    @InjectView(R.id.txtRegisterDatePicker)
+    TextView txtRegisterDatePicker;
 
-    @NotEmpty(sequence = 1)@Order(4)
-    @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+    @Order(5) @NotEmpty(sequence = 1)@InjectView(R.id.txtLastName)
+    EditText txtLastName;
 
-    @InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
-    @InjectView(R.id.editTextFax) EditText editTextFax;
+    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.txtAddressLine1)
+    EditText txtAddressLine1;
 
-    @InjectView(R.id.registerContinueButton) Button registerContinueButton;
-    @InjectView(R.id.txtCity) EditText txtCity;
-    @InjectView(R.id.txtTitle) TextView txtTitle;
+    @Order(7) @Optional @InjectView(R.id.txtAddressLine2)
+    EditText txtAddressLine2;
+
+    @Order(8) @NotEmpty(sequence = 1) @InjectView(R.id.editTextPostcode)
+    EditText editTextPostcode;
+
+    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+    @Order(10)@Optional @InjectView(R.id.editTextAlternatePhone)
+    EditText editTextAlternatePhone;
+
+    @Order(11)@Optional @InjectView(R.id.editTextFax)
+    EditText editTextFax;
+
+    @InjectView(R.id.registerContinueButton)
+    Button registerContinueButton;
+
+    @Order(12)@NotEmpty @InjectView(R.id.txtCity)
+    EditText txtCity;
+
+    @Order(14)@NotEmpty @InjectView(R.id.txtTitle)
+    TextView txtTitle;
 
 
 
@@ -445,19 +463,27 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        Log.e("Validation Success","True");
+        Log.e("Validation Success", "True");
+        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
+        //Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
         showHiddenBlock(currentPage + 1);
+       // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+
+
     }
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
         for (ValidationError error : errors) {
             View view = error.getView();
+
+             /* Split Error Message. Display first sequence only */
             String message = error.getCollatedErrorMessage(getActivity());
+            String splitErrorMsg[] = message.split("\\r?\\n");
 
             // Display error messages
             if (view instanceof EditText) {
-                ((EditText) view).setError(message);
+                ((EditText) view).setError(splitErrorMsg[0]);
             } else {
                 Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
             }
