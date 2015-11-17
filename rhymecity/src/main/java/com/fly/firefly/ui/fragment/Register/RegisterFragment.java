@@ -82,8 +82,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @Order(8) @NotEmpty(sequence = 1) @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
 
     @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
-    @Order(10)@Optional @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
-    @Order(11)@Optional@Length(sequence = 2, min = 6,max = 14, message = "invalid fax number") @InjectView(R.id.editTextFax) EditText editTextFax;
+    @Order(10)@Optional @InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
+    @Order(11)@Optional @InjectView(R.id.editTextFax) EditText editTextFax;
 
     @InjectView(R.id.registerContinueButton) Button registerContinueButton;
     @Order(12)@NotEmpty @InjectView(R.id.txtCity) EditText txtCity;
