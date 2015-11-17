@@ -38,7 +38,6 @@ import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,8 +46,6 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class RegisterFragment extends BaseFragment implements RegisterPresenter.RegisterView,Validator.ValidationListener {
 
@@ -67,32 +64,30 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.registerContactInfoBlock) LinearLayout registerContactBlock;
 
     @InjectView(R.id.imageViewRegisterIndicator) ImageView imageRegisterIndicator;
-    @InjectView(R.id.editTextCountry) TextView editTextCountry;
+    @Order(13) @NotEmpty @InjectView(R.id.editTextCountry) TextView editTextCountry;
     @InjectView(R.id.editTextState) TextView editTextState;
 
-    @NotEmpty(sequence = 1)
-    @Order(1)
-    @InjectView(R.id.txtUsername) EditText txtUsername;
-    @NotEmpty(sequence = 1)
+    @Order(1) @NotEmpty(sequence = 1)@InjectView(R.id.txtUsername) EditText txtUsername;
+    @Order(2) @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6, message = "Must at least 6 character")
     @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
-    @Order(2)
     @InjectView(R.id.txtPassword) EditText txtPassword;
-    @ConfirmPassword @Order(3) @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
-    @NotEmpty @Order(3)@InjectView(R.id.txtFirstName) EditText txtFirstName;
+
+    @Order(3) @ConfirmPassword  @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
+    @Order(4) @NotEmpty @InjectView(R.id.txtFirstName) EditText txtFirstName;
     @InjectView(R.id.txtRegisterDatePicker) TextView txtRegisterDatePicker;
-    @NotEmpty(sequence = 1)@Order(4)@InjectView(R.id.txtLastName)EditText txtLastName;
-    @NotEmpty(sequence = 1)@Order(5) @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
-    @Optional @Order(6)@InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
-    @Order(7)@InjectView(R.id.editTextPostcode)EditText editTextPostcode;
-    
-    @Order(8)@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
-    @Order(9)@InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
-    @Order(10) @InjectView(R.id.editTextFax) EditText editTextFax;
+    @Order(5) @NotEmpty(sequence = 1)@InjectView(R.id.txtLastName)EditText txtLastName;
+    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
+    @Order(7) @Optional @InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
+    @Order(8) @NotEmpty(sequence = 1) @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
+
+    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+    @Order(10)@Optional @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
+    @Order(11)@Optional@Length(sequence = 2, min = 6,max = 14, message = "invalid fax number") @InjectView(R.id.editTextFax) EditText editTextFax;
 
     @InjectView(R.id.registerContinueButton) Button registerContinueButton;
-    @Order(11) @NotEmpty @InjectView(R.id.txtCity) EditText txtCity;
-    @Order(12)@NotEmpty @InjectView(R.id.txtTitle) TextView txtTitle;
+    @Order(12)@NotEmpty @InjectView(R.id.txtCity) EditText txtCity;
+    @Order(14)@NotEmpty @InjectView(R.id.txtTitle) TextView txtTitle;
 
 
 
@@ -129,7 +124,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         // Validator
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
-        mValidator.setValidationMode(Validator.Mode.IMMEDIATE);
+        mValidator.setValidationMode(Validator.Mode.BURST);
     }
 
     @Override
@@ -261,7 +256,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
                 //Validate form
                 mValidator.validate();
                // Log.e("selectedTitle",selectedTitle);
-                showHiddenBlock(currentPage+1);
+
             }
         });
 
@@ -433,7 +428,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @Override
     public void onValidationSucceeded() {
         // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
-        Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
+        //Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
+        showHiddenBlock(currentPage + 1);
        // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
 
 
