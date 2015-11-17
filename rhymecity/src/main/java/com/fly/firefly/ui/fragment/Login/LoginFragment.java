@@ -172,6 +172,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
                 .setCategory("Action")
                 .setAction("Click booking page")
                 .build());
+        getActivity().finish();
     }
 
 
@@ -179,11 +180,11 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     public void onLoginSuccess(LoginReceive obj) {
 
         Log.e("ABC",obj.getStatus());
-        //if (obj.getStatus().equals("success")) {
-       ///     goBookingPage();
-       // }else{
-        //    Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
-        //}
+        if (obj.getStatus().equals("success")) {
+           goBookingPage();
+       }else{
+           Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
+        }
 
 
     }
