@@ -72,19 +72,26 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @NotEmpty(sequence = 1)
     @Order(1)
     @InjectView(R.id.txtUsername) EditText txtUsername;
+
     @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6, message = "Must at least 6 character")
     @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
     @Order(2)
     @InjectView(R.id.txtPassword) EditText txtPassword;
+
     @ConfirmPassword @Order(3) @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
     @NotEmpty @Order(3)@InjectView(R.id.txtFirstName) EditText txtFirstName;
     @InjectView(R.id.txtRegisterDatePicker) TextView txtRegisterDatePicker;
+
     @NotEmpty(sequence = 1)@Order(4)@InjectView(R.id.txtLastName)EditText txtLastName;
     @NotEmpty(sequence = 1)@Order(5) @InjectView(R.id.txtAddressLine1) EditText txtAddressLine1;
+
     @Optional @Order(6)@InjectView(R.id.txtAddressLine2)EditText txtAddressLine2;
     @InjectView(R.id.editTextPostcode)EditText editTextPostcode;
+
+    @NotEmpty(sequence = 1)@Order(4)
     @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+
     @InjectView(R.id.editTextAlternatePhone) EditText editTextAlternatePhone;
     @InjectView(R.id.editTextFax) EditText editTextFax;
 
@@ -127,7 +134,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         // Validator
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
-        mValidator.setValidationMode(Validator.Mode.IMMEDIATE);
+        mValidator.setValidationMode(Validator.Mode.BURST);
     }
 
     @Override
@@ -257,9 +264,9 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             @Override
             public void onClick(View v) {
                 //Validate form
-                mValidator.validate();
                // Log.e("selectedTitle",selectedTitle);
-                showHiddenBlock(currentPage+1);
+                mValidator.validate();
+
             }
         });
 
@@ -347,11 +354,9 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             registerContactBlock.setVisibility(View.VISIBLE);
             currentPage = 3;
         }
-        else if(page == 4){
-            Log.e("READY FOR VALIDATION","TRUE");
-            //validate();
+        else if (page == 4) {
+            Log.e("READY FOR VALIDATION", "TRUE");
             requestRegister();
-
         }
         else {
             getActivity().finish();
@@ -388,7 +393,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         regObj.setCity(txtCity.getText().toString());
         regObj.setPostcode(editTextPostcode.getText().toString());
         regObj.setFax(editTextFax.getText().toString());
-        regObj.setSignature(signatureFromLocal);
+        regObj.setSignature("");
 
         presenter.onRequestRegister(regObj);
     }
@@ -404,37 +409,44 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     public void onSuccessRegister(RegisterReceive obj) {
         Log.e("Here", obj.getStatus());
 
-        if (obj.getStatus() == "success") {
+        if (obj.getStatus().equals("success")) {
 
             pref.setSignatureToLocalStorage(obj.getUserInfo().getSignature());
 
-            HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-            String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
-
-            Log.e("SignatureFromLocal", signatureFromLocal);
-            Log.e("SignatureFromServer", obj.getUserInfo().getSignature());
+            //HashMap<String, String> init = pref.getSignatureFromLocalStorage();
+           //String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
 
             Intent home = new Intent(getActivity(), LoginActivity.class);
             getActivity().startActivity(home);
             getActivity().finish();
 
-        } else if(obj.getStatus() == "success"){
-            Log.e("Messages", obj.getUserObj().getMessage());
-        }else
-        {
-            
+            Log.e("success", "True");
+
+        }
+        else if (obj.getStatus().equals("error")) {
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
+            Log.e("ELSE if", "True");
+
+        }else{
+
+            Log.e("ELSE","True");
+            /*Expired*/
+
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
+            //pref.clearSignatureFromLocalStorage();
+
+           // Intent home = new Intent(getActivity(), HomeActivity.class);
+           // getActivity().startActivity(home);
+           // getActivity().finish();
+
         }
     }
-
 
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
-        Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
-       // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
-
-
+        Log.e("Validation Success","True");
+        showHiddenBlock(currentPage + 1);
     }
 
     @Override
