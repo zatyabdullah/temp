@@ -18,7 +18,7 @@ public class LoginPresenter {
         void onLoginFailed(String dumm);
 
         void onPasswordRequestSuccess(ForgotPasswordReceive obj);
-        void onPasswordRequesFailed(String dumm);
+        //void onPasswordRequesFailed(String dumm);
 
 
     }
@@ -70,15 +70,15 @@ public class LoginPresenter {
     @Subscribe
     public void onUserSuccessReqPassword(ForgotPasswordReceive event) {
 
-        /*Save Session And Redirect To Homepage*/
+        //*Save Session And Redirect To Homepage*//*
         view.onPasswordRequestSuccess(event.getUserObj());
     }
 
-    @Subscribe
-    public void onUserFailedReqPassword(FailedConnectToServer event) {
-
-        /*Save Session And Redirect To Homepage*/
-        view.onPasswordRequesFailed(event.getDummy());
-    }
+   // @Subscribe
+    //public void onUserFailedReqPassword(FailedConnectToServer event) {
+//
+        //*Save Session And Redirect To Homepage*//*
+  //      view.onPasswordRequesFailed(event.getDummy());
+   // }
 
 }

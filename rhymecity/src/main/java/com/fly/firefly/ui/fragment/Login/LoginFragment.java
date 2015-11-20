@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
+import com.fly.firefly.api.obj.ForgotPasswordReceive;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
@@ -146,7 +147,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
             data.setUsername(username);
             data.setPassword(password);
 
-
         presenter.loginFunction(data);
     }
 
@@ -177,7 +177,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @Override
     public void onLoginSuccess(LoginReceive obj) {
 
-        Log.e("ABC",obj.getStatus());
+        Log.e("ABC", obj.getStatus());
         if (obj.getStatus().equals("success")) {
            goBookingPage();
        }else{
@@ -193,6 +193,30 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         Crouton.makeText(getActivity(), obj, Style.ALERT).show();
     }
+
+
+    @Override
+    public void onPasswordRequestSuccess(ForgotPasswordReceive obj) {
+
+        Log.e("ABC", obj.getStatus());
+        if (obj.getStatus().equals("success")) {
+            goBookingPage();
+        }else{
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
+        }
+
+
+    }
+
+    /*IF Login Failed*/
+   // @Override
+ //   public void onPasswordRequesFailed(String obj) {
+//
+  //      Crouton.makeText(getActivity(), obj, Style.ALERT).show();
+    ///}
+
+
+
 
     /* Validation Success - Start send data to server */
     @Override
@@ -225,9 +249,20 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     /*Popup Forgot Password*/
     public void forgotPassword(){
 
-        PasswordRequest data = new PasswordRequest();
         LayoutInflater li = LayoutInflater.from(getActivity());
         final View myView = li.inflate(R.layout.forgot_password_screen, null);
+        Button cont = (Button)myView.findViewById(R.id.btncontinue);
+        final EditText editEmail = (EditText)myView.findViewById(R.id.editTextemail);
+
+        cont.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                requestForgotPassword(editEmail.getText().toString());
+                dialog.dismiss();
+            }
+
+        });
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(myView);
@@ -242,8 +277,19 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         dialog.show();
 
-        presenter.forgotPassword(data);
+
     }
+
+
+    public void requestForgotPassword(String email){
+        PasswordRequest data = new PasswordRequest();
+        data.setEmail(email);
+
+        presenter.forgotPassword(data);
+
+    }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

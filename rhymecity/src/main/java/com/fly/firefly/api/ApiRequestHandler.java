@@ -69,7 +69,7 @@ public class ApiRequestHandler {
     public void onPasswordRequest(final PasswordRequest event) {
 
         Log.e("Email", event.getEmail());
-        Log.e("Password", event.getPassword());
+
 
         initiateLoading();
         loading(true);
