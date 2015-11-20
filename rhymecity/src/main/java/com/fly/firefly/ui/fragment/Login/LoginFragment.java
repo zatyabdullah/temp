@@ -23,6 +23,7 @@ import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.object.LoginRequest;
+import com.fly.firefly.ui.object.PasswordRequest;
 import com.fly.firefly.ui.presenter.LoginPresenter;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -98,8 +99,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         View view = inflater.inflate(R.layout.login, container, false);
         ButterKnife.inject(this, view);
 
-
-
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
@@ -143,7 +142,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         /* Dummy Data For Testing - Imal */
        // data.setUsername("zhariffadam00@me-tech.com.my");
        // data.setPassword("P@$$w0rd");
-
 
             data.setUsername(username);
             data.setPassword(password);
@@ -227,6 +225,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     /*Popup Forgot Password*/
     public void forgotPassword(){
 
+        PasswordRequest data = new PasswordRequest();
         LayoutInflater li = LayoutInflater.from(getActivity());
         final View myView = li.inflate(R.layout.forgot_password_screen, null);
 
@@ -242,6 +241,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         dialog.getWindow().setAttributes(lp);
 
         dialog.show();
+
+        presenter.forgotPassword(data);
     }
 
     @Override

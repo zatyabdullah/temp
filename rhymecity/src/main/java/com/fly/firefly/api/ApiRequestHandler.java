@@ -6,11 +6,13 @@ import android.util.Log;
 
 import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.api.obj.FailedConnectToServer;
+import com.fly.firefly.api.obj.ForgotPasswordReceive;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.object.LoginRequest;
+import com.fly.firefly.ui.object.PasswordRequest;
 import com.fly.firefly.ui.object.RegisterObj;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -60,6 +62,41 @@ public class ApiRequestHandler {
 
         });
     }
+
+
+
+    @Subscribe
+    public void onPasswordRequest(final PasswordRequest event) {
+
+        Log.e("Email", event.getEmail());
+        Log.e("Password", event.getPassword());
+
+        initiateLoading();
+        loading(true);
+
+
+        apiService.onRequestPassword(event, new Callback<ForgotPasswordReceive>() {
+
+            @Override
+            public void success(ForgotPasswordReceive rhymesResponse, Response response) {
+
+                Log.e("Success", "OK");
+                bus.post(new ForgotPasswordReceive(rhymesResponse));
+                loading(false);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                bus.post(new FailedConnectToServer("Unable to connect to server"));
+                loading(false);
+            }
+
+        });
+    }
+
+
+
 
     /* Subscribe From HomePresenter - Send Device Information to server - ImalPasha */
     @Subscribe

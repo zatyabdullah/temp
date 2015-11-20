@@ -1,11 +1,13 @@
 package com.fly.firefly.api;
 
+import com.fly.firefly.api.obj.ForgotPasswordReceive;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
 import com.fly.firefly.api.obj.tryObj;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.object.LoginRequest;
+import com.fly.firefly.ui.object.PasswordRequest;
 import com.fly.firefly.ui.object.RegisterObj;
 
 import retrofit.Callback;
@@ -38,6 +40,9 @@ public interface ApiService {
 
     @POST("/Register")
     void onRegisterRequest(@Body RegisterObj obj, Callback<RegisterReceive> callback);
+
+    @POST("/ForgotPassword")
+    void onRequestPassword(@Body PasswordRequest task, Callback<ForgotPasswordReceive> callback);
 
 
 }

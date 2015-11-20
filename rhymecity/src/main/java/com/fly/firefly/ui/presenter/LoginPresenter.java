@@ -5,6 +5,7 @@ import android.util.Log;
 import com.fly.firefly.api.obj.FailedConnectToServer;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.ui.object.LoginRequest;
+import com.fly.firefly.ui.object.PasswordRequest;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -37,6 +38,12 @@ public class LoginPresenter {
     public void loginFunction(LoginRequest data) {
         Log.e("xxxx",data.getUsername());
         bus.post(new LoginRequest(data));
+    }
+
+
+    public void forgotPassword(PasswordRequest data) {
+        Log.e("xxxx",data.getEmail());
+        bus.post(new PasswordRequest(data));
     }
 
     @Subscribe
