@@ -8,7 +8,7 @@ public class ApiEndpoint implements Endpoint {
     public String getUrl() {
         //return "https://api.github.com";
        //return "http://api.github.com";
-       return "http://fyapidev.me-tech.com.my";
+       return "http://fyapidev.me-tech.com.my/api";
         //return "http://sheetsu.com";
 
       //  return "http://103.249.85.102";

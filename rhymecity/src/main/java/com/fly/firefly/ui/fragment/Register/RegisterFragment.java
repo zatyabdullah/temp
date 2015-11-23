@@ -80,7 +80,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.txtPassword) EditText txtPassword;
 
     @Order(3)
-    @ConfirmPassword
+    @NotEmpty(sequence = 1)
+    @ConfirmPassword(sequence = 2)
     @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
 
     @Order(4) @NotEmpty @InjectView(R.id.txtFirstName)

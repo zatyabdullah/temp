@@ -303,6 +303,10 @@
         <string name="forgotPasswordNextBtn">Next</string>
         <string name="forgotPasswordUserID">User ID</string>
         <string name="forgotPasswordTxt">Forgot \nPassword</string>
+        <string name="forgotPasswordExpired">PASSWORD EXPIRED</string>
+        <string name="forgotPasswordCurrent">Current Password</string>
+        <string name="forgotPasswordNew">New Password</string>
+        <string name="forgotPasswordConfirm">Confirm Password</string>
 
         <!-- Product Profile -->
         <string name="productAddToCartLoading">Loading...</string>

@@ -45,7 +45,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class LoginFragment extends BaseFragment implements LoginPresenter.LoginView,Validator.ValidationListener {
 
-
     // Validator Attributes
     private Validator mValidator;
     private Tracker mTracker;
