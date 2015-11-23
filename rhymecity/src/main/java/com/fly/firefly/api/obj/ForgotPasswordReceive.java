@@ -24,14 +24,14 @@ public class ForgotPasswordReceive {
 
    public class UserInfo{
 
-        private String email;
+        private String username;
         private String password;
 
         public String getEmail() {
-            return email;
+            return username;
         }
         public void setEmail(String email) {
-            this.email = email;
+            this.username = email;
         }
         public String getPassword() {
             return password;

@@ -200,7 +200,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         Log.e("ABC", obj.getStatus());
         if (obj.getStatus().equals("success")) {
-            goBookingPage();
+            Crouton.makeText(getActivity(), obj.getMessage(), Style.CONFIRM).show();
+          //goBookingPage();
         }else{
             Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
@@ -257,7 +258,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         cont.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestForgotPassword(editEmail.getText().toString());
+                requestForgotPassword(editEmail.getText().toString(),"");
                 dialog.dismiss();
             }
 
@@ -274,19 +275,17 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
         //lp.height = 570;
         dialog.getWindow().setAttributes(lp);
-
         dialog.show();
 
 
     }
 
 
-    public void requestForgotPassword(String email){
+    public void requestForgotPassword(String username,String signature){
         PasswordRequest data = new PasswordRequest();
-        data.setEmail(email);
-
+        data.setEmail(username);
+        data.setSignature(signature);
         presenter.forgotPassword(data);
-
     }
 
 

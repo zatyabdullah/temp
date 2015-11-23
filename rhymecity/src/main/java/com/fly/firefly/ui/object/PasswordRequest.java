@@ -3,10 +3,7 @@ package com.fly.firefly.ui.object;
 /**
  * Created by Dell on 11/4/2015.
  */
-public class PasswordRequest {
-
-    /*Local Data Send To Server*/
-    String email;
+public class PasswordRequest extends BaseClass {
 
 
     /*Initiate Class*/
@@ -14,17 +11,17 @@ public class PasswordRequest {
     }
 
     public PasswordRequest(PasswordRequest data){
-        email = data.getEmail();
-
+        username = data.getEmail();
+        signature = data.getSignature();
     }
     public String getEmail() {
 
-        return email;
+        return username;
     }
 
     public void setEmail(String email) {
 
-        this.email = email;
+        this.username = email;
     }
 
 
