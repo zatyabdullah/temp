@@ -28,6 +28,8 @@ import com.fly.firefly.utils.SharedPrefManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
+import java.util.HashMap;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -74,7 +76,6 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         fragment.setArguments(args);
         return fragment;
 
-        // new SearchFragment();
     }
 
     @Override
@@ -91,16 +92,15 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         View view = inflater.inflate(R.layout.home, container, false);
         ButterKnife.inject(this, view);
 
+        aq.recycle(view);
         pref = new SharedPrefManager(getActivity());
 
         /*SET BANNER*/
-        /*HashMap<String, String> init = pref.getDefaultBanner();
+        HashMap<String, String> init = pref.getDefaultBanner();
         String defaultBanner = init.get(SharedPrefManager.DEFAULT_BANNER);
+        Log.e("defaultBanner",defaultBanner);
+        aq.id(R.id.bannerImg).image(defaultBanner);
 
-        URL url = new URL(defaultBanner.toS);
-        Bitmap mIcon_val = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        bannerImg.setImageBitmap(mIcon_val);
-        */
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();

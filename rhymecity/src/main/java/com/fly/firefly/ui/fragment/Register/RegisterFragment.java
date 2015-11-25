@@ -186,8 +186,8 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             JSONObject row = (JSONObject) jsonCountry.opt(i);
 
             DropDownItem itemCountry = new DropDownItem();
-            itemCountry.setText(row.optString("countryName"));
-            itemCountry.setCode(row.optString("countryCode"));
+            itemCountry.setText(row.optString("country_name"));
+            itemCountry.setCode(row.optString("country_code"));
             itemCountry.setTag("Country");
             itemCountry.setId(i);
             countrys.add(itemCountry);
@@ -217,15 +217,13 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
         /*Display Title Data*/
         JSONArray jsonTitle = getTitle(getActivity());
-        Log.e("jsonTitle",jsonTitle.toString());
-        Log.e("jsonTitle.length()", Integer.toString(jsonTitle.length()));
         for (int i = 0; i < jsonTitle.length(); i++)
         {
             JSONObject row = (JSONObject) jsonTitle.opt(i);
 
             DropDownItem itemTitle = new DropDownItem();
-            itemTitle.setText(row.optString("titleName"));
-            itemTitle.setCode(row.optString("titleCode"));
+            itemTitle.setText(row.optString("title_name"));
+            itemTitle.setCode(row.optString("title_code"));
             itemTitle.setTag("Title");
             titleList.add(itemTitle);
         }

@@ -16,6 +16,7 @@
             android:orientation="vertical"
             android:layout_height="0dp"
             android:layout_weight="0.15"
+            android:visibility="gone"
             android:background="@color/dark_lvl1" >
 
             <ImageView
@@ -41,16 +42,16 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.35"
+            android:layout_weight="0.5"
             android:gravity="center"
             android:background="@drawable/grey_with_white_gradient">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
+                android:padding="2dp"
                 android:id="@+id/bannerImg"
-                android:src="@drawable/firefly_home"
-                android:scaleType="centerInside"
+                android:scaleType="fitCenter"
                 android:adjustViewBounds="true"/>
         </LinearLayout>
 

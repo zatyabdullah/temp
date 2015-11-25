@@ -10,14 +10,15 @@ import android.view.ViewGroup;
 
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
+import com.fly.firefly.api.obj.DeviceInfoSuccess;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.activity.Homepage.HomeActivity;
 import com.fly.firefly.ui.module.SplashScreenModule;
-import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.presenter.HomePresenter;
 import com.fly.firefly.utils.SharedPrefManager;
+import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
@@ -60,7 +61,6 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
         int sdkVersion = android.os.Build.VERSION.SDK_INT;
 
         info = new DeviceInformation();
-
         info.setSdkVersion(Integer.toString(sdkVersion));
         info.setVersion(version);
         info.setDeviceId(deviceId);
@@ -86,8 +86,22 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
     public void loadingSuccess(DeviceInfoSuccess obj) {
 
         String signature = obj.getObj().getSignature();
-        String bannerUrl = obj.getObj().getBannerDefault();
-        String promoBannerUrl = obj.getObj().getBannerPromo();
+        String bannerUrl = obj.getObj().getBanner_default();
+        String promoBannerUrl = obj.getObj().getBanner_promo();
+
+        /*Save All to pref for reference*/
+        Gson gsonTitle = new Gson();
+        String title = gsonTitle.toJson(obj.getObj().getData_title());
+        pref.setUserTitle(title);
+
+        Gson gsonCountry = new Gson();
+        String country = gsonCountry.toJson(obj.getObj().getData_country());
+        pref.setCountry(country);
+
+        Gson gsonFlight = new Gson();
+        String flight = gsonFlight.toJson(obj.getObj().getData_market());
+        pref.setFlight(flight);
+        /*End*/
 
         /*Save Signature to local storage*/
         pref.setSignatureToLocalStorage(signature);

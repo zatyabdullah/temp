@@ -153,7 +153,7 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         Set<String> hs = new LinkedHashSet<>();
         for (int i = 0; i < jsonFlight.length(); i++) {
             JSONObject row = (JSONObject) jsonFlight.opt(i);
-            al.add(row.optString("location")+"-"+row.optString("locationcode"));
+            al.add(row.optString("location")+"-"+row.optString("location_code"));
         }
         hs.addAll(al);
         al.clear();
@@ -419,12 +419,13 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
             for (int i = 0; i < jsonFlight.length(); i++)
             {
                 JSONObject row = (JSONObject) jsonFlight.opt(i);
-                if(code.equals(row.optString("locationcode")) && row.optString("status").equals("Y")) {
-                    Log.e(code,row.optString("locationcode"));
+                if(code.equals(row.optString("location_code")) && row.optString("status").equals("Y")) {
+                    Log.e(code,row.optString("location_code"));
 
                     DropDownItem itemFlight = new DropDownItem();
-                    itemFlight.setText(row.optString("travellocation"));
-                    itemFlight.setCode(row.optString("travellocationcode"));
+                    itemFlight.setText(row.optString("travel_location"));
+                    itemFlight.setCode(row.optString("travel_location_code" +
+                            ""));
                     itemFlight.setTag("FLIGHT_DEPARTURE");
                     dataFlightArrival.add(itemFlight);
 
