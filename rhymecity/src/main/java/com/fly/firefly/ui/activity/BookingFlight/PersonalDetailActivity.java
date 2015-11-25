@@ -2,11 +2,14 @@ package com.fly.firefly.ui.activity.BookingFlight;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.R;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.fragment.BookingFlight.PersonalDetailFragment;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.ButterKnife;
 
@@ -19,6 +22,7 @@ public class PersonalDetailActivity extends MainFragmentActivity implements Frag
     //@InjectView(R.id.main_activity_progress_indicator) ProgressBar progressIndicator;
 
     //private FragmentManager fragmentManager;
+    private Tracker mTracker;
     FragmentManager fragmentManager = getFragmentManager();
 
     @Override
@@ -54,6 +58,15 @@ public class PersonalDetailActivity extends MainFragmentActivity implements Frag
     public Toolbar getToolbar() {
         return toolbar;
     }*/
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // presenter.onResume();
+        Log.i("Page Name", "Setting screen name: " + "Personal Detail");
+        mTracker.setScreenName("Personal Detail" + "A");
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
 
     @Override
     public int getFragmentContainerId() {

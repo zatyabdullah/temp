@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
@@ -37,6 +36,7 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
+import com.mobsandgeeks.saripaar.annotation.Past;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.registerContactInfoBlock) LinearLayout registerContactBlock;
 
     @InjectView(R.id.imageViewRegisterIndicator) ImageView imageRegisterIndicator;
-    @Order(13) @NotEmpty @InjectView(R.id.editTextCountry) TextView editTextCountry;
+    @Order(14) @NotEmpty @InjectView(R.id.editTextCountry) TextView editTextCountry;
     @InjectView(R.id.editTextState) TextView editTextState;
 
     @NotEmpty(sequence = 1)
@@ -83,48 +83,48 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @InjectView(R.id.txtPassword) EditText txtPassword;
 
     @Order(3)
-    @ConfirmPassword
+    @NotEmpty(sequence = 1)
+    @ConfirmPassword(sequence = 2)
     @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
 
     @Order(4) @NotEmpty @InjectView(R.id.txtFirstName)
     EditText txtFirstName;
 
+    @Order(5) @NotEmpty(sequence = 1) @Past(sequence = 2)
     @InjectView(R.id.txtRegisterDatePicker)
     TextView txtRegisterDatePicker;
 
-    @Order(5) @NotEmpty(sequence = 1)@InjectView(R.id.txtLastName)
+    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.txtLastName)
     EditText txtLastName;
 
-    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.txtAddressLine1)
+    @Order(7) @NotEmpty(sequence = 1)@InjectView(R.id.txtAddressLine1)
     EditText txtAddressLine1;
 
-    @Order(7) @Optional @InjectView(R.id.txtAddressLine2)
+    @Order(8) @Optional @InjectView(R.id.txtAddressLine2)
     EditText txtAddressLine2;
 
-    @Order(8) @NotEmpty(sequence = 1) @InjectView(R.id.editTextPostcode)
+    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 5,max = 7, message = "invalid postcode")@InjectView(R.id.editTextPostcode)
     EditText editTextPostcode;
 
-    @Order(9)
-    @NotEmpty(sequence = 1)
+    @Order(10) @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")
     @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
 
-    @Order(10)
-    @Optional
-    //@Length(required = false, sequence = 1, min = 6,max = 14, message = "invalid phone number")
+    @Order(11)
+    @Optional @Length(sequence = 1, min = 6,max = 14, message = "invalid phone number")
     @InjectView(R.id.editTextAlternatePhone)
     EditText editTextAlternatePhone;
 
-    @Order(11)@Optional @InjectView(R.id.editTextFax)
+    @Order(12)@Optional @InjectView(R.id.editTextFax)
     EditText editTextFax;
 
     @InjectView(R.id.registerContinueButton)
     Button registerContinueButton;
 
-    @Order(12)@NotEmpty @InjectView(R.id.txtCity)
+    @Order(13)@NotEmpty @InjectView(R.id.txtCity)
     EditText txtCity;
 
-    @Order(14)@NotEmpty @InjectView(R.id.txtTitle)
+    @Order(15)@NotEmpty @InjectView(R.id.txtTitle)
     TextView txtTitle;
 
 
@@ -499,7 +499,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             if (view instanceof EditText) {
                 ((EditText) view).setError(splitErrorMsg[0]);
             } else {
-                Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
+                Crouton.makeText(getActivity(), message,Style.ALERT).show();
             }
         }
     }
