@@ -5,39 +5,32 @@ package com.fly.firefly.ui.object;
  */
 public class Country {
 
-    private String countryName;
-    private String countryCode;
-    private String countryCallingCode;
+    private String country_name;
+    private String country_code;
+    private String dialing_code;
 
-    public Country(String name,String code){
-        countryName = name;
-        countryCode = code;
+    public String getCountry_name() {
+        return country_name;
     }
 
-    public Country() {
-    }
-    public String getCountryName() {
-        return countryName;
+    public void setCountry_name(String country_name) {
+        this.country_name = country_name;
     }
 
-    public void setCountryName(String countryName) {
-        this.countryName = countryName;
+    public String getCountry_code() {
+        return country_code;
     }
 
-    public String getCountryCode() {
-        return countryCode;
+    public void setCountry_code(String country_code) {
+        this.country_code = country_code;
     }
 
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
+    public String getDialing_code() {
+        return dialing_code;
     }
 
-    public String getCountryCallingCode() {
-        return countryCallingCode;
-    }
-
-    public void setCountryCallingCode(String countryCallingCode) {
-        this.countryCallingCode = countryCallingCode;
+    public void setDialing_code(String dialing_code) {
+        this.dialing_code = dialing_code;
     }
 
 }

@@ -5,13 +5,12 @@ package com.fly.firefly.ui.object;
  */
 public class AirportObj {
 
-
     private String location;
-    private String locationcode;
-    private String travellocation;
-    private String travellocationcode;
+    private String location_code;
+    private String travel_location;
+    private String travel_location_code;
     private String status;
-    private String mobilecheckin;
+    private String mobile_check_in;
 
     public String getLocation() {
         return location;
@@ -21,28 +20,28 @@ public class AirportObj {
         this.location = location;
     }
 
-    public String getLocationcode() {
-        return locationcode;
+    public String getLocation_code() {
+        return location_code;
     }
 
-    public void setLocationcode(String locationcode) {
-        this.locationcode = locationcode;
+    public void setLocation_code(String location_code) {
+        this.location_code = location_code;
     }
 
-    public String getTravellocation() {
-        return travellocation;
+    public String getTravel_location() {
+        return travel_location;
     }
 
-    public void setTravellocation(String travellocation) {
-        this.travellocation = travellocation;
+    public void setTravel_location(String travel_location) {
+        this.travel_location = travel_location;
     }
 
-    public String getTravellocationcode() {
-        return travellocationcode;
+    public String getTravel_location_code() {
+        return travel_location_code;
     }
 
-    public void setTravellocationcode(String travellocationcode) {
-        this.travellocationcode = travellocationcode;
+    public void setTravel_location_code(String travel_location_code) {
+        this.travel_location_code = travel_location_code;
     }
 
     public String getStatus() {
@@ -53,13 +52,11 @@ public class AirportObj {
         this.status = status;
     }
 
-    public String getMobilecheckin() {
-        return mobilecheckin;
+    public String getMobile_check_in() {
+        return mobile_check_in;
     }
 
-    public void setMobilecheckin(String mobilecheckin) {
-        this.mobilecheckin = mobilecheckin;
+    public void setMobile_check_in(String mobile_check_in) {
+        this.mobile_check_in = mobile_check_in;
     }
-
-
 }
