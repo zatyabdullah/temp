@@ -24,6 +24,7 @@ import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.presenter.LoginPresenter;
+import com.fly.firefly.utils.SharedPrefManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -69,7 +70,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @Order(2)
     @InjectView(R.id.txtLoginPassword) EditText txtLoginPassword;
 
-    AlertDialog dialog;
+    private AlertDialog dialog;
+    private SharedPrefManager pref;
 
     private int fragmentContainerId;
 
@@ -98,7 +100,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         View view = inflater.inflate(R.layout.login, container, false);
         ButterKnife.inject(this, view);
 
-
+        pref = new SharedPrefManager(getActivity());
 
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
@@ -117,7 +119,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
             @Override
             public void onClick(View v) {
                 //goBookingPage();
-                // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+                //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
 
                 //Validate form
                 mValidator.validate();
@@ -136,18 +138,10 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         return view;
     }
 
-
     public void loginFromFragment(String username,String password){
         LoginRequest data = new LoginRequest();
-
-        /* Dummy Data For Testing - Imal */
-       // data.setUsername("zhariffadam00@me-tech.com.my");
-       // data.setPassword("P@$$w0rd");
-
-
-            data.setUsername(username);
-            data.setPassword(password);
-
+        data.setUsername(username);
+        data.setPassword(password);
 
         presenter.loginFunction(data);
     }
@@ -179,20 +173,19 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @Override
     public void onLoginSuccess(LoginReceive obj) {
 
-        Log.e("ABC",obj.getStatus());
         if (obj.getStatus().equals("success")) {
+
+           pref.setLoginStatus("Y");
            goBookingPage();
        }else{
            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
-
 
     }
 
     /*IF Login Failed*/
     @Override
     public void onLoginFailed(String obj) {
-
         Crouton.makeText(getActivity(), obj, Style.ALERT).show();
     }
 

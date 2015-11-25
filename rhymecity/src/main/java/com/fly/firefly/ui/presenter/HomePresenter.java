@@ -2,10 +2,13 @@ package com.fly.firefly.ui.presenter;
 
 import android.util.Log;
 
+import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.rhymes.RhymesRequestedEvent;
 import com.fly.firefly.ui.object.AirportObj;
+import com.fly.firefly.ui.object.Country;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
+import com.fly.firefly.ui.object.TitleObj;
 import com.fly.firefly.utils.SharedPrefManager;
 import com.google.gson.Gson;
 import com.squareup.otto.Bus;
@@ -15,8 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class HomePresenter {
 
@@ -70,75 +71,76 @@ public class HomePresenter {
     @Subscribe
     public void onSuccessSendDeviceInformation(DeviceInfoSuccess event) {
 
-        //Log.e("Signature", event.getSignature());
-        //pref = new SharedPrefManager(MainFragmentActivity.getContext());
-        //pref.setAirPortAvailability(Airport);
+        pref = new SharedPrefManager(MainFragmentActivity.getContext());
+        pref.clearTitle();
 
-        ArrayList<AirportObj> customObjList = new ArrayList<>();
-        //Log.e("x",customObjList.get(1).getLocation());
-        customObjList = (ArrayList) event.getObj().getDataMarket();
-        //Log.e("XxxXxXx", customObjList.get(1).getLocationcode());
-        //Log.e("XxxXxXx", customObjList.toString());
+        /*Save Title Data to SharedPref*/
+        ArrayList<TitleObj> dataTitle = new ArrayList<>();
+        JSONArray jsonTitle = new JSONArray(event.getObj().getDataTitle());
 
-        JSONArray json = new JSONArray(customObjList);
-
-       // Gson gson = new Gson();
-       // String countryList = gson.toJson(json);
-
-       /// AirportObj m = gson.fromJson(countryList, AirportObj.class);
-       // Log.e("x",m.getLocation());
-
-
-        //logs = gson.fromJson(json, new TypeToken<List<AirportObj>>(){}.getType());
-        /*iterate obj data - using loop*/
-        for (int i = 0; i < json.length(); i++) {
+        for (int i = 0; i < jsonTitle.length(); i++) {
             /*create json object*/
-            JSONObject row = (JSONObject) json.opt(i);
-            Log.e("x", row.optString("location"));
-            //Save to pref
+            JSONObject row = (JSONObject) jsonTitle.opt(i);
+            TitleObj dataTitleObj = new TitleObj();
+            dataTitleObj.setTitleCode(row.optString("titlecode"));
+            dataTitleObj.setTitleName(row.optString("titlename"));
 
-            /*insert data into db - function located at MainFragmentActivity*/
+            dataTitle.add(dataTitleObj);
+        }
+
+        Gson gsonTitle = new Gson();
+        String title = gsonTitle.toJson(dataTitle);
+        Log.e("title",title);
+        pref.setUserTitle(title);
+
+
+         /*Save Country Data to SharedPref*/
+        ArrayList<Country> dataCountry = new ArrayList<>();
+        //dataTitle = (ArrayList) event.getObj().getDataTitle();
+        JSONArray jsonCountry = new JSONArray(event.getObj().getDataCountry());
+
+        for (int i = 0; i < jsonCountry.length(); i++) {
+            /*create json object*/
+            JSONObject row = (JSONObject) jsonCountry.opt(i);
+            Country dataCountryObj = new Country();
+            dataCountryObj.setCountryCode(row.optString("countrycode"));
+            dataCountryObj.setCountryName(row.optString("countryname"));
+            dataCountryObj.setCountryCallingCode(row.optString("countryname"));
+
+            dataCountry.add(dataCountryObj);
+        }
+
+        Gson gsonCountry = new Gson();
+        String country = gsonCountry.toJson(dataCountry);
+        pref.setCountry(country);
+
+
+        /*Save Flight Data to SharedPref*/
+        ArrayList<AirportObj> dataFlight = new ArrayList<>();
+        //dataFlight = (ArrayList) event.getObj().getDataMarket();
+        JSONArray jsonFlight = new JSONArray(event.getObj().getDataMarket());
+
+
+        for (int i = 0; i < jsonFlight.length(); i++) {
+            JSONObject row = (JSONObject) jsonFlight.opt(i);
+
+            AirportObj airportObj = new AirportObj();
+            airportObj.setLocation(row.optString("location"));
+            airportObj.setLocationcode(row.optString("locationcode"));
+            airportObj.setTravellocation(row.optString("travellocation"));
+            airportObj.setTravellocationcode(row.optString("travellocationcode"));
+            airportObj.setStatus(row.optString("status"));
+            airportObj.setMobilecheckin(row.optString("mobilecheckin"));
+            dataFlight.add(airportObj);
        }
 
-       /* Gson gson = new Gson();
-        String[] gsonDepartmentList = new String[customObjList.size()];
-        String gsonHtmlList = gson.toJson(customObjList);
+        Gson gsonFlight = new Gson();
+        String flight = gsonFlight.toJson(dataFlight);
+        pref.setFlight(flight);
 
-        for (int i = 0; i < json.length(); i++) {
-
-            JSONObject row = (JSONObject) json.opt(i);
-
-        }*/
-
-        /*Set set = customObjList.entrySet();
-        Iterator i = set.iterator();
-        while (i.hasNext()) {
-            Map.Entry me = (Map.Entry) i.next();
-            gsonDepartmentList[Integer.parseInt(me.getKey().toString()) - 1] = gson.toJson(me.getValue());
-        }*/
-
-      //  Log.e("gsonHtmlList",gsonHtmlList);
-
-
-        //Log.e("XxxXxXx", customObjList.get(1).toString());
-
-        //Log.e("XxxXxXx", (ArrayList) event.getObj().getDataMarket().get(1).toString());
-
-       // ArrayList<AirportObj> air = event.getObj().getDataMarket();
-        //Log.e("XxxXxXx", stringToArray("TEST", AirportObj[].class).get(1).getLocation());
-
-       // Gson gson = new GsonBuilder().create();
-       // gson.toJson(event);
-
-        //System.out.println(gson);
-
-        /*Save Session And Redirect To Homepage*/
         view2.loadingSuccess(event);
-    }
 
-    public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
-        T[] arr = new Gson().fromJson(s, clazz);
-        return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+        /*Dummy Retrieve Data*/
     }
 
 }

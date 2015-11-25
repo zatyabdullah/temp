@@ -18,7 +18,6 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
 import android.provider.CalendarContract;
 import android.provider.CalendarContract.Events;
 import android.provider.Settings.Secure;
@@ -253,7 +252,7 @@ public class Utils {
         Toast toast1 = Toast.makeText(context, text, duration);
         toast1.show();
 
-        final Toast toast2 = Toast.makeText(context, text, duration);
+        /*final Toast toast2 = Toast.makeText(context, text, duration);
         toast2.show();
 
         Handler toast_handler = new Handler();
@@ -262,7 +261,11 @@ public class Utils {
             public void run() {
                 toast2.show();
             }
-        }, duration - 100);
+        }, duration - 50);
+        */
+
+
+
     }
 
 

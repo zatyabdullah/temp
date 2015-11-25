@@ -2,7 +2,7 @@ package com.fly.firefly.ui.module;
 
 import com.fly.firefly.AppModule;
 import com.fly.firefly.ui.fragment.BookingFlight.SearchFlightFragment;
-import com.fly.firefly.ui.presenter.BF_SearchFlightPresenter;
+import com.fly.firefly.ui.presenter.BookingPresenter;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -17,15 +17,15 @@ import dagger.Provides;
 )
 public class SearchFlightModule {
 
-    private final BF_SearchFlightPresenter.SearchFlightView searchFlightView;
+    private final BookingPresenter.SearchFlightView searchFlightView;
 
-    public SearchFlightModule(BF_SearchFlightPresenter.SearchFlightView searchFlightView) {
+    public SearchFlightModule(BookingPresenter.SearchFlightView searchFlightView) {
         this.searchFlightView = searchFlightView;
     }
 
     @Provides
     @Singleton
-    BF_SearchFlightPresenter provideSearchFlightPresenter(Bus bus) {
-        return new BF_SearchFlightPresenter(searchFlightView, bus);
+    BookingPresenter provideSearchFlightPresenter(Bus bus) {
+        return new BookingPresenter(searchFlightView, bus);
     }
 }

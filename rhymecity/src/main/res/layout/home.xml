@@ -41,14 +41,14 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.32"
+            android:layout_weight="0.35"
             android:gravity="center"
             android:background="@drawable/grey_with_white_gradient">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
+                android:id="@+id/bannerImg"
                 android:src="@drawable/firefly_home"
                 android:scaleType="centerInside"
                 android:adjustViewBounds="true"/>
@@ -58,7 +58,7 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.45"
+            android:layout_weight="0.42"
             android:background="@color/dark_lvl1"
             android:weightSum="1">
 
@@ -68,7 +68,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:weightSum="1"
                 android:id="@+id/homeBookFlight">
 
@@ -115,7 +115,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:id="@+id/homeManageFlight">
 
                 <LinearLayout
@@ -162,7 +162,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:gravity="center">
 
                 <LinearLayout
@@ -207,7 +207,7 @@
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.2"
+                android:layout_weight="0.25"
                 android:gravity="center"
                 android:id="@+id/homeMobileBoardingPass">
 
@@ -254,6 +254,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="0.2"
                 android:gravity="center"
+                android:visibility="gone"
                 android:id="@+id/homeBeacon" >
 
                 <LinearLayout

@@ -18,16 +18,18 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fly.firefly.ui.fragment.BookingFlight.SearchFlightFragment;
 import com.fly.firefly.ui.object.Country;
 import com.fly.firefly.utils.DropDownItem;
 import com.fly.firefly.utils.DropMenuAdapter;
 import com.fly.firefly.utils.SharedPrefManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 
 
 public class BaseFragment extends Fragment {
@@ -36,7 +38,7 @@ public class BaseFragment extends Fragment {
 	protected SharedPreferences pref;
 	int indexForState = -1;
 	private String selected;
-	private SharedPrefManager prefManager;
+	private static SharedPrefManager prefManager;
 	private static Country obj = new Country();
 
 	/*Global PoPup*/
@@ -55,19 +57,23 @@ public class BaseFragment extends Fragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						//aq.id(R.id.txtStateCodeReg).text(array.get(which).getText());
 						String selected = a.get(which).getText();
-						txt.setText(selected);
-						//prefManager.setSelectedPopupSelection(selected);
+						String selectedCode = a.get(which).getCode();
 
-						//selected = a.get(which).getText();
+						txt.setText(selected);
+						txt.setTag(selectedCode);
+
+                        if(a.get(which).getTag() == "FLIGHT"){
+                            SearchFlightFragment.filterArrivalAirport(selectedCode);
+                        }
+
 						indexForState = which;
 
 						dialog.dismiss();
 					}
 				});
 
-		//Utils.hideKeyboard(getActivity(), v);
+				//Utils.hideKeyboard(getActivity(), v);
 				AlertDialog mDialog = alertStateCode.create();
 				mDialog.show();
 
@@ -76,7 +82,6 @@ public class BaseFragment extends Fragment {
 				lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
 				lp.height = 600;
 				mDialog.getWindow().setAttributes(lp);
-		//Log.e("selected",selected);
 	}
 
 	public String getSelectedPopupSelection(Activity act){
@@ -85,15 +90,70 @@ public class BaseFragment extends Fragment {
 		return selectedValue;
 	}
 
+
+	public JSONArray getTitle(Activity act){
+
+		JSONArray json = null;
+
+		prefManager = new SharedPrefManager(act);
+		HashMap<String, String> init = prefManager.getTitle();
+		String dataTitle = init.get(SharedPrefManager.TITLE);
+
+		try {
+			json = new JSONArray(dataTitle);
+			Log.e("json",Integer.toString(json.length()));
+		}catch (JSONException e){
+			e.printStackTrace();
+		}
+
+		return json;
+	}
+
+	public static JSONArray getFlight(Activity act){
+
+		JSONArray json = null;
+
+		prefManager = new SharedPrefManager(act);
+		HashMap<String, String> init = prefManager.getFlight();
+		String dataFlight = init.get(SharedPrefManager.FLIGHT);
+
+		try {
+			json = new JSONArray(dataFlight);
+			Log.e("Flight Size",Integer.toString(json.length()));
+
+		}catch (JSONException e){
+			e.printStackTrace();
+		}
+
+		return json;
+	}
+
+
 	/*Return month in alphabet*/
 	public String getMonthAlphabet(int month) {
 		return new DateFormatSymbols().getShortMonths()[month];
 	}
 
 	/*Get All Country From OS*/
-	public static ArrayList<String> getCountry()
+	public JSONArray getCountry(Activity act)
 	{
-		Locale[] locales = Locale.getAvailableLocales();
+		JSONArray json = null;
+
+		prefManager = new SharedPrefManager(act);
+		HashMap<String, String> init = prefManager.getCountry();
+		String dataCountry = init.get(SharedPrefManager.COUNTRY);
+		Log.e("dataCountry",dataCountry);
+
+		try {
+			json = new JSONArray(dataCountry);
+			Log.e("json",Integer.toString(json.length()));
+		}catch (JSONException e){
+			e.printStackTrace();
+		}
+
+		return json;
+
+		/*Locale[] locales = Locale.getAvailableLocales();
 		ArrayList<String> countries = new ArrayList<String>();
 
 		for (Locale locale : locales) {
@@ -107,7 +167,7 @@ public class BaseFragment extends Fragment {
 		}
 
 		Collections.sort(countries);
-		return countries;
+		return countries;*/
 	}
 
 

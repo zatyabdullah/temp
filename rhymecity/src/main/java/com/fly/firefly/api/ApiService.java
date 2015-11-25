@@ -2,11 +2,13 @@ package com.fly.firefly.api;
 
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
+import com.fly.firefly.api.obj.SearchFlightReceive;
 import com.fly.firefly.api.obj.tryObj;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.object.RegisterObj;
+import com.fly.firefly.ui.object.SearchFlightObj;
 
 import retrofit.Callback;
 import retrofit.http.Body;
@@ -39,6 +41,8 @@ public interface ApiService {
     @POST("/Register")
     void onRegisterRequest(@Body RegisterObj obj, Callback<RegisterReceive> callback);
 
+    @POST("/Search")
+    void onSearchFlightRequest(@Body SearchFlightObj obj, Callback<SearchFlightReceive> callback);
 
 }
 

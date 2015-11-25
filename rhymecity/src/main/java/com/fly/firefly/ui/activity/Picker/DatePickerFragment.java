@@ -34,7 +34,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-
+        //DatePickerFragment myFragment = (DatePickerFragment)getFragmentManager().findFragmentByTag("datePicker");
+        //if (myFragment != null && myFragment.isVisible()) {
+        //   Log.e("Visible","true6                                                                                                                                                                                                                                                                         ");
+        //}
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
@@ -58,9 +61,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
 
         Intent intent = new Intent();
-        intent.putExtra(EXTRA_DATE,dateParam);
+        intent.putExtra(EXTRA_DATE, dateParam);
+        int result;
+        Log.e("getTag",getTag());
+        if(getTag().equals("datepicker")){
+            result = 2;
+        }
+        else{
+            result = 4;
+        }
 
-        getTargetFragment().onActivityResult(2, Activity.RESULT_OK, intent);
+        getTargetFragment().onActivityResult(result, Activity.RESULT_OK, intent);
         Log.e("Get Target Fragment", "NOT NULL");
         dismiss();
     }

@@ -7,6 +7,7 @@ public class Country {
 
     private String countryName;
     private String countryCode;
+    private String countryCallingCode;
 
     public Country(String name,String code){
         countryName = name;
@@ -29,6 +30,14 @@ public class Country {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public String getCountryCallingCode() {
+        return countryCallingCode;
+    }
+
+    public void setCountryCallingCode(String countryCallingCode) {
+        this.countryCallingCode = countryCallingCode;
     }
 
 }

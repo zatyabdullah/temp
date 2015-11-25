@@ -28,7 +28,7 @@ public class LoginActivity extends MainFragmentActivity implements FragmentConta
         ButterKnife.inject(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, LoginFragment.newInstance()).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_content, LoginFragment.newInstance()).commit();
 
         // [START shared_tracker]
         // Obtain the shared Tracker instance.

@@ -30,7 +30,7 @@ public class HomeActivity extends MainFragmentActivity implements FragmentContai
         ButterKnife.inject(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.main_activity_fragment_container, HomeFragment.newInstance()).commit();
+        fragmentManager.beginTransaction().replace(R.id.main_content, HomeFragment.newInstance()).commit();
 
         hideTitle();
 

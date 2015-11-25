@@ -21,10 +21,12 @@ public class SplashScreenActivity extends MainFragmentActivity implements Fragme
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.main_activity_fragment_container, SplashScreenFragment.newInstance()).commit();
-
+        hideMenuButton();
         hideTitle();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.main_content, SplashScreenFragment.newInstance()).commit();
+
     }
 
     @Override

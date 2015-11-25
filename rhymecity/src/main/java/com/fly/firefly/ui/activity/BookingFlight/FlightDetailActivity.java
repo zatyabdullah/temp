@@ -1,6 +1,6 @@
 package com.fly.firefly.ui.activity.BookingFlight;
 
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 
 import com.fly.firefly.MainFragmentActivity;
@@ -19,14 +19,16 @@ public class FlightDetailActivity extends MainFragmentActivity implements Fragme
     //@InjectView(R.id.main_activity_progress_indicator) ProgressBar progressIndicator;
 
     //private FragmentManager fragmentManager;
-    FragmentManager fragmentManager = getFragmentManager();
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.inject(this);
 
-        fragmentManager.beginTransaction().add(R.id.main_activity_fragment_container, FlightDetailFragment.newInstance()).commit();
+        Bundle bundle = getIntent().getExtras();
+
+        fragmentManager.beginTransaction().replace(R.id.main_content, FlightDetailFragment.newInstance(bundle)).commit();
         hideTitle();
     }
 

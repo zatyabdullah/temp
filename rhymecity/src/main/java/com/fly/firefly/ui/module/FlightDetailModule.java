@@ -2,7 +2,7 @@ package com.fly.firefly.ui.module;
 
 import com.fly.firefly.AppModule;
 import com.fly.firefly.ui.fragment.BookingFlight.FlightDetailFragment;
-import com.fly.firefly.ui.presenter.BF_FlightDetailPresenter;
+import com.fly.firefly.ui.presenter.BookingPresenter;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -17,15 +17,15 @@ import dagger.Provides;
 )
 public class FlightDetailModule {
 
-    private final BF_FlightDetailPresenter.FlightDetailView flightDetailViewView;
+    private final BookingPresenter.SearchFlightView flightDetailViewView;
 
-    public FlightDetailModule(BF_FlightDetailPresenter.FlightDetailView flightDetailViewView) {
+    public FlightDetailModule(BookingPresenter.SearchFlightView flightDetailViewView) {
         this.flightDetailViewView = flightDetailViewView;
     }
 
     @Provides
     @Singleton
-    BF_FlightDetailPresenter provideFlightDetailPresenter(Bus bus) {
-        return new BF_FlightDetailPresenter(flightDetailViewView, bus);
+    BookingPresenter provideFlightDetailPresenter(Bus bus) {
+        return new BookingPresenter(flightDetailViewView, bus);
     }
 }

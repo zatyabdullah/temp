@@ -27,7 +27,7 @@ public class RegisterActivity extends MainFragmentActivity implements FragmentCo
         ButterKnife.inject(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.main_activity_fragment_container, RegisterFragment.newInstance(),"xx").commit();
+        fragmentManager.beginTransaction().replace(R.id.main_content, RegisterFragment.newInstance(),"xx").commit();
 
        /* Fragment fragmentA = new FragmentA();
         getFragmentManager().beginTransaction()

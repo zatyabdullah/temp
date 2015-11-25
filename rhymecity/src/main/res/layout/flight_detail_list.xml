@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:text="08.15AM"
                     android:textStyle="bold"
-                    android:id="@+id/textView27"
+                    android:id="@+id/txtDepartureTime"
                     android:textSize="20dp"
                     android:textColor="@color/actionBarColour_default_theme"/>
 
@@ -94,7 +94,7 @@
                     android:text="Subang Airport"
                     android:textSize="14dp"
                     android:textStyle="bold"
-                    android:id="@+id/textView28" />
+                    android:id="@+id/txtDepartureAirport" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="09.15 AM"
-                    android:id="@+id/textView29"
+                    android:id="@+id/txtArrivalTime"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:textColor="@color/actionBarColour_default_theme"/>
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Alor Setar Airport"
-                    android:id="@+id/textView30"
+                    android:id="@+id/txtArrivalAirport"
                     android:textSize="14dp"
                     android:textStyle="bold"/>
             </LinearLayout>
@@ -149,8 +149,8 @@
             android:layout_height="wrap_content"
             android:text="MYR 80"
             android:textColor="@color/myrColour"
-            android:id="@+id/textView31"
-            android:textSize="24dp"
+            android:id="@+id/txtFarePrice"
+            android:textSize="23dp"
             android:textStyle="bold"/>
 
     </LinearLayout>

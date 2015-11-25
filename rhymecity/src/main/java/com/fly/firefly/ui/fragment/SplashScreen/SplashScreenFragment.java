@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
     HomePresenter presenter;
     private int fragmentContainerId;
     private SharedPrefManager pref;
-
+    private DeviceInformation info;
     //@InjectView(R.id.search_edit_text) EditText searchEditText;
 
     public static SplashScreenFragment newInstance() {
@@ -55,13 +54,12 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
         ButterKnife.inject(this, view);
         pref = new SharedPrefManager(getActivity());
 
-
         //retrieve data
         String deviceId = Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID);
         String version = android.os.Build.VERSION.RELEASE;
         int sdkVersion = android.os.Build.VERSION.SDK_INT;
 
-        DeviceInformation info = new DeviceInformation();
+        info = new DeviceInformation();
 
         info.setSdkVersion(Integer.toString(sdkVersion));
         info.setVersion(version);
@@ -87,11 +85,14 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
     @Override
     public void loadingSuccess(DeviceInfoSuccess obj) {
 
-        //Log.e("obj", obj.getStatus());
-        //Log.e("obj", obj.getObj().getSignature());
         String signature = obj.getObj().getSignature();
-        Log.e("signature", signature);
-        //Save Signature to local storage
+        String bannerUrl = obj.getObj().getBannerDefault();
+        String promoBannerUrl = obj.getObj().getBannerPromo();
+
+        /*Save Signature to local storage*/
+        pref.setSignatureToLocalStorage(signature);
+        pref.setBannerUrl(bannerUrl);
+        pref.setPromoBannerUrl(promoBannerUrl);
 
         //Redirect to homepage after success loading splashscreen
         Intent home = new Intent(getActivity(), HomeActivity.class);
@@ -109,6 +110,8 @@ public class SplashScreenFragment extends BaseFragment implements HomePresenter.
     public void onResume() {
         super.onResume();
         presenter.onResume();
+        sendDeviceInformationToServer(info);
+
     }
 
     @Override

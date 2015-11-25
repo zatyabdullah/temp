@@ -24,11 +24,6 @@ import android.widget.ListView;
 import com.fly.firefly.R;
 import com.fly.firefly.drawer.NavigationDrawerAdapter.DrawerViewType;
 import com.fly.firefly.utils.LazyList.ImageLoader;
-import com.fly.firefly.utils.Utils;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -113,10 +108,6 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //HashMap<String, String> init = pref.getInitialApp();
-        //String DEPARTMENT1 = init.get(SharedPrefManager.DEPARTMENTLIST[0]);
-        //String htmlListString = init.get(SharedPrefManager.HTMLLIST);
-
 
         mDrawerListView = (ListView) inflater.inflate(R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setVerticalScrollBarEnabled(false);
@@ -129,8 +120,6 @@ public class NavigationDrawerFragment extends Fragment {
 
 		/* Initiate NavigationDrawer Item */
         menuTop();
-       // menuCenter(DEPARTMENT1);
-        //menuBottom(htmlListString);
 
         drawerAdapter = new NavigationDrawerAdapter(getActivity(), this);
         drawerAdapter.setItems(itemList);
@@ -144,20 +133,6 @@ public class NavigationDrawerFragment extends Fragment {
         itemList.clear();
         itemList = new ArrayList<DrawerItem>();
 
-
-        /*if (session.isLoggedIn()) {
-            if (Utils.getDeviceType(getActivity()) == "1") {
-                DrawerItem profile = new DrawerItem();
-                profile.setId(21);
-                profile.setTag("PROFILE");
-                // d1.setTitle(getString(R.string.action_example));
-                profile.setTitle("PROFILE");
-                profile.setLayoutId(DrawerViewType.DRAWER_PROFILE);
-                itemList.add(profile);
-            }
-        }*/
-
-        // if (Utils.getDeviceType(getActivity()) == "2") {
         DrawerItem vrsm = new DrawerItem();
         vrsm.setId(0);
         vrsm.setTitle("FIREFLY");
@@ -165,7 +140,6 @@ public class NavigationDrawerFragment extends Fragment {
         vrsm.setLayoutId(DrawerViewType.HEADER_CLOSEBTN);
         vrsm.setBackgroundColor(getResources().getColor(R.color.black));
         itemList.add(vrsm);
-        // }
 
         DrawerItem home = new DrawerItem();
         home.setId(1);
@@ -181,12 +155,12 @@ public class NavigationDrawerFragment extends Fragment {
         sbb.setLayoutId(DrawerViewType.MENU);
         itemList.add(sbb);
 
-        DrawerItem register = new DrawerItem();
+        /*DrawerItem register = new DrawerItem();
         register.setId(3);
         register.setTag("Register");
         register.setTitle("Register");
         register.setLayoutId(DrawerViewType.MENU);
-        itemList.add(register);
+        itemList.add(register);*/
 
         DrawerItem about = new DrawerItem();
         about.setId(4);
@@ -202,128 +176,12 @@ public class NavigationDrawerFragment extends Fragment {
         faq.setLayoutId(DrawerViewType.MENU);
         itemList.add(faq);
 
-
         DrawerItem logout = new DrawerItem();
         logout.setId(6);
         logout.setTag("Logout");
         logout.setTitle("Logout");
         logout.setLayoutId(DrawerViewType.MENU);
         itemList.add(logout);
-    }
-
-    public void menuCenter(String jsonStr) {
-        JSONArray json = null;
-        try {
-            json = new JSONArray(jsonStr);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        DrawerItem d0 = new DrawerItem();
-        d0.setId(3);
-        d0.setTitle("Department");
-        d0.setTag("HEADER");
-        d0.setLayoutId(DrawerViewType.HEADER);
-        d0.setBackgroundColor(getResources().getColor(R.color.theme1_tab_bg_2));
-        itemList.add(d0);
-        if(json != null){
-            for (int i = 0; i < json.length(); i++) {
-                JSONObject row = (JSONObject) json.opt(i);
-
-                DrawerItem dynamicDepartmentList = new DrawerItem();
-                dynamicDepartmentList.setTag(row.optInt("departmentId"));
-                dynamicDepartmentList.setId(row.optInt("departmentId"));
-                dynamicDepartmentList.setLvl(row.optInt("departmentLvl"));
-                dynamicDepartmentList.setTitle(row.optString("departmentName"));
-                dynamicDepartmentList.setLayoutId(DrawerViewType.MENU);
-                itemList.add(dynamicDepartmentList);
-            }
-        }
-
-    }
-
-    public void dynamicMenuBottom(String jsonStr) {
-
-        JSONArray json = null;
-        try {
-            if (jsonStr != null)
-                json = new JSONArray(jsonStr);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        if (json != null) {
-            for (int i = 0; i < json.length(); i++) {
-                JSONObject row = (JSONObject) json.opt(i);
-
-                if (!row.optString("htmlPath").equalsIgnoreCase("")) {
-                    DrawerItem dynamicHtmlList = new DrawerItem();
-                    dynamicHtmlList.setTag("htmlName");
-                    dynamicHtmlList.setId(row.optInt("htmlId"));
-                    dynamicHtmlList.setTitle(row.optString("htmlName"));
-                    dynamicHtmlList.setPath(row.optString("htmlPath"));
-                    dynamicHtmlList.setLayoutId(DrawerViewType.MENU);
-                    itemList.add(dynamicHtmlList);
-                }
-            }
-        }
-    }
-
-    public void menuBottom(String htmList) {
-        DrawerItem headerMore = new DrawerItem();
-        headerMore.setId(11);
-        headerMore.setTag("HEADER");
-        headerMore.setTitle(getString(R.string.more_about_vrsm));
-        headerMore.setLayoutId(DrawerViewType.HEADER);
-        headerMore.setBackgroundColor(getResources().getColor(R.color.theme1_tab_bg_1));
-        itemList.add(headerMore);
-
-        DrawerItem news = new DrawerItem();
-        news.setId(12);
-        news.setTag("Newsletter");
-        news.setTitle(getString(R.string.newsletter));
-        news.setLayoutId(DrawerViewType.STATIC_MENU);
-        news.setIconId(R.drawable.drawer_newsletter);
-        itemList.add(news);
-
-        DrawerItem aug = new DrawerItem();
-        aug.setId(13);
-        aug.setTag("Augmented");
-        aug.setTitle(getString(R.string.augmented_reality));
-        aug.setLayoutId(DrawerViewType.STATIC_MENU);
-        aug.setIconId(R.drawable.drawer_augmented);
-        itemList.add(aug);
-
-        DrawerItem partners = new DrawerItem();
-        partners.setId(14);
-        partners.setTag("Merchant");
-        partners.setTitle(getString(R.string.merchant));
-        partners.setLayoutId(DrawerViewType.STATIC_MENU);
-        partners.setIconId(R.drawable.drawer_partner);
-        itemList.add(partners);
-
-        DrawerItem contactUs = new DrawerItem();
-        contactUs.setId(15);
-        contactUs.setTag("Contact Us");
-        contactUs.setTitle(getString(R.string.contactUS));
-        contactUs.setLayoutId(DrawerViewType.STATIC_MENU);
-        contactUs.setIconId(R.drawable.drawer_contactus);
-        itemList.add(contactUs);
-
-        DrawerItem tnc = new DrawerItem();
-        tnc.setId(16);
-        tnc.setTag("Term & Condition");
-        tnc.setTitle(getString(R.string.tnc));
-        tnc.setLayoutId(DrawerViewType.STATIC_MENU);
-        tnc.setIconId(R.drawable.drawer_terms);
-        itemList.add(tnc);
-
-        dynamicMenuBottom(htmList);
-
-        DrawerItem version = new DrawerItem();
-        version.setId(99);
-        version.setTag("Version");
-        version.setTitle(Utils.getVersion(getActivity()));
-        version.setLayoutId(DrawerViewType.STATIC_MENU);
-        itemList.add(version);
     }
 
     public boolean isDrawerOpen() {
@@ -345,10 +203,6 @@ public class NavigationDrawerFragment extends Fragment {
         // opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // set up the drawer's list view with items and click listener
-
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeButtonEnabled(true);
 
         // ActionBarDrawerToggle ties together the the proper interactions
         // between the navigation drawer and the action bar app icon.
@@ -439,6 +293,7 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void closeDrawer() {
+        Log.e("Drawer Close", "<--------");
         mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 
@@ -500,11 +355,13 @@ public class NavigationDrawerFragment extends Fragment {
      */
     private void showGlobalContextActionBar() {
         ActionBar actionBar = getActionBar();
-        // actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-        // actionBar.setTitle(R.string.app_name);
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        actionBar.setCustomView(R.layout.actionbar);
+        //actionBar.setElevation(0f);
+        //actionBar.setCustomView(R.layout.actionbar)
+        // actionBar.setDisplayShowTitleEnabled(true);
+        // actionBar.setTitle(R.string.app_name);
+
     }
 
     private ActionBar getActionBar() {

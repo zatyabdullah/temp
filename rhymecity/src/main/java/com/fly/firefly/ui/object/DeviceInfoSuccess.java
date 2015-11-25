@@ -11,28 +11,38 @@ public class DeviceInfoSuccess{
 
     private String dataVersion;
     private ArrayList dataTitle;
+    private ArrayList dataCountry;
     private ArrayList dataMarket;
     private String titleCode;
     private String titleName;
     private String status;
     private String signature;
-
     private String location;
+    private String bannerDefault;
+    private String bannerPromo;
 
-    //ArrayList<Airport> places;
-    //= new ArrayList<Airport>();
+
+    public String getBannerDefault() {
+        return bannerDefault;
+    }
+
+    public void setBannerDefault(String bannerDefault) {
+        this.bannerDefault = bannerDefault;
+    }
+
+    public String getBannerPromo() {
+        return bannerPromo;
+    }
+
+    public void setBannerPromo(String bannerPromo) {
+        this.bannerPromo = bannerPromo;
+    }
 
     public DeviceInfoSuccess(DeviceInfoSuccess param_obj){
         this.userObj = param_obj;
     }
 
-    //public ArrayList<Airport> getPlaces() {
-    //    return places;
-   // }
 
-   // public void setPlaces(ArrayList<Airport> places) {
-    //    this.places = places;
-    //}
    public String getSignature() {
        return signature;
    }
@@ -79,17 +89,27 @@ public class DeviceInfoSuccess{
         return dataTitle;
     }
 
+
+    public ArrayList getDataCountry() {
+        return dataCountry;
+    }
+
+    public void setDataCountry(ArrayList dataCountry) {
+        this.dataCountry = dataCountry;
+    }
+
     public void setDataTitle(ArrayList dataTitle) {
         this.dataTitle = dataTitle;
     }
 
     public ArrayList getDataMarket() {
-        return dataMarket;
-    }
+       return dataMarket;
+   }
 
     public void setDataMarket(ArrayList dataMarket) {
-        this.dataMarket = dataMarket;
+       this.dataMarket = dataMarket;
     }
+//
 
     public DeviceInfoSuccess getObj() {
         return userObj;

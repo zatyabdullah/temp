@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.fly.firefly.R;
+import com.fly.firefly.api.obj.FlightInfo;
 
 import java.util.List;
 
@@ -17,11 +18,15 @@ import butterknife.InjectView;
 public class FlightDetailAdapter extends BaseAdapter {
 
     private final Context context;
-    private final List<String> obj;
+    private final List<FlightInfo> obj;
+    private String departureAirport;
+    private String arrivalAirport;
 
-    public FlightDetailAdapter(Context context, List<String> obj) {
+    public FlightDetailAdapter(Context context, List<FlightInfo> paramObj,String depart, String arrival) {
         this.context = context;
-        this.obj = obj;
+        this.obj = paramObj;
+        this.departureAirport = depart;
+        this.arrivalAirport = arrival;
     }
 
     @Override
@@ -41,6 +46,12 @@ public class FlightDetailAdapter extends BaseAdapter {
 
     static class ViewHolder {
         @InjectView(R.id.txtFlightNo) TextView txtFlightNo;
+        @InjectView(R.id.txtArrivalTime) TextView txtArrivalTime;
+        @InjectView(R.id.txtDepartureTime) TextView txtDepartureTime;
+        @InjectView(R.id.txtDepartureAirport) TextView txtDepartureAirport;
+        @InjectView(R.id.txtArrivalAirport) TextView txtArrivalAirport;
+        @InjectView(R.id.txtFarePrice) TextView txtFarePrice;
+
     }
 
     @Override
@@ -55,7 +66,13 @@ public class FlightDetailAdapter extends BaseAdapter {
             vh = (ViewHolder) view.getTag();
         }
 
-       // vh.txtFlightNo.setText(obj.get(position));
+        vh.txtFlightNo.setText("FLIGHT NO. "+ obj.get(position).getFlight_number());
+        vh.txtArrivalTime.setText(obj.get(position).getArrival_time());
+        vh.txtDepartureTime.setText(obj.get(position).getDeparture_time());
+        vh.txtDepartureAirport.setText(departureAirport);
+        vh.txtDepartureAirport.setText(departureAirport);
+        vh.txtArrivalAirport.setText(arrivalAirport);
+        vh.txtFarePrice.setText("MYR "+obj.get(position).getTotal_fare());
 
         return view;
     }

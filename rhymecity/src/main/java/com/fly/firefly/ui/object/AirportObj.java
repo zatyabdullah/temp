@@ -1,11 +1,5 @@
 package com.fly.firefly.ui.object;
 
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 /**
  * Created by Dell on 11/9/2015.
  */
@@ -16,16 +10,8 @@ public class AirportObj {
     private String locationcode;
     private String travellocation;
     private String travellocationcode;
-    private final ArrayList<AirportObj> obj;
-
-
-    public AirportObj(ArrayList dataObj ){
-        this.obj = dataObj;
-    }
-
-    public ArrayList getObj() {
-        return obj;
-    }
+    private String status;
+    private String mobilecheckin;
 
     public String getLocation() {
         return location;
@@ -59,9 +45,20 @@ public class AirportObj {
         this.travellocationcode = travellocationcode;
     }
 
-    public static <T> List<T> stringToArray(String s, Class<T[]> clazz) {
-        T[] arr = new Gson().fromJson(s, clazz);
-        return Arrays.asList(arr); //or return Arrays.asList(new Gson().fromJson(s, clazz)); for a one-liner
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMobilecheckin() {
+        return mobilecheckin;
+    }
+
+    public void setMobilecheckin(String mobilecheckin) {
+        this.mobilecheckin = mobilecheckin;
     }
 
 

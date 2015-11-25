@@ -38,6 +38,9 @@ import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,8 +104,15 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @Order(8) @NotEmpty(sequence = 1) @InjectView(R.id.editTextPostcode)
     EditText editTextPostcode;
 
-    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")@InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
-    @Order(10)@Optional @InjectView(R.id.editTextAlternatePhone)
+    @Order(9)
+    @NotEmpty(sequence = 1)
+    @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")
+    @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
+
+    @Order(10)
+    @Optional
+    //@Length(required = false, sequence = 1, min = 6,max = 14, message = "invalid phone number")
+    @InjectView(R.id.editTextAlternatePhone)
     EditText editTextAlternatePhone;
 
     @Order(11)@Optional @InjectView(R.id.editTextFax)
@@ -168,31 +178,22 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         titleList = new ArrayList<DropDownItem>();
 
 
+        /*Display Country Data*/
+        JSONArray jsonCountry = getCountry(getActivity());
 
-        /*Add Country To DropDown List*/
-        ArrayList<String> countries = new ArrayList<String>();
-        countries = BaseFragment.getCountry();
-
-        int b = 1;
-
-        for (String country : countries) {
-            int y = 1;
-
-             /*Split data*/
-            String[] parts = country.split("-");
-            String state_name = parts[0];
-            String state_code = parts[1];
+        for (int i = 0; i < jsonCountry.length(); i++)
+        {
+            JSONObject row = (JSONObject) jsonCountry.opt(i);
 
             DropDownItem itemCountry = new DropDownItem();
-            itemCountry.setText(state_name+" "+state_code);
-            itemCountry.setCode(state_code);
+            itemCountry.setText(row.optString("countryName"));
+            itemCountry.setCode(row.optString("countryCode"));
             itemCountry.setTag("Country");
-            itemCountry.setId(y);
+            itemCountry.setId(i);
             countrys.add(itemCountry);
+        }
 
-            y++;
 
-         }
 
         /* Get State From Local String*/
         state_val = getResources().getStringArray(R.array.state);
@@ -209,8 +210,24 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             itemCountry.setTag("State");
             itemCountry.setId(x);
             state.add(itemCountry);
-            titleList.add(itemCountry);
+            //titleList.add(itemCountry);
 
+        }
+
+
+        /*Display Title Data*/
+        JSONArray jsonTitle = getTitle(getActivity());
+        Log.e("jsonTitle",jsonTitle.toString());
+        Log.e("jsonTitle.length()", Integer.toString(jsonTitle.length()));
+        for (int i = 0; i < jsonTitle.length(); i++)
+        {
+            JSONObject row = (JSONObject) jsonTitle.opt(i);
+
+            DropDownItem itemTitle = new DropDownItem();
+            itemTitle.setText(row.optString("titleName"));
+            itemTitle.setCode(row.optString("titleCode"));
+            itemTitle.setTag("Title");
+            titleList.add(itemTitle);
         }
 
          /*Switch register info block*/
@@ -241,7 +258,6 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             public void onClick(View v) {
                Log.e("Clicked", "Ok");
                popupSelection(titleList, getActivity(),txtTitle);
-               //selectedTitle = getSelectedPopupSelection(getActivity());
             }
         });
 
@@ -336,10 +352,6 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
                    selectedState = selectedCountry.getCode();
                }
 
-               // } else if (requestCode == 0) {
-               //    Log.e("requestCode","0");
-               //controllerMessages.setVisibility(LinearLayout.GONE);
-               // }
            }else{
 
                date = (DatePickerObj)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
@@ -384,36 +396,45 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
     public void requestRegister(){
 
-        HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-        String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
+        try{
+            HashMap<String, String> init = pref.getSignatureFromLocalStorage();
+            String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
 
-        RegisterObj regObj = new RegisterObj();
+            RegisterObj regObj = new RegisterObj();
 
-        //Reconstruct DOB
-        String dob = date.getYear()+"-"+date.getMonth()+"-"+date.getDay();
+            //Reconstruct DOB
+            String var = "";
+            if(date.getMonth() < 10){
+                var = "0";
+            }
 
-        regObj.setUsername(txtUsername.getText().toString());
-        regObj.setFirst_name(txtFirstName.getText().toString());
-        regObj.setLast_name(txtLastName.getText().toString());
-        regObj.setPassword(txtPassword.getText().toString());
-        //regObj.setTitle(txtTitle.getText().toString());
-        regObj.setTitle("MR");
-        regObj.setDob(dob);
-        regObj.setAddress_1(txtAddressLine1.getText().toString());
-        regObj.setAddress_2(txtAddressLine2.getText().toString());
-        regObj.setAddress_3(txtAddressLine2.getText().toString());
-        regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
-        regObj.setMobile_phone(editTextMobilePhone.getText().toString());
-        regObj.setCountry(selectedState);
-        regObj.setState(selectedCountryCode);
-        //Log.e("State",selectedState);
-        //Log.e("Country", selectedCountryCode);
-        regObj.setCity(txtCity.getText().toString());
-        regObj.setPostcode(editTextPostcode.getText().toString());
-        regObj.setFax(editTextFax.getText().toString());
-        regObj.setSignature("");
+            String dob = date.getYear()+"-"+(var+""+date.getMonth())+"-"+date.getDay();
 
-        presenter.onRequestRegister(regObj);
+            regObj.setUsername(txtUsername.getText().toString());
+            regObj.setFirst_name(txtFirstName.getText().toString());
+            regObj.setLast_name(txtLastName.getText().toString());
+            regObj.setPassword(txtPassword.getText().toString());
+            regObj.setTitle(txtTitle.getTag().toString());
+            regObj.setDob(dob);
+            regObj.setAddress_1(txtAddressLine1.getText().toString());
+            regObj.setAddress_2(txtAddressLine2.getText().toString());
+            regObj.setAddress_3(txtAddressLine2.getText().toString());
+            regObj.setAlternate_phone(editTextAlternatePhone.getText().toString());
+            regObj.setMobile_phone(editTextMobilePhone.getText().toString());
+            regObj.setCountry(selectedCountryCode);
+            regObj.setState(selectedState);
+            regObj.setCity(txtCity.getText().toString());
+            regObj.setPostcode(editTextPostcode.getText().toString());
+            regObj.setFax(editTextFax.getText().toString());
+            regObj.setSignature("");
+
+            presenter.onRequestRegister(regObj);
+
+        }catch(Exception e){
+
+        }
+
+
     }
 
     /*Set all block visibility to - GONE*/
@@ -431,10 +452,9 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
             pref.setSignatureToLocalStorage(obj.getUserInfo().getSignature());
 
-            //HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-           //String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
 
             Intent home = new Intent(getActivity(), LoginActivity.class);
+            home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(home);
             getActivity().finish();
 
@@ -463,13 +483,7 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        Log.e("Validation Success", "True");
-        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
-        //Crouton.makeText(getActivity(), "Registration Success", Style.CONFIRM).show();
         showHiddenBlock(currentPage + 1);
-       // loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
-
-
     }
 
     @Override

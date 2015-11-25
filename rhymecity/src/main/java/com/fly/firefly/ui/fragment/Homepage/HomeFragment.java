@@ -9,20 +9,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.Beacon.BeaconRanging;
 import com.fly.firefly.ui.activity.BoardingPass.BoardingPassActivity;
+import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.activity.Login.LoginActivity;
-import com.fly.firefly.ui.activity.ManageFlight.ManageFlight_Activity;
 import com.fly.firefly.ui.activity.MobileCheckIn.MobileCheckInActivity1;
 import com.fly.firefly.ui.module.HomeModule;
 import com.fly.firefly.ui.presenter.HomePresenter;
-import com.fly.firefly.AnalyticsApplication;
+import com.fly.firefly.utils.SharedPrefManager;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -41,20 +43,29 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
     @Inject
     HomePresenter presenter;
 
-    @InjectView(R.id.homeBookFlight) LinearLayout bookFlight;
-    @InjectView(R.id.homeMobileCheckIn) LinearLayout mobileCheckIn;
-    @InjectView(R.id.homeBeacon) LinearLayout homeBeacon;
-    @InjectView(R.id.homeManageFlight) LinearLayout homeManageFlight;
-    @InjectView(R.id.homeMobileBoardingPass) LinearLayout homeMobileBoardingPass;
+    @InjectView(R.id.homeBookFlight)
+    LinearLayout bookFlight;
 
+    @InjectView(R.id.homeMobileCheckIn)
+    LinearLayout mobileCheckIn;
 
+    @InjectView(R.id.homeBeacon)
+    LinearLayout homeBeacon;
 
+    @InjectView(R.id.homeManageFlight)
+    LinearLayout homeManageFlight;
+
+    @InjectView(R.id.homeMobileBoardingPass)
+    LinearLayout homeMobileBoardingPass;
+
+    @InjectView(R.id.bannerImg)
+    ImageView bannerImg;
 
     /* Beacon - Testing Module */
     //private BeaconManager beaconManager;
 
-    //private ProgressBar progressIndicator;
     private int fragmentContainerId;
+    private SharedPrefManager pref;
 
     public static HomeFragment newInstance() {
 
@@ -80,6 +91,16 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         View view = inflater.inflate(R.layout.home, container, false);
         ButterKnife.inject(this, view);
 
+        pref = new SharedPrefManager(getActivity());
+
+        /*SET BANNER*/
+        /*HashMap<String, String> init = pref.getDefaultBanner();
+        String defaultBanner = init.get(SharedPrefManager.DEFAULT_BANNER);
+
+        URL url = new URL(defaultBanner.toS);
+        Bitmap mIcon_val = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        bannerImg.setImageBitmap(mIcon_val);
+        */
         // [START shared_tracker]
         // Obtain the shared Tracker instance.
         AnalyticsApplication application = (AnalyticsApplication) getActivity().getApplication();
@@ -89,7 +110,8 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         bookFlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToLoginPage();
+                //goToLoginPage();
+                goBookingPage();
             }
         });
         //getSampleData();
@@ -159,8 +181,7 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
 
 
     /*Public-Inner Func*/
-    public void goToLoginPage()
-    {
+    public void goToLoginPage(){
        Intent loginPage = new Intent(getActivity(), LoginActivity.class);
        // Intent loginPage = new Intent(getActivity(), SensorActivity.class);
        //Intent loginPage = new Intent(getActivity(), Touch.class);
@@ -175,8 +196,8 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
 
     public void goToManageFlight()
     {
-        Intent loginPage = new Intent(getActivity(), ManageFlight_Activity.class);
-        getActivity().startActivity(loginPage);
+        //Intent loginPage = new Intent(getActivity(), ManageFlight_Activity.class);
+        //getActivity().startActivity(loginPage);
     }
 
     /*Public-Inner Func*/
@@ -200,6 +221,16 @@ public class HomeFragment extends BaseFragment implements HomePresenter.HomeView
         getActivity().startActivity(loginPage);
     }
 
+    public void goBookingPage()
+    {
+        Intent loginPage = new Intent(getActivity(), SearchFlightActivity.class);
+        getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click booking page")
+                .build());
+        //getActivity().finish();
+    }
 
 
     @Override

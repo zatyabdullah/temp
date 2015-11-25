@@ -8,10 +8,12 @@ import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.api.obj.FailedConnectToServer;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
+import com.fly.firefly.api.obj.SearchFlightReceive;
 import com.fly.firefly.ui.object.DeviceInfoSuccess;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.object.RegisterObj;
+import com.fly.firefly.ui.object.SearchFlightObj;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
@@ -77,20 +79,17 @@ public class ApiRequestHandler {
             @Override
             public void success(DeviceInfoSuccess deviceResponse, Response response) {
 
-               // Log.e("deviceResponse", deviceResponse.getDataMarket().toString());
-               // bus.post(new AirportObj(deviceResponse.getDataMarket()));
                 bus.post(new DeviceInfoSuccess(deviceResponse));
-
-                // List<Airport> ee = deviceResponse.getDataMarket();
-               // Log.e("TEST",ee.get(1).getLocationcode());
                 //loading(false);
+
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Log.e("Error",error.getMessage());
+
                 //loading(false);
-                //bus.post(new RhymesFailureEvent(rhymesResponse));
+                bus.post(new FailedConnectToServer("Unable to connect to server"));
+
             }
 
         });
@@ -109,7 +108,7 @@ public class ApiRequestHandler {
             @Override
             public void success(RegisterReceive rhymesResponse, Response response) {
 
-                Log.e("Success","True");
+                Log.e("Success", "True");
                 bus.post(new RegisterReceive(rhymesResponse));
                 loading(false);
             }
@@ -117,13 +116,73 @@ public class ApiRequestHandler {
             @Override
             public void failure(RetrofitError error) {
 
-                Log.e("Failed","True");
+                Log.e("Failed", "True");
                 loading(false);
                 //bus.post(new RhymesFailureEvent(rhymesResponse));
             }
 
         });
     }
+
+
+    @Subscribe
+    public void onSearchFlight(final SearchFlightObj event) {
+
+        initiateLoading();
+        loading(true);
+
+        apiService.onSearchFlightRequest(event, new Callback<SearchFlightReceive>() {
+
+            @Override
+            public void success(SearchFlightReceive rhymesResponse, Response response) {
+                Log.e(rhymesResponse.getStatus(),"x");
+                bus.post(new SearchFlightReceive(rhymesResponse));
+                loading(false);
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                Log.e("Failed",error.getMessage());
+                loading(false);
+
+            }
+
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /* ------------------------- Loading ------------------------- */
 
