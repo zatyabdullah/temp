@@ -21,6 +21,7 @@ import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.base.BaseFragment;
 import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
+import com.fly.firefly.ui.activity.PasswordExpired.ChangePasswordActivity;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
 import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.object.LoginRequest;
@@ -132,6 +133,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //goChangePassword();
                 forgotPassword();
             }
         });
@@ -170,13 +172,42 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     }
 
 
+    public void goChangePasswordPage()
+    {
+        Intent loginPage = new Intent(getActivity(), ChangePasswordActivity.class);
+        getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click booking page")
+                .build());
+        getActivity().finish();
+    }
+
+
+
+    public void goChangePassword()
+    {
+        Intent loginPage = new Intent(getActivity(), ChangePasswordActivity.class);
+        getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("passwordexpired")
+                .build());
+        getActivity().finish();
+    }
+
+
     @Override
     public void onLoginSuccess(LoginReceive obj) {
 
         if (obj.getStatus().equals("success")) {
-           pref.setLoginStatus("Y");
-           goBookingPage();
-       }else{
+            pref.setLoginStatus("Y");
+            goBookingPage();
+        }
+        else if (obj.getStatus().equals("change_password")) {
+            pref.setLoginStatus("Y");
+            goChangePasswordPage();
+        }else{
            Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
 
@@ -247,6 +278,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         LayoutInflater li = LayoutInflater.from(getActivity());
         final View myView = li.inflate(R.layout.forgot_password_screen, null);
         Button cont = (Button)myView.findViewById(R.id.btncontinue);
+
         final EditText editEmail = (EditText)myView.findViewById(R.id.editTextemail);
 
         cont.setOnClickListener(new View.OnClickListener() {
