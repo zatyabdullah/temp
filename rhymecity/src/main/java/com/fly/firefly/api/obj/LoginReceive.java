@@ -11,10 +11,7 @@ public class LoginReceive {
     private final LoginReceive userObj;
     private String status;
     private String message;
-    private UserInfo userInfo;
-
-
-
+    private UserInfo user_info;
 
     public LoginReceive(LoginReceive param_userObj) {
         this.userObj = param_userObj;
@@ -44,12 +41,12 @@ public class LoginReceive {
 
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public UserInfo getUser_info() {
+        return user_info;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUser_info(UserInfo user_info) {
+        this.user_info = user_info;
     }
 
     public String getStatus() {

@@ -141,6 +141,7 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         ButterKnife.inject(this, view);
 
         pref = new SharedPrefManager(MainFragmentActivity.getContext());
+        txtDepartureFlight.setTag("null");
 
         /*Retrieve all - Display Flight Data*/
         JSONArray jsonFlight = getFlight(getActivity());
@@ -180,6 +181,7 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
             @Override
             public void onClick(View v) {
                 popupSelection(dataFlightDeparture, getActivity(), txtDepartureFlight);
+                txtArrivalFlight.setText("ARRIVAL AIRPORT");
             }
         });
 
@@ -187,7 +189,13 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         btnArrivalFlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupSelection(dataFlightArrival, getActivity(), txtArrivalFlight);
+                if(txtDepartureFlight.getTag().toString().equals("null"))
+                {
+                    Utils.toastNotification(getActivity(),"Please select Departure");
+                }else
+                {
+                    popupSelection(dataFlightArrival, getActivity(), txtArrivalFlight);
+                }
             }
         });
 
@@ -337,7 +345,7 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
             @Override
             public void onClick(View v) {
 
-                try{
+
                     HashMap<String, String> init = pref.getSignatureFromLocalStorage();
                     String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
 
@@ -362,12 +370,6 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
                     fragmentTransaction.replace(R.id.main_activity_fragment_container, BF_FlightDetailFragment.newInstance(), "FLIGHT_DETAIL");
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();*/
-                }
-                catch (Exception t){
-
-                }
-
-
 
             }
         });

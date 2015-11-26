@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.fly.firefly.R;
@@ -51,6 +52,8 @@ public class FlightDetailAdapter extends BaseAdapter {
         @InjectView(R.id.txtDepartureAirport) TextView txtDepartureAirport;
         @InjectView(R.id.txtArrivalAirport) TextView txtArrivalAirport;
         @InjectView(R.id.txtFarePrice) TextView txtFarePrice;
+        @InjectView(R.id.checkBox) CheckBox checkBox;
+
 
     }
 
@@ -74,6 +77,8 @@ public class FlightDetailAdapter extends BaseAdapter {
         vh.txtArrivalAirport.setText(arrivalAirport);
         vh.txtFarePrice.setText("MYR "+obj.get(position).getTotal_fare());
 
+
+        //vh.checkBox.setCheckMarkDrawable(R.drawable.default_checkbox);
         return view;
     }
 }

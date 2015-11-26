@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/main_content"
+    android:focusableInTouchMode="true"
     tools:context="com.fly.firefly.MainFragmentActivity">
 
 

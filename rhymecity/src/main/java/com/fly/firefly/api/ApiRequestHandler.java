@@ -165,8 +165,8 @@ public class ApiRequestHandler {
     @Subscribe
     public void onSearchFlight(final SearchFlightObj event) {
 
-        initiateLoading();
-        loading(true);
+        //initiateLoading();
+        //loading(true);
 
         apiService.onSearchFlightRequest(event, new Callback<SearchFlightReceive>() {
 
@@ -174,7 +174,7 @@ public class ApiRequestHandler {
             public void success(SearchFlightReceive rhymesResponse, Response response) {
                 Log.e(rhymesResponse.getStatus(),"x");
                 bus.post(new SearchFlightReceive(rhymesResponse));
-                loading(false);
+                //loading(false);
 
             }
 
@@ -182,7 +182,7 @@ public class ApiRequestHandler {
             public void failure(RetrofitError error) {
 
                 Log.e("Failed",error.getMessage());
-                loading(false);
+                //loading(false);
 
             }
 
