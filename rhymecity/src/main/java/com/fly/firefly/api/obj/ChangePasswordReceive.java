@@ -1,9 +1,5 @@
 package com.fly.firefly.api.obj;
 
-/*
- * Created by ImalPasha on 11/6/2015.
- */
-
  /* Response From API */
 
 public class ChangePasswordReceive {
@@ -25,8 +21,8 @@ public class ChangePasswordReceive {
    public class UserInfo{
 
         private String username;
-        private String newpassword;
-       private String currentpassword;
+        private String new_password;
+       private String password;
 
         public String getEmail() {
             return username;
@@ -35,15 +31,15 @@ public class ChangePasswordReceive {
             this.username = email;
         }
         public String getNewPassword() {
-            return newpassword;
+            return new_password;
         }
         public void setNewPassword(String newpassword) {
-            this.newpassword = newpassword;
+            this.new_password = newpassword;
         }
         public String getCurrentPassword() {
-           return currentpassword;
+           return password;
        }
-        public void setCurrentPassword(String currentpassword) {this.currentpassword = currentpassword;}
+        public void setCurrentPassword(String currentpassword) {this.password = currentpassword;}
 
     }
 

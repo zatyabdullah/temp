@@ -103,8 +103,8 @@ public class ApiRequestHandler {
     public void onChangePasswordRequest(final ChangePasswordRequest event) {
 
         Log.e("Email", event.getEmail());
-        Log.e("NewPassword", event.getNewPassword());
-        Log.e("CurrentPassword", event.getCurrentPassword());
+        Log.e("password", event.getNewPassword());
+        Log.e("new_password", event.getCurrentPassword());
 
 
         initiateLoading();

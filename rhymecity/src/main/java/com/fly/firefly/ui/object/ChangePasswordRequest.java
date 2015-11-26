@@ -6,16 +6,16 @@ package com.fly.firefly.ui.object;
 public class ChangePasswordRequest  {
 
     private String username;
-    private String currentPassword;
-    private String newPassword;
+    private String password;
+    private String new_password;
     /*Initiate Class*/
     public ChangePasswordRequest(){
     }
 
     public ChangePasswordRequest(ChangePasswordRequest data){
         username = data.getEmail();
-        currentPassword = data.getCurrentPassword();
-        newPassword = data.getNewPassword();
+        password = data.getCurrentPassword();
+        new_password = data.getNewPassword();
 
     }
     public String getEmail() {
@@ -31,21 +31,21 @@ public class ChangePasswordRequest  {
 
     public String getCurrentPassword() {
 
-        return currentPassword;
+        return password;
     }
 
-    public void setCurrentPassword(String currentPassword) {
+    public void setCurrentPassword(String password) {
 
-        this.currentPassword = currentPassword;
+        this.password = password;
     }
     public String getNewPassword() {
 
-        return newPassword ;
+        return new_password ;
     }
 
-    public void setNewPassword(String newPassword ) {
+    public void setNewPassword(String new_password ) {
 
-        this.newPassword  = newPassword ;
+        this.new_password  = new_password ;
     }
 
 
