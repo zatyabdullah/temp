@@ -1,6 +1,7 @@
 package com.fly.firefly.ui.activity.PasswordExpired;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
 import com.fly.firefly.base.BaseFragment;
+import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.module.ChangePasswordModule;
 import com.fly.firefly.ui.object.ChangePasswordRequest;
@@ -97,7 +99,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             public void onClick(View v) {
                 //Validate form
                 // Log.e("selectedTitle",selectedTitle);
-
                 mValidator.validate();
 
             }
@@ -106,11 +107,25 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return view;
     }
 
+    public void goBookingPage()
+    {
+        Intent loginPage = new Intent(getActivity(), SearchFlightActivity.class);
+        getActivity().startActivity(loginPage);
+        mTracker.send(new HitBuilders.EventBuilder()
+                .setCategory("Action")
+                .setAction("Click booking page")
+                .build());
+        getActivity().finish();
+    }
+
+
+
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
         requestChangePassword(editTextemail.getText().toString(), editTextPasswordCurrent.getText().toString(), editTextPasswordNew.getText().toString());
-        //Crouton.makeText(getActivity(), "Success", Style.CONFIRM).show();
+        Crouton.makeText(getActivity(), "Success", Style.CONFIRM).show();
+        //goBookingPage();
     }
 
     @Override
