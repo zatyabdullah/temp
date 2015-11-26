@@ -5,12 +5,14 @@ import android.app.ProgressDialog;
 import android.util.Log;
 
 import com.fly.firefly.MainFragmentActivity;
+import com.fly.firefly.api.obj.ChangePasswordReceive;
+import com.fly.firefly.api.obj.DeviceInfoSuccess;
 import com.fly.firefly.api.obj.FailedConnectToServer;
 import com.fly.firefly.api.obj.ForgotPasswordReceive;
 import com.fly.firefly.api.obj.LoginReceive;
 import com.fly.firefly.api.obj.RegisterReceive;
 import com.fly.firefly.api.obj.SearchFlightReceive;
-import com.fly.firefly.api.obj.DeviceInfoSuccess;
+import com.fly.firefly.ui.object.ChangePasswordRequest;
 import com.fly.firefly.ui.object.DeviceInformation;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.object.PasswordRequest;
@@ -97,6 +99,37 @@ public class ApiRequestHandler {
         });
     }
 
+    @Subscribe
+    public void onChangePasswordRequest(final ChangePasswordRequest event) {
+
+        Log.e("Email", event.getEmail());
+        Log.e("NewPassword", event.getNewPassword());
+        Log.e("CurrentPassword", event.getCurrentPassword());
+
+
+        initiateLoading();
+        loading(true);
+
+
+        apiService.onRequestChangePassword(event, new Callback<ChangePasswordReceive>() {
+
+            @Override
+            public void success(ChangePasswordReceive rhymesResponse, Response response) {
+
+                Log.e("Success", "OK");
+                bus.post(new ChangePasswordReceive(rhymesResponse));
+                loading(false);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                bus.post(new FailedConnectToServer("Unable to connect to server"));
+                loading(false);
+            }
+
+        });
+    }
 
 
 
