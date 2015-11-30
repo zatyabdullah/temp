@@ -14,8 +14,8 @@ import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.FireFlyApplication;
 import com.fly.firefly.R;
 import com.fly.firefly.base.BaseFragment;
-import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
+import com.fly.firefly.ui.activity.Homepage.HomeActivity;
 import com.fly.firefly.ui.module.ChangePasswordModule;
 import com.fly.firefly.ui.object.ChangePasswordRequest;
 import com.fly.firefly.ui.presenter.ChangePasswordPresenter;
@@ -100,6 +100,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                 //Validate form
                 // Log.e("selectedTitle",selectedTitle);
                 mValidator.validate();
+                requestChangePassword(editTextemail.getText().toString(), editTextPasswordCurrent.getText().toString(), editTextPasswordNew.getText().toString());
 
             }
         });
@@ -107,9 +108,9 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         return view;
     }
 
-    public void goBookingPage()
+    public void goHomePage()
     {
-        Intent loginPage = new Intent(getActivity(), SearchFlightActivity.class);
+        Intent loginPage = new Intent(getActivity(), HomeActivity.class);
         getActivity().startActivity(loginPage);
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
@@ -123,9 +124,8 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        requestChangePassword(editTextemail.getText().toString(), editTextPasswordCurrent.getText().toString(), editTextPasswordNew.getText().toString());
         Crouton.makeText(getActivity(), "Success", Style.CONFIRM).show();
-        //goBookingPage();
+        goHomePage();
     }
 
     @Override

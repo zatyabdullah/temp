@@ -801,5 +801,13 @@
     <string name="forgot_password">FORGOT PASSWORD</string>
     <string name="title_activity_password_expired">PasswordExpiredActivity</string>
 
+    <!-- Password Expire -->
+    <string name="password_expire_text">Your password has expired and needs to be changed. The password must consist of at least 8 characters, must include one upper case letter, one lower case letter, one numeric digit and one symbol. Example: SkyPark+123</string>
+
+    <!-- Update Profile -->
+    <string name="title_activity_update_profile">UPDATE PROFILE</string>
+    <string name="update_profile_logininfo">Login Information</string>
+    <string name="update_profile_contactinfo">Contact Information</string>
+
 
 </resources>

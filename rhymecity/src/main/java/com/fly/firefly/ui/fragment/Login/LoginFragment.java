@@ -23,6 +23,7 @@ import com.fly.firefly.ui.activity.BookingFlight.SearchFlightActivity;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.fly.firefly.ui.activity.PasswordExpired.ChangePasswordActivity;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
+import com.fly.firefly.ui.activity.UpdateProfile.UpdateProfileActivity;
 import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.object.PasswordRequest;
@@ -134,6 +135,7 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
             @Override
             public void onClick(View v) {
                 //goChangePassword();
+                //goUpdateProfile();
                 forgotPassword();
             }
         });
@@ -185,9 +187,12 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
 
 
-    public void goChangePassword()
+
+
+
+    public void goUpdateProfile()
     {
-        Intent loginPage = new Intent(getActivity(), ChangePasswordActivity.class);
+        Intent loginPage = new Intent(getActivity(), UpdateProfileActivity.class);
         getActivity().startActivity(loginPage);
         mTracker.send(new HitBuilders.EventBuilder()
                 .setCategory("Action")
