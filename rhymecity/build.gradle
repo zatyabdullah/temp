@@ -80,5 +80,8 @@ dependencies {
 
     // exclusion is not necessary, but generally a good idea.
     exclude group: 'com.google.android', module: 'support-v4'
+
+    compile 'com.scottyab:aescrypt:0.0.1'
+   // compile 'com.tozny:aes-crypto:0.0.1'
     }
 }

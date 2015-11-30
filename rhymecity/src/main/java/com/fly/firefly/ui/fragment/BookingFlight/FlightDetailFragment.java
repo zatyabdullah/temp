@@ -2,7 +2,6 @@ package com.fly.firefly.ui.fragment.BookingFlight;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +42,15 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
     @InjectView(R.id.txtReturnType)TextView txtReturnType;
     @InjectView(R.id.txtReturnAirport)TextView txtReturnAirport;
     @InjectView(R.id.txtReturnDate)TextView txtReturnDate;
+    @InjectView(R.id.btnBasic)LinearLayout btnBasic;
+    @InjectView(R.id.btnPremier)LinearLayout btnPremier;
+
+    @InjectView(R.id.premierFlightDeparture)ExpandAbleGridView premierFlightDeparture;
 
     private int fragmentContainerId;
-    private FlightDetailAdapter departList,returnList;
+    private FlightDetailAdapter departListBasic,departListPremier,returnList;
+    private final String BASIC = "BASIC";
+    private final String PREMIER = "PREMIER";
 
     public static FlightDetailFragment newInstance(Bundle bundle) {
 
@@ -68,12 +73,11 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
         ButterKnife.inject(this, view);
 
         Bundle bundle = getArguments();
+        btnPremier.setBackgroundColor(getResources().getColor(R.color.grey));
 
         String dataFlight2 = bundle.getString("FLIGHT_OBJ");
         Gson gson = new Gson();
         SearchFlightReceive obj = gson.fromJson(dataFlight2, SearchFlightReceive.class);
-
-        Log.e("Size", Integer.toString(obj.getJourneyObj().getJourneys().size()));
 
         /*Departure*/
         List<FlightInfo> departFlight = obj.getJourneyObj().getJourneys().get(0).getFlights();
@@ -88,10 +92,15 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
         String departDate = obj.getJourneyObj().getJourneys().get(0).getDeparture_date();
         String[] output = departDate.split("-");
         String month = getMonthAlphabet(Integer.parseInt(output[1]));
-        txtDepartureDate.setText(output[0]+" "+month+" "+output[2]);
+        txtDepartureDate.setText(output[0] + " " + month + " " + output[2]);
 
-        departList = new FlightDetailAdapter(getActivity(),departFlight,departPort,arrivalPort);
-        flightDeparture.setAdapter(departList);
+        /*Basic*/
+        departListBasic = new FlightDetailAdapter(getActivity(),departFlight,departPort,arrivalPort,BASIC);
+        flightDeparture.setAdapter(departListBasic);
+
+        /*Premier*/
+        departListPremier = new FlightDetailAdapter(getActivity(),departFlight,departPort,arrivalPort,PREMIER);
+        premierFlightDeparture.setAdapter(departListPremier);
 
         /*Return If Available*/
         if(obj.getJourneyObj().getJourneys().size() > 1){
@@ -111,7 +120,7 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
             String returnMonth = getMonthAlphabet(Integer.parseInt(returnDateOutput[1]));
             txtReturnDate.setText(returnDateOutput[0]+" "+returnMonth+" "+returnDateOutput[2]);
 
-            returnList = new FlightDetailAdapter(getActivity(),returnFlight,returnDepartPort,returnArrivalPort);
+            returnList = new FlightDetailAdapter(getActivity(),returnFlight,returnDepartPort,returnArrivalPort,BASIC);
             flightArrival.setAdapter(returnList);
 
         }
@@ -123,6 +132,21 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
                 goPersonalDetail();
             }
         });
+
+        btnBasic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchFare(BASIC);
+            }
+        });
+
+        btnPremier.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchFare(PREMIER);
+            }
+        });
+
         return view;
     }
 
@@ -139,6 +163,26 @@ public class FlightDetailFragment extends BaseFragment implements BookingPresent
     {
         Intent loginPage = new Intent(getActivity(), PersonalDetailActivity.class);
         getActivity().startActivity(loginPage);
+    }
+
+    //Switch Flight Type
+    public void switchFare(String way)
+    {
+        if(way == BASIC) {
+            premierFlightDeparture.setVisibility(View.GONE);
+            flightDeparture.setVisibility(View.VISIBLE);
+            btnBasic.setBackgroundColor(getResources().getColor(R.color.white));
+            btnPremier.setBackgroundColor(getResources().getColor(R.color.grey));
+            //flightClass = "1";
+        }else {
+            premierFlightDeparture.setVisibility(View.VISIBLE);
+            flightDeparture.setVisibility(View.GONE);
+            btnBasic.setBackgroundColor(getResources().getColor(R.color.grey));
+            btnPremier.setBackgroundColor(getResources().getColor(R.color.white));
+
+            //flightClass = "0";
+
+        }
     }
 
     @Override

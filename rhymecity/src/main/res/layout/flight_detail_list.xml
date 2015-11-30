@@ -48,15 +48,12 @@
             android:layout_weight="0.2"
             android:layout_height="match_parent"
             android:gravity="center">
-
+           <!--android:scaleX="1"
+           android:scaleY="1" -->
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox"
-                android:scaleX="1.20"
-                android:scaleY="1.20"
-                android:background="@drawable/checkbox"
-                />
+                android:id="@+id/checkBox" />
         </LinearLayout>
     </LinearLayout>
 

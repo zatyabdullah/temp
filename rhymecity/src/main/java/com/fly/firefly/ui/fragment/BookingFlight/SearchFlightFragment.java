@@ -114,8 +114,12 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
     private ArrayList<DropDownItem> dataFlightDeparture;
     private static ArrayList<DropDownItem> dataFlightArrival;
     private DatePickerObj date;
+    private int a,b,c,d = 0;
 
-
+    private String DEPARTURE_FLIGHT = "Please choose your departure airport";
+    private String ARRIVAL_FLIGHT = "Please choose your arrival airport";
+    private String DEPARTURE_FLIGHT_DATE = "Please choose your departure date.";
+    private String ARRIVAL_FLIGHT_DATE = "Please choose your arrival date.";
     private String FLIGHT_OBJECT = "FLIGHT_OBJECT";
 
     public static SearchFlightFragment newInstance() {
@@ -141,7 +145,11 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         ButterKnife.inject(this, view);
 
         pref = new SharedPrefManager(MainFragmentActivity.getContext());
-        txtDepartureFlight.setTag("null");
+
+        txtDepartureFlight.setTag(DEPARTURE_FLIGHT);
+        txtArrivalFlight.setTag(ARRIVAL_FLIGHT);
+        bookFlightDepartureDate.setTag(DEPARTURE_FLIGHT_DATE);
+        bookFlightReturnDate.setTag(ARRIVAL_FLIGHT_DATE);
 
         /*Retrieve all - Display Flight Data*/
         JSONArray jsonFlight = getFlight(getActivity());
@@ -189,11 +197,10 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         btnArrivalFlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(txtDepartureFlight.getTag().toString().equals("null"))
+                if(txtDepartureFlight.getTag().toString().equals("NOT SELECTED"))
                 {
-                    Utils.toastNotification(getActivity(),"Please select Departure");
-                }else
-                {
+                    popupAlert("Select Departure Airport First");
+                }else{
                     popupSelection(dataFlightArrival, getActivity(), txtArrivalFlight);
                 }
             }
@@ -219,6 +226,7 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         btnOneWay.setBackgroundColor(getResources().getColor(R.color.grey));
         txtAdultTotal.setText("1");
         txtChildTotal.setText("0");
+
         //txtInfantTotal.setText("0");
 
         /*Return Button Clicked*/
@@ -345,31 +353,43 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
             @Override
             public void onClick(View v) {
 
+                String df = txtDepartureFlight.getTag().toString();
+                String af = txtArrivalFlight.getTag().toString();
+                String d1 = bookFlightDepartureDate.getTag().toString();
+                String d2 = bookFlightReturnDate.getTag().toString();
 
-                    HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-                    String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
+                if(df.equals(DEPARTURE_FLIGHT)){
 
-                    SearchFlightObj flightObj = new SearchFlightObj();
-                    flightObj.setAdult(txtAdultTotal.getText().toString());
-                    flightObj.setChildren(txtChildTotal.getText().toString());
-                    flightObj.setInfant(txtInfantTotal.getText().toString());
-                    flightObj.setType(flightType);
-                    flightObj.setDeparture_station(txtDepartureFlight.getTag().toString());
-                    flightObj.setDeparture_date(bookFlightDepartureDate.getTag().toString());
-                    flightObj.setArrival_station(txtArrivalFlight.getTag().toString());
+                    popupAlert(DEPARTURE_FLIGHT);
 
-                    /*Return Flight*/
-                    String returnDate = flightType.equals("1") ? bookFlightReturnDate.getTag().toString() : "";
-                    flightObj.setReturn_date(returnDate);
+                }else if (af.equals(ARRIVAL_FLIGHT)){
 
-                    flightObj.setSignature(signatureFromLocal);
-                    searchFlightFragment(flightObj);
-                    //goFlightDetailPage();
-                    /*FragmentManager fragmentManager = getFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.main_activity_fragment_container, BF_FlightDetailFragment.newInstance(), "FLIGHT_DETAIL");
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();*/
+                    popupAlert(ARRIVAL_FLIGHT);
+
+                }else if (d1.equals(DEPARTURE_FLIGHT_DATE)){
+
+                    popupAlert(DEPARTURE_FLIGHT_DATE);
+
+                }else if (d2.equals(ARRIVAL_FLIGHT_DATE)){
+
+                    popupAlert(ARRIVAL_FLIGHT_DATE);
+
+                }else{
+                    searchFlight();
+                }
+
+
+                // Define a constant in your class. Use a HashSet for performance
+                /*Set<String> values = new HashSet<String>(Arrays.asList(df, af, d1,d2));
+
+                if (!values.contains("NOT SELECTED")) {
+                    searchFlight();
+                }else
+                {
+                    popupAlert("Fill Empty Field");
+                }*/
+
+
 
             }
         });
@@ -379,6 +399,34 @@ public class SearchFlightFragment extends BaseFragment implements BookingPresent
         return view;
     }
 
+    public void searchFlight(){
+
+        HashMap<String, String> init = pref.getSignatureFromLocalStorage();
+        String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
+
+        SearchFlightObj flightObj = new SearchFlightObj();
+        flightObj.setAdult(txtAdultTotal.getText().toString());
+        flightObj.setChildren(txtChildTotal.getText().toString());
+        flightObj.setInfant(txtInfantTotal.getText().toString());
+        flightObj.setType(flightType);
+        flightObj.setDeparture_station(txtDepartureFlight.getTag().toString());
+        flightObj.setDeparture_date(bookFlightDepartureDate.getTag().toString());
+        flightObj.setArrival_station(txtArrivalFlight.getTag().toString());
+
+                    /*Return Flight*/
+        String returnDate = flightType.equals("1") ? bookFlightReturnDate.getTag().toString() : "";
+        flightObj.setReturn_date(returnDate);
+
+        flightObj.setSignature(signatureFromLocal);
+        searchFlightFragment(flightObj);
+        //goFlightDetailPage();
+                    /*FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.main_activity_fragment_container, BF_FlightDetailFragment.newInstance(), "FLIGHT_DETAIL");
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();*/
+
+    }
 
     public void searchFlightFragment(SearchFlightObj flightObj){
 

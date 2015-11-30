@@ -1,4 +1,4 @@
-package com.fly.firefly.ui.fragment.Login;
+package com.fly.firefly.ui.activity.Login;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -35,7 +35,9 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
+import com.scottyab.aescrypt.AESCrypt;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -137,6 +139,16 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
                 forgotPassword();
             }
         });
+
+
+
+        try {
+           //String helloworld =  FlyAes.decrypt3("","","eyJpdiI6InpNb2xsSTRhZjlWSXpWbDlLcXU0THc9PSIsInZhbHVlIjoibGZ4V1FlTnZOK3dWWjlyV01FXC9cLzJRPT0iLCJtYWMiOiI2MGNlYjdhYjNhNmFjOTVjZDk4YmVlNmJjMDE0YzAwODczZDk0OTUxYThhYjU0OThhNzgxZTkwZWFhMGUxN2Q5In0=");
+            String encryptedMsg = AESCrypt.encrypt("test", "owNLfnLjPvwbQH3hUmj5Wb7wBIv83pR7");
+            Log.e("encryptedMsg",encryptedMsg);
+        }catch (GeneralSecurityException e){
+            //handle error
+        }
 
         return view;
     }

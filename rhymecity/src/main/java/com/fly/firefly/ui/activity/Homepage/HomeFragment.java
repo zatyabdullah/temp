@@ -1,4 +1,4 @@
-package com.fly.firefly.ui.fragment.Homepage;
+package com.fly.firefly.ui.activity.Homepage;
 
 import android.app.PendingIntent;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.fly.firefly.ui.fragment.SplashScreen;
+package com.fly.firefly.ui.activity.SplashScreen;
 
 import android.content.Intent;
 import android.os.Build;

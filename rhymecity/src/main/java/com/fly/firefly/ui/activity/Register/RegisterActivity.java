@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.R;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
-import com.fly.firefly.ui.fragment.Register.RegisterFragment;
 
 import butterknife.ButterKnife;
 
@@ -40,12 +39,11 @@ public class RegisterActivity extends MainFragmentActivity implements FragmentCo
         return R.id.main_activity_fragment_container;
     }
 
-    @Override
-    public void onBackPressed(){
+/*    public void onBackPressed(){
 
         final FragmentManager manager = getSupportFragmentManager();
         RegisterFragment fragment = (RegisterFragment) manager.findFragmentByTag("xx");
         fragment.registerBackFunction();
 
-    }
+    }*/
 }

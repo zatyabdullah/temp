@@ -41,6 +41,21 @@ public class BaseFragment extends Fragment {
 	private static SharedPrefManager prefManager;
 	private static Country obj = new Country();
 
+
+	public void popupAlert(String message){
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setMessage(message)
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						// FIRE ZE MISSILES!
+					}
+				});
+
+		// Create the AlertDialog object and return it
+		builder.create();
+		builder.show();
+	}
+
 	/*Global PoPup*/
 	public void popupSelection(final ArrayList array,Activity act,final TextView txt){
 

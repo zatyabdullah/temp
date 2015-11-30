@@ -1,4 +1,4 @@
-package com.fly.firefly.ui.fragment.Register;
+package com.fly.firefly.ui.activity.Register;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fly.firefly.FireFlyApplication;
@@ -28,15 +27,16 @@ import com.fly.firefly.ui.object.RegisterObj;
 import com.fly.firefly.ui.presenter.RegisterPresenter;
 import com.fly.firefly.utils.DropDownItem;
 import com.fly.firefly.utils.SharedPrefManager;
+import com.fly.firefly.utils.Utils;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.Checked;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Length;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Past;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -60,73 +60,83 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
     @Inject
     RegisterPresenter presenter;
 
-    @InjectView(R.id.registerIndicator1) LinearLayout indicator1;
-    @InjectView(R.id.registerIndicator2) LinearLayout indicator2;
-    @InjectView(R.id.registerIndicator3) LinearLayout indicator3;
+    @Order(14) @NotEmpty
+    @InjectView(R.id.editTextCountry)
+    TextView editTextCountry;
 
-    @InjectView(R.id.registerBasicInfoBlock) LinearLayout registerPersonalInfoBlock;
-    @InjectView(R.id.registerAddressInfoBlock) LinearLayout registerAddressBlock;
-    @InjectView(R.id.registerContactInfoBlock) LinearLayout registerContactBlock;
-
-    @InjectView(R.id.imageViewRegisterIndicator) ImageView imageRegisterIndicator;
-    @Order(14) @NotEmpty @InjectView(R.id.editTextCountry) TextView editTextCountry;
-    @InjectView(R.id.editTextState) TextView editTextState;
+    @InjectView(R.id.editTextState)
+    TextView editTextState;
 
     @NotEmpty(sequence = 1)
     @Order(1)
-    @InjectView(R.id.txtUsername) EditText txtUsername;
+    @InjectView(R.id.txtUsername)
+    EditText txtUsername;
 
     @Order(2)
     @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6, message = "Must at least 6 character")
     @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
-    @InjectView(R.id.txtPassword) EditText txtPassword;
+    @InjectView(R.id.txtPassword)
+    EditText txtPassword;
 
     @Order(3)
     @NotEmpty(sequence = 1)
     @ConfirmPassword(sequence = 2)
-    @InjectView(R.id.txtConfirmPassword) EditText txtConfirmPassword;
+    @InjectView(R.id.txtConfirmPassword)
+    EditText txtConfirmPassword;
 
-    @Order(4) @NotEmpty @InjectView(R.id.txtFirstName)
+    @Order(4)
+    @NotEmpty
+    @InjectView(R.id.txtFirstName)
     EditText txtFirstName;
 
-    @Order(5) @NotEmpty(sequence = 1) @Past(sequence = 2)
+    @Order(5)
+    @NotEmpty(sequence = 1)
     @InjectView(R.id.txtRegisterDatePicker)
     TextView txtRegisterDatePicker;
 
-    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.txtLastName)
+    @Order(6) @NotEmpty(sequence = 1)
+    @InjectView(R.id.txtLastName)
     EditText txtLastName;
 
-    @Order(7) @NotEmpty(sequence = 1)@InjectView(R.id.txtAddressLine1)
+    @Order(7) @NotEmpty(sequence = 1)
+    @InjectView(R.id.txtAddressLine1)
     EditText txtAddressLine1;
 
-    @Order(8) @Optional @InjectView(R.id.txtAddressLine2)
+    @Order(8) @Optional
+    @InjectView(R.id.txtAddressLine2)
     EditText txtAddressLine2;
 
-    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 5,max = 7, message = "invalid postcode")@InjectView(R.id.editTextPostcode)
+    @Order(9) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 5,max = 7, message = "invalid postcode")
+    @InjectView(R.id.editTextPostcode)
     EditText editTextPostcode;
 
     @Order(10) @NotEmpty(sequence = 1)
     @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")
     @InjectView(R.id.editTextMobilePhone) EditText editTextMobilePhone;
 
-    @Order(11)
-    @Optional @Length(sequence = 1, min = 6,max = 14, message = "invalid phone number")
     @InjectView(R.id.editTextAlternatePhone)
     EditText editTextAlternatePhone;
 
-    @Order(12)@Optional @InjectView(R.id.editTextFax)
+    @Order(12)@Optional
+    @InjectView(R.id.editTextFax)
     EditText editTextFax;
+
+    @Order(13)@NotEmpty
+    @InjectView(R.id.txtCity)
+    EditText txtCity;
+
+    @Order(15)@NotEmpty
+    @InjectView(R.id.txtTitle)
+    TextView txtTitle;
+
+    @Order(16)
+    @Checked(message = "You must agree with tem & condition")
+    @InjectView(R.id.chkTNC)
+    CheckBox chkTNC;
 
     @InjectView(R.id.registerContinueButton)
     Button registerContinueButton;
-
-    @Order(13)@NotEmpty @InjectView(R.id.txtCity)
-    EditText txtCity;
-
-    @Order(15)@NotEmpty @InjectView(R.id.txtTitle)
-    TextView txtTitle;
-
 
 
     private int currentPage;
@@ -259,46 +269,12 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             }
         });
 
-
-        /*Initial indicator*/
-        imageRegisterIndicator.setBackgroundResource(R.drawable.register_account_focus);
-        currentPage = 1;
-
-        /*Switch register info block*/
-        indicator1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            showHiddenBlock(1);
-
-            }
-        });
-
-        indicator2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            showHiddenBlock(2);
-
-            }
-        });
-
-        indicator3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            showHiddenBlock(3);
-
-            }
-        });
-
         registerContinueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Validate form
-               // Log.e("selectedTitle",selectedTitle);
                 mValidator.validate();
-
+                Utils.hideKeyboard(getActivity(), v);
             }
         });
 
@@ -333,13 +309,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
 
    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-       Log.e("enter here", "ok");
        if (resultCode != Activity.RESULT_OK) {
            return;
         } else {
            if (requestCode == 1) {
-               // if (requestCode == 1) {
-               Log.e("requestCode", "1");
                DropDownItem selectedCountry = data.getParcelableExtra(CountryListDialogFragment.EXTRA_COUNTRY);
 
                if (selectedCountry.getTag() == "Country") {
@@ -355,58 +328,32 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
                date = (DatePickerObj)data.getSerializableExtra(DatePickerFragment.EXTRA_DATE);
                String month =  getMonthAlphabet(date.getMonth());
                month_number = date.getMonth();
-               Log.e("Date Picker",Integer.toString(date.getMonth()));
-               txtRegisterDatePicker.setText(date.getDay()+" "+month+" "+date.getYear());
+
+               txtRegisterDatePicker.setText(date.getDay() + " " + month + " " + date.getYear());
         }
        }
     }
 
-    /*Change Field Block*/
-    public void showHiddenBlock(int page)
-    {
-        if(page == 1){
-            imageRegisterIndicator.setBackgroundResource(R.drawable.register_account_focus);
-            resetRegisterFieldBlockVisibility();
-            registerPersonalInfoBlock.setVisibility(View.VISIBLE);
-            currentPage = 1;
-        }
-        else if(page == 2){
-            imageRegisterIndicator.setBackgroundResource(R.drawable.register_address_focus);
-            resetRegisterFieldBlockVisibility();
-            registerAddressBlock.setVisibility(View.VISIBLE);
-            currentPage = 2;
-        }
-        else if(page == 3){
-            imageRegisterIndicator.setBackgroundResource(R.drawable.register_contact_focus);
-            resetRegisterFieldBlockVisibility();
-            registerContactBlock.setVisibility(View.VISIBLE);
-            currentPage = 3;
-        }
-        else if (page == 4) {
-            Log.e("READY FOR VALIDATION", "TRUE");
-            requestRegister();
-        }
-        else {
-            getActivity().finish();
-        }
-
-    }
-
     public void requestRegister(){
 
-        try{
             HashMap<String, String> init = pref.getSignatureFromLocalStorage();
             String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
 
             RegisterObj regObj = new RegisterObj();
 
             //Reconstruct DOB
-            String var = "";
+            String varMonth = "";
+            String varDay = "";
+
             if(date.getMonth() < 10){
-                var = "0";
+                varMonth = "0";
+            }
+            if(date.getDay() < 10){
+                varDay = "0";
             }
 
-            String dob = date.getYear()+"-"+(var+""+date.getMonth())+"-"+date.getDay();
+
+            String dob = date.getYear()+"-"+(varMonth+""+date.getMonth())+"-"+varDay+""+date.getDay();
 
             regObj.setUsername(txtUsername.getText().toString());
             regObj.setFirst_name(txtFirstName.getText().toString());
@@ -427,61 +374,35 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             regObj.setSignature("");
 
             presenter.onRequestRegister(regObj);
-
-        }catch(Exception e){
-
-        }
-
-
-    }
-
-    /*Set all block visibility to - GONE*/
-    public void resetRegisterFieldBlockVisibility(){
-        registerPersonalInfoBlock.setVisibility(View.GONE);
-        registerAddressBlock.setVisibility(View.GONE);
-        registerContactBlock.setVisibility(View.GONE);
     }
 
     @Override
     public void onSuccessRegister(RegisterReceive obj) {
-        Log.e("Here", obj.getStatus());
 
         if (obj.getStatus().equals("success")) {
-
-            pref.setSignatureToLocalStorage(obj.getUserInfo().getSignature());
-
 
             Intent home = new Intent(getActivity(), LoginActivity.class);
             home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(home);
             getActivity().finish();
 
-            Log.e("success", "True");
-
         }
         else if (obj.getStatus().equals("error")) {
+
             Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
-            Log.e("ELSE if", "True");
 
         }else{
 
-            Log.e("ELSE","True");
-            /*Expired*/
-
             Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
-            //pref.clearSignatureFromLocalStorage();
-
-           // Intent home = new Intent(getActivity(), HomeActivity.class);
-           // getActivity().startActivity(home);
-           // getActivity().finish();
 
         }
     }
 
-    //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        showHiddenBlock(currentPage + 1);
+
+        requestRegister();
+        Log.e("Success","True");
     }
 
     @Override
@@ -496,10 +417,16 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
             // Display error messages
             if (view instanceof EditText) {
                 ((EditText) view).setError(splitErrorMsg[0]);
-            } else {
-                Crouton.makeText(getActivity(), message,Style.ALERT).show();
             }
+            else if (view instanceof CheckBox){
+                ((CheckBox) view).setError(splitErrorMsg[0]);
+                Crouton.makeText(getActivity(), splitErrorMsg[0],Style.ALERT).show();
+            }
+
+            Log.e("Validation Failed",splitErrorMsg[0]);
+
         }
+
     }
 
 
@@ -522,10 +449,10 @@ public class RegisterFragment extends BaseFragment implements RegisterPresenter.
         presenter.onPause();
     }
 
-    public void registerBackFunction()
+    /*public void registerBackFunction()
     {
             showHiddenBlock(currentPage-1);
 
-    }
+    }*/
 
 }

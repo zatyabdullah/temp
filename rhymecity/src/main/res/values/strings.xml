@@ -769,7 +769,17 @@
     <string name="book_flight_infant">Infant</string>
     <string name="book_flight_infant_year">1-23 months</string>
 
+
     <!-- BOOKING FLIGHT - SEARCH FLIGHT -->
+
+    <!-- BOOKING FLIGHT - LIST FLIGHT -->
+    <string name="book_flight_basic">BASIC</string>
+    <string name="book_flight_premier">PREMIER</string>
+
+
+
+
+
     <string name="mobile_checkin">MOBILE CHECK-IN</string>
 
     <!-- MANAGE FLIGHT -->
@@ -792,6 +802,13 @@
     <string name="general_continue">Continue</string>
     <string name="general_email_addresss">Email Address</string>
     <string name="general_travel_purpose">Primary Purpose of Your Travel:</string>
+
+    <string name="agreeTnc">Im agree with the Term &amp; Condition</string>
+    <string name="subscribe">Subscribe to any Firefly Promotion</string>
+    <string name="alertTNC">You must agree to the terms.</string>
+
+
+
 
     <!-- Boarding Pass -->
     <string name="boarding_pass">BOARDING PASS</string>

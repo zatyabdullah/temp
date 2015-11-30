@@ -1,7 +1,7 @@
 package com.fly.firefly.ui.module;
 
 import com.fly.firefly.AppModule;
-import com.fly.firefly.ui.fragment.Register.RegisterFragment;
+import com.fly.firefly.ui.activity.Register.RegisterFragment;
 import com.fly.firefly.ui.presenter.RegisterPresenter;
 import com.squareup.otto.Bus;
 

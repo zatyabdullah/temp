@@ -1,7 +1,7 @@
 package com.fly.firefly.ui.module;
 
 import com.fly.firefly.AppModule;
-import com.fly.firefly.ui.fragment.Login.LoginFragment;
+import com.fly.firefly.ui.activity.Login.LoginFragment;
 import com.fly.firefly.ui.presenter.LoginPresenter;
 import com.squareup.otto.Bus;
 

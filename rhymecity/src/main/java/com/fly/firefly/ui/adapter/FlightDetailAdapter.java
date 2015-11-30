@@ -22,12 +22,15 @@ public class FlightDetailAdapter extends BaseAdapter {
     private final List<FlightInfo> obj;
     private String departureAirport;
     private String arrivalAirport;
+    private String flightClass;
 
-    public FlightDetailAdapter(Context context, List<FlightInfo> paramObj,String depart, String arrival) {
+
+    public FlightDetailAdapter(Context context, List<FlightInfo> paramObj,String depart, String arrival,String fclass) {
         this.context = context;
         this.obj = paramObj;
         this.departureAirport = depart;
         this.arrivalAirport = arrival;
+        this.flightClass = fclass;
     }
 
     @Override
@@ -68,6 +71,14 @@ public class FlightDetailAdapter extends BaseAdapter {
         } else {
             vh = (ViewHolder) view.getTag();
         }
+        String totalFare = "";
+        if(flightClass.equals("PREMIER")){
+            totalFare = "SOLD OUT";
+            //totalFare = obj.get(position).getFlexObj().getTotal_fare();
+
+        }else{
+            totalFare = obj.get(position).getBasicObj().getTotal_fare();
+        }
 
         vh.txtFlightNo.setText("FLIGHT NO. "+ obj.get(position).getFlight_number());
         vh.txtArrivalTime.setText(obj.get(position).getArrival_time());
@@ -75,10 +86,7 @@ public class FlightDetailAdapter extends BaseAdapter {
         vh.txtDepartureAirport.setText(departureAirport);
         vh.txtDepartureAirport.setText(departureAirport);
         vh.txtArrivalAirport.setText(arrivalAirport);
-        vh.txtFarePrice.setText("MYR "+obj.get(position).getTotal_fare());
-
-
-        //vh.checkBox.setCheckMarkDrawable(R.drawable.default_checkbox);
+        vh.txtFarePrice.setText("MYR " + totalFare);
         return view;
     }
 }
