@@ -21,6 +21,7 @@ import com.fly.firefly.drawer.NavigationDrawerFragment;
 import com.fly.firefly.ui.activity.Homepage.HomeActivity;
 import com.fly.firefly.ui.activity.Login.LoginActivity;
 import com.fly.firefly.ui.activity.Register.RegisterActivity;
+import com.fly.firefly.utils.SharedPrefManager;
 
 import butterknife.ButterKnife;
 
@@ -36,7 +37,7 @@ public class MainFragmentActivity extends BaseFragmentActivity implements Naviga
      * navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
-
+    private SharedPrefManager pref;
     private static MainFragmentActivity instance;
 
     @Override
@@ -51,32 +52,10 @@ public class MainFragmentActivity extends BaseFragmentActivity implements Naviga
 
         /*Testing*/
         moveDrawerToTop();
+        pref = new SharedPrefManager(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        /*Testing End*/
-
-
-        // Inflate the "decor.xml"
-        /*LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        DrawerLayout drawer = (DrawerLayout) inflater.inflate(R.layout.decor2, null); // "null" is important.
-
-        // HACK: "steal" the first child of decor view
-        ViewGroup decor = (ViewGroup) getWindow().getDecorView();
-        View child = decor.getChildAt(0);
-        decor.removeView(child);
-        FrameLayout container = (FrameLayout) drawer.findViewById(R.id.main_activity_fragment_container); // This is the container we defined just now.
-        container.addView(child);
-
-        // Make the drawer replace the first child
-        decor.addView(drawer);*/
-
-        //moveDrawerToTop();
-
-        // Set up the drawer.
-        //mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        //mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
 
     }
 
@@ -178,7 +157,20 @@ public class MainFragmentActivity extends BaseFragmentActivity implements Naviga
                 login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(login);
             }
+            else if (item.getTag().equals("Logout"))
+            {
+                pref.setLoginStatus("N");
+                Intent login = new Intent(this, HomeActivity.class);
+                login.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(login);
+            }
             else if (item.getTag().equals("Register"))
+            {
+                Intent register = new Intent(this, RegisterActivity.class);
+                register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(register);
+            }
+            else if (item.getTag().equals("Profile"))
             {
                 Intent register = new Intent(this, RegisterActivity.class);
                 register.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -11,7 +11,7 @@ public class RegisterReceive {
     private final RegisterReceive userObj;
     private String status;
     private String message;
-    private UserInfo userInfo;
+    private user_info user_info;
 
     public RegisterReceive(RegisterReceive param_userObj) {
         this.userObj = param_userObj;
@@ -21,7 +21,7 @@ public class RegisterReceive {
         return userObj;
     }
 
-    public class UserInfo{
+    public class user_info{
 
         private String username;
         private String password;
@@ -49,12 +49,12 @@ public class RegisterReceive {
 
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public user_info getUserInfo() {
+        return user_info;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUserInfo(user_info userInfo) {
+        this.user_info = userInfo;
     }
 
     public String getStatus() {

@@ -27,7 +27,9 @@ import com.fly.firefly.ui.module.LoginModule;
 import com.fly.firefly.ui.object.LoginRequest;
 import com.fly.firefly.ui.object.PasswordRequest;
 import com.fly.firefly.ui.presenter.LoginPresenter;
+import com.fly.firefly.utils.AESCBC;
 import com.fly.firefly.utils.SharedPrefManager;
+import com.fly.firefly.utils.Utils;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mobsandgeeks.saripaar.ValidationError;
@@ -35,9 +37,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
-import com.scottyab.aescrypt.AESCrypt;
 
-import java.security.GeneralSecurityException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -122,33 +122,33 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //goBookingPage();
-                //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
-
                 //Validate form
                 mValidator.validate();
-                //goBookingPage();
-                //loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
+                Utils.hideKeyboard(getActivity(), v);
             }
         });
 
         txtForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //goChangePassword();
                 forgotPassword();
             }
         });
 
 
 
-        try {
-           //String helloworld =  FlyAes.decrypt3("","","eyJpdiI6InpNb2xsSTRhZjlWSXpWbDlLcXU0THc9PSIsInZhbHVlIjoibGZ4V1FlTnZOK3dWWjlyV01FXC9cLzJRPT0iLCJtYWMiOiI2MGNlYjdhYjNhNmFjOTVjZDk4YmVlNmJjMDE0YzAwODczZDk0OTUxYThhYjU0OThhNzgxZTkwZWFhMGUxN2Q5In0=");
-            String encryptedMsg = AESCrypt.encrypt("test", "owNLfnLjPvwbQH3hUmj5Wb7wBIv83pR7");
+        //try {
+           // String encryptedMsg = AESCrypt.encrypt("test", "owNLfnLjPvwbQH3hUmj5Wb7wBIv83pR7");
+            String encryptedMsg = AESCBC.encrypt("owNLfnLjPvwbQH3hUmj5Wb7wBIv83pR7", "owNLfnLjPvwbQH3h","1234");
             Log.e("encryptedMsg",encryptedMsg);
-        }catch (GeneralSecurityException e){
-            //handle error
-        }
+
+            String decrypt = AESCBC.decrypt("owNLfnLjPvwbQH3hUmj5Wb7wBIv83pR7", "owNLfnLjPvwbQH3h",encryptedMsg);
+            Log.e("decrypt",decrypt);
+
+
+       // }catch (GeneralSecurityException e){
+       //
+        //}
 
         return view;
     }
@@ -214,6 +214,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
 
         if (obj.getStatus().equals("success")) {
             pref.setLoginStatus("Y");
+            Log.e("X",obj.getUser_info().getFirstname());
+            pref.setUsername(obj.getUser_info().getFirstname());
             goBookingPage();
         }
         else if (obj.getStatus().equals("change_password")) {
@@ -235,33 +237,18 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
     @Override
     public void onPasswordRequestSuccess(ForgotPasswordReceive obj) {
 
-        Log.e("ABC", obj.getStatus());
         if (obj.getStatus().equals("success")) {
             Crouton.makeText(getActivity(), obj.getMessage(), Style.CONFIRM).show();
-          //goBookingPage();
         }else{
             Crouton.makeText(getActivity(), obj.getMessage(), Style.ALERT).show();
         }
 
-
     }
-
-    /*IF Login Failed*/
-   // @Override
- //   public void onPasswordRequesFailed(String obj) {
-//
-  //      Crouton.makeText(getActivity(), obj, Style.ALERT).show();
-    ///}
-
-
-
 
     /* Validation Success - Start send data to server */
     @Override
     public void onValidationSucceeded() {
-        // Toast.makeText(getActivity(), "Login Success!", Toast.LENGTH_SHORT).show();
         loginFromFragment(txtLoginEmail.getText().toString(), txtLoginPassword.getText().toString());
-
     }
 
     /* Validation Failed - Toast Error */

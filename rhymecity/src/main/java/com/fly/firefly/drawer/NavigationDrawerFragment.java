@@ -24,8 +24,10 @@ import android.widget.ListView;
 import com.fly.firefly.R;
 import com.fly.firefly.drawer.NavigationDrawerAdapter.DrawerViewType;
 import com.fly.firefly.utils.LazyList.ImageLoader;
+import com.fly.firefly.utils.SharedPrefManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation
@@ -71,6 +73,9 @@ public class NavigationDrawerFragment extends Fragment {
 
     //SharedPrefManager prefer;
     public ImageLoader imageLoader;
+    private SharedPrefManager pref;
+    private String userName;
+    private String loginStatus = "N";
 
     public NavigationDrawerFragment() {
     }
@@ -118,6 +123,17 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
 
+        pref = new SharedPrefManager(getActivity());
+
+        try{
+            HashMap<String, String> init = pref.getLoginStatus();
+            loginStatus = init.get(SharedPrefManager.ISLOGIN);
+
+            HashMap<String, String> username = pref.getUsername();
+            userName = username.get(SharedPrefManager.USERNAME);
+        }
+        catch (Exception e){}
+
 		/* Initiate NavigationDrawer Item */
         menuTop();
 
@@ -133,13 +149,48 @@ public class NavigationDrawerFragment extends Fragment {
         itemList.clear();
         itemList = new ArrayList<DrawerItem>();
 
-        DrawerItem vrsm = new DrawerItem();
-        vrsm.setId(0);
-        vrsm.setTitle("FIREFLY");
-        vrsm.setTag("HEADER");
-        vrsm.setLayoutId(DrawerViewType.HEADER_CLOSEBTN);
-        vrsm.setBackgroundColor(getResources().getColor(R.color.black));
-        itemList.add(vrsm);
+        if(!loginStatus.equals("Y")){
+
+            DrawerItem vrsm = new DrawerItem();
+            vrsm.setId(0);
+            vrsm.setTitle("FIREFLY");
+            vrsm.setTag("HEADER");
+            vrsm.setLayoutId(DrawerViewType.HEADER_CLOSEBTN);
+            vrsm.setBackgroundColor(getResources().getColor(R.color.black));
+            itemList.add(vrsm);
+
+            DrawerItem sbb = new DrawerItem();
+            sbb.setId(2);
+            sbb.setTag("Login");
+            sbb.setTitle("Login");
+            sbb.setLayoutId(DrawerViewType.MENU);
+            itemList.add(sbb);
+        }
+        else{
+            DrawerItem vrsm = new DrawerItem();
+            vrsm.setId(0);
+            vrsm.setTitle("Welcome " + userName);
+            vrsm.setTag("HEADER");
+            vrsm.setLayoutId(DrawerViewType.HEADER_CLOSEBTN);
+            vrsm.setBackgroundColor(getResources().getColor(R.color.black));
+            itemList.add(vrsm);
+
+            DrawerItem sbb = new DrawerItem();
+            sbb.setId(2);
+            sbb.setTag("Logout");
+            sbb.setTitle("Logout");
+            sbb.setLayoutId(DrawerViewType.MENU);
+            itemList.add(sbb);
+
+            DrawerItem profile = new DrawerItem();
+            profile.setId(3);
+            profile.setTag("Profile");
+            profile.setTitle("Profile");
+            profile.setLayoutId(DrawerViewType.MENU);
+            itemList.add(profile);
+
+        }
+
 
         DrawerItem home = new DrawerItem();
         home.setId(1);
@@ -147,20 +198,6 @@ public class NavigationDrawerFragment extends Fragment {
         home.setTitle("Home");
         home.setLayoutId(DrawerViewType.MENU);
         itemList.add(home);
-
-        DrawerItem sbb = new DrawerItem();
-        sbb.setId(2);
-        sbb.setTag("Login");
-        sbb.setTitle("Login");
-        sbb.setLayoutId(DrawerViewType.MENU);
-        itemList.add(sbb);
-
-        /*DrawerItem register = new DrawerItem();
-        register.setId(3);
-        register.setTag("Register");
-        register.setTitle("Register");
-        register.setLayoutId(DrawerViewType.MENU);
-        itemList.add(register);*/
 
         DrawerItem about = new DrawerItem();
         about.setId(4);
@@ -176,12 +213,6 @@ public class NavigationDrawerFragment extends Fragment {
         faq.setLayoutId(DrawerViewType.MENU);
         itemList.add(faq);
 
-        DrawerItem logout = new DrawerItem();
-        logout.setId(6);
-        logout.setTag("Logout");
-        logout.setTitle("Logout");
-        logout.setLayoutId(DrawerViewType.MENU);
-        itemList.add(logout);
     }
 
     public boolean isDrawerOpen() {

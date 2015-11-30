@@ -11,7 +11,7 @@ public class LoginReceive {
     private final LoginReceive userObj;
     private String status;
     private String message;
-    private UserInfo user_info;
+    private user_info user_info;
 
     public LoginReceive(LoginReceive param_userObj) {
         this.userObj = param_userObj;
@@ -21,12 +21,20 @@ public class LoginReceive {
         return userObj;
     }
 
-   public class UserInfo{
+   public class user_info{
 
         private String username;
         private String password;
+        private String firstname;
 
-        public String getUsername() {
+
+       public String getFirstname() {
+           return firstname;
+       }
+
+       public void setFirstname(String firstname) {
+           this.firstname = firstname;
+       }        public String getUsername() {
             return username;
         }
         public void setUsername(String username) {
@@ -41,11 +49,11 @@ public class LoginReceive {
 
     }
 
-    public UserInfo getUser_info() {
+    public user_info getUser_info() {
         return user_info;
     }
 
-    public void setUser_info(UserInfo user_info) {
+    public void setUser_info(user_info user_info) {
         this.user_info = user_info;
     }
 

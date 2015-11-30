@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.widget.DatePicker;
 
 import com.fly.firefly.ui.object.DatePickerObj;
@@ -34,21 +33,15 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        //DatePickerFragment myFragment = (DatePickerFragment)getFragmentManager().findFragmentByTag("datePicker");
-        //if (myFragment != null && myFragment.isVisible()) {
-        //   Log.e("Visible","true6                                                                                                                                                                                                                                                                         ");
-        //}
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-
         datePickerObj.setYear(year);
         datePickerObj.setMonth(month+1);
         datePickerObj.setDay(day);
-        Log.e("Month", Integer.toString(datePickerObj.getMonth()));
 
         sendResult(datePickerObj);
 
@@ -56,14 +49,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     private void sendResult(DatePickerObj dateParam) {
         if (getTargetFragment() == null) {
-            Log.e("Get Target Fragment", "NULL");
             return;
         }
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_DATE, dateParam);
         int result;
-        Log.e("getTag",getTag());
         if(getTag().equals("datepicker")){
             result = 2;
         }
@@ -72,7 +63,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         }
 
         getTargetFragment().onActivityResult(result, Activity.RESULT_OK, intent);
-        Log.e("Get Target Fragment", "NOT NULL");
         dismiss();
     }
 }

@@ -18,6 +18,7 @@ public class SharedPrefManager {
 
     public static final String PROMO_BANNER = "PM";
     public static final String DEFAULT_BANNER = "DB";
+    public static final String USERNAME = "USERNAME";
 
     // public static final String SELECTED = "SELECTED";
 
@@ -38,6 +39,13 @@ public class SharedPrefManager {
     public HashMap<String, String> getPromoBanner() {
         HashMap<String, String> init = new HashMap<String, String>();
         init.put(PROMO_BANNER, _sharedPrefs.getString(PROMO_BANNER, null));
+        return init;
+    }
+
+    /*Return Username*/
+    public HashMap<String, String> getUsername() {
+        HashMap<String, String> init = new HashMap<String, String>();
+        init.put(USERNAME, _sharedPrefs.getString(USERNAME, null));
         return init;
     }
 
@@ -91,6 +99,12 @@ public class SharedPrefManager {
         return init;
     }
 
+
+    /*Set Username Value*/
+    public void setUsername(String url) {
+        _prefsEditor.putString(USERNAME, url);
+        _prefsEditor.apply();
+    }
 
     /*Set Signature Value*/
     public void setBannerUrl(String url) {
@@ -158,6 +172,12 @@ public class SharedPrefManager {
     public void clearSignatureFromLocalStorage() {
         // Clearing Siganture
         _sharedPrefs.edit().remove(SIGNATURE).apply();
+    }
+
+    /*Clear Signature Value*/
+    public void setUsername() {
+        // Clearing Siganture
+        _sharedPrefs.edit().remove(USERNAME).apply();
     }
 
     /*Clear Selected Value*/
