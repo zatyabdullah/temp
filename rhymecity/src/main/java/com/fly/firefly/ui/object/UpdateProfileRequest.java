@@ -1,7 +1,7 @@
 package com.fly.firefly.ui.object;
 
 /**
- * Created by Metch user
+ * Created by Metech user
  */
 public class UpdateProfileRequest {
 
@@ -31,7 +31,7 @@ public class UpdateProfileRequest {
     }
 
     public UpdateProfileRequest(UpdateProfileRequest data){
-        username = data.getEmail();
+        //username = data.getEmail();
        // password = data.getPassword();
         new_password = data.getNewPassword();
         country = data.getCountry();
@@ -54,21 +54,7 @@ public class UpdateProfileRequest {
         signature = data.getSignature();
 
     }
-    public String getEmail() {
 
-        return username;
-    }
-
-    public void setEmail(String email) {
-
-        this.username = email;
-    }
-
-
-    public String getCurrentPassword() {
-
-        return password;
-    }
 
 
     public String getNewPassword() {

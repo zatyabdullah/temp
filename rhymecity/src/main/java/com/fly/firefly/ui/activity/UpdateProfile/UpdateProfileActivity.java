@@ -3,17 +3,15 @@ package com.fly.firefly.ui.activity.UpdateProfile;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
-
 import com.fly.firefly.AnalyticsApplication;
 import com.fly.firefly.MainFragmentActivity;
 import com.fly.firefly.R;
 import com.fly.firefly.ui.activity.FragmentContainerActivity;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
-
 import butterknife.ButterKnife;
 
-//import android.view.WindowManager;
+
 
 public class UpdateProfileActivity extends MainFragmentActivity implements FragmentContainerActivity {
 

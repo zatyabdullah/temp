@@ -42,8 +42,8 @@ public class ChangePasswordActivity extends MainFragmentActivity implements Frag
     public void onResume() {
         super.onResume();
         // presenter.onResume();
-        Log.i("Page Name", "Setting screen name: " + "Login Page");
-        mTracker.setScreenName("Login" + "B");
+        Log.i("Page Name", "Setting screen name: " + "Change Password");
+        mTracker.setScreenName("Change Password" + "B");
         mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 

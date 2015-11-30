@@ -30,8 +30,8 @@ public class UpdateProfilePresenter {
     }
 
     public void updateProfile(UpdateProfileRequest data) {
-        Log.e("xxxx",data.getEmail());
-        Log.e("xxxx",data.getCurrentPassword());
+        Log.e("xxxx",data.getUsername());
+       // Log.e("xxxx",data.getPassword());
         Log.e("xxxx",data.getNewPassword());
         Log.e("xxxx",data.getCountry());
         Log.e("xxxx",data.getState());

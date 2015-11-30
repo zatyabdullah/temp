@@ -30,13 +30,8 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
-import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
-import com.mobsandgeeks.saripaar.annotation.Length;
-import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Optional;
 import com.mobsandgeeks.saripaar.annotation.Order;
-import com.mobsandgeeks.saripaar.annotation.Password;
-import com.mobsandgeeks.saripaar.annotation.Past;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,79 +53,11 @@ public class UpdateProfileFragment extends BaseFragment implements
     // Validator Attributes
     private Validator mValidator;
     private Tracker mTracker;
-    @Inject UpdateProfilePresenter presenter;
-
-    //@InjectView(R.id.search_edit_text) EditText searchEditText;
-    //@Order(1)@NotEmpty(sequence = 1)@Email(sequence = 2)
-    @InjectView(R.id.editEmail) TextView editEmail;
-    //@Order(2)@NotEmpty (sequence = 1)@InjectView(R.id.editCurrentPassword) EditText editCurrentPassword;
-   // @Order(3)@NotEmpty (sequence = 1)@Password(sequence = 2) @InjectView(R.id.editConfirmPassword) EditText editConfirmPassword;
-
-    @Order(1)
-    @NotEmpty(sequence = 1)
-    @Length(sequence = 2, min = 6, message = "Must at least 6 character")
-    @Password(sequence =3,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
-    @InjectView(R.id.editCurrentPassword) EditText editCurrentPassword;
-
-    @Order(2)
-    @NotEmpty(sequence = 1)@ConfirmPassword(sequence = 2) @InjectView(R.id.editNewPassword) EditText editNewPassword;
-
-    @Order(3)
-    @NotEmpty(sequence = 1)
-    @ConfirmPassword(sequence = 2)
-    @InjectView(R.id.editConfirmPassword) EditText editConfirmPassword;
-
-    @Order(4)
-    @NotEmpty @InjectView(R.id.editTitle)
-    TextView editTitle;
-
-    @Order(5) @NotEmpty @InjectView(R.id.editFirstName)
-    EditText editFirstName;
-
-    @Order(6) @NotEmpty(sequence = 1)@InjectView(R.id.editLastName)
-    EditText editLastName;
-
-    @Order(7) @NotEmpty(sequence = 1)@InjectView(R.id.editAddress)
-    EditText editAddressLine1;
-
-    @Order(8) @NotEmpty @InjectView(R.id.editCountry) TextView editCountry;
-
-    @Order(9)@NotEmpty @InjectView(R.id.editCity)  EditText editCity;
-
-    @Order(10) @InjectView(R.id.editState) TextView editState;
-
-    @Order(11) @NotEmpty(sequence = 1) @Length(sequence = 2, min = 5,max = 7, message = "invalid postcode")@InjectView(R.id.editPostcode)
-    EditText editPostcode;
-
-    @Order(12) @NotEmpty(sequence = 1)
-    @Length(sequence = 2, min = 6,max = 14, message = "invalid phone number")
-    @InjectView(R.id.editMobilePhone) EditText editMobilePhone;
-
-
-    @Order(13)
-    @Optional @Length(sequence = 1, min = 6,max = 14, message = "invalid phone number")
-    @InjectView(R.id.editAltPhone)
-    EditText editAltPhone;
-
-    @Order(14)@Optional @InjectView(R.id.editFax) EditText editFax;
-
-    @Order(15) @NotEmpty(sequence = 1) @Past(sequence = 2)
-    @InjectView(R.id.txtRegisterDatePicker)
-    TextView txtRegisterDatePicker;
-
-
-    @InjectView(R.id.btnUpdateProfile)
-    Button btnUpdateProfile;
-
-
-
     private ArrayList<DropDownItem> countrys;
     private ArrayList<DropDownItem> state;
     private int day;
     private int month;
     private int year;
-    //private int fragmentContainerId;
-    //private SharedPrefManager pref;
     private int month_number;
     private DatePickerObj date;
     private ArrayList<DropDownItem> titleList;
@@ -138,11 +65,77 @@ public class UpdateProfileFragment extends BaseFragment implements
     String[] state_val;
     private String selectedState;
     private String selectedCountryCode;
-
     private AlertDialog dialog;
     private SharedPrefManager pref;
-
     private int fragmentContainerId;
+
+    @Inject UpdateProfilePresenter presenter;
+    @InjectView(R.id.editEmail) TextView editEmail;
+
+    @Order(1)@Optional
+    //@Length(sequence = 1, min = 6, message = "Must at least 6 character")
+    //@Password(sequence =2,scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS,message = "Must have uppercase char,number and symbols") // Password validator
+    @InjectView(R.id.editCurrentPassword)
+    EditText editCurrentPassword;
+
+    @Order(2)@Optional
+    @InjectView(R.id.editNewPassword)
+    EditText editNewPassword;
+
+    @Order(3)@Optional
+    //@ConfirmPassword(sequence =1)
+    @InjectView(R.id.editConfirmPassword)
+    EditText editConfirmPassword;
+
+    @Order(4)@Optional
+    @InjectView(R.id.editTitle)
+    TextView editTitle;
+
+    @Order(5)@Optional@InjectView(R.id.editFirstName)
+    EditText editFirstName;
+
+    @Order(6)@Optional @InjectView(R.id.editLastName)
+    EditText editLastName;
+
+    @Order(7) @Optional@InjectView(R.id.editAddress)
+    EditText editAddressLine1;
+
+    @Order(8) @Optional @InjectView(R.id.editCountry)
+    TextView editCountry;
+
+    @Order(9)@InjectView(R.id.editCity)
+    EditText editCity;
+
+    @Order(10) @InjectView(R.id.editState)
+    TextView editState;
+
+    @Order(11) @Optional
+    //@Length(sequence = 1, min = 5,max = 7, message = "invalid postcode")@InjectView(R.id.editPostcode)
+    EditText editPostcode;
+
+    @Order(12)@Optional
+    //@Length(sequence = 1, min = 6,max = 14, message = "invalid phone number") @InjectView(R.id.editMobilePhone)
+    EditText editMobilePhone;
+
+
+    @Order(13)
+    @Optional
+    //@Length(sequence = 1, min = 6,max = 14, message = "invalid phone number")
+    @InjectView(R.id.editAltPhone)
+    EditText editAltPhone;
+
+    @Order(14)@Optional
+    @InjectView(R.id.editFax)
+    EditText editFax;
+
+    @Order(15) @Optional
+    @InjectView(R.id.txtRegisterDatePicker)
+    TextView txtRegisterDatePicker;
+
+    @InjectView(R.id.btnUpdateProfile)
+    Button btnUpdateProfile;
+
+
 
     public static UpdateProfileFragment newInstance() {
 
@@ -176,11 +169,18 @@ public class UpdateProfileFragment extends BaseFragment implements
         mTracker = application.getDefaultTracker();
         // [END shared_tracker]
 
-
+      //  editEmail.setText("zaty.abdullah@gmail.com");
         pref = new SharedPrefManager(getActivity());
         countrys = new ArrayList<DropDownItem>();
         state = new ArrayList<DropDownItem>();
         titleList = new ArrayList<DropDownItem>();
+
+
+
+       HashMap<String, String> prefusername = pref.getUsername();
+        String email = prefusername.get(SharedPrefManager.USERNAME);
+
+        editEmail.setText(email);
 
 
         /*Display Country Data*/
@@ -197,7 +197,6 @@ public class UpdateProfileFragment extends BaseFragment implements
             itemCountry.setId(i);
             countrys.add(itemCountry);
         }
-
 
 
         /* Get State From Local String*/
@@ -233,7 +232,7 @@ public class UpdateProfileFragment extends BaseFragment implements
             titleList.add(itemTitle);
         }
 
-         /*Switch register info block*/
+        /*Select list*/
         editCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -271,8 +270,7 @@ public class UpdateProfileFragment extends BaseFragment implements
             public void onClick(View v) {
                 //Validate form
                 // Log.e("selectedTitle",selectedTitle);
-                mValidator.validate();
-                requestUpdateProfile();
+               mValidator.validate(); requestUpdateProfile();
                 //requestChangePassword(editTextemail.getText().toString(), editTextPasswordCurrent.getText().toString(), editTextPasswordNew.getText().toString());
 
             }
@@ -334,11 +332,52 @@ public class UpdateProfileFragment extends BaseFragment implements
     }
 
 
+    public void requestUpdateProfile() {
 
+        try {
+            HashMap<String, String> init = pref.getSignatureFromLocalStorage();
+            String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
+
+
+            UpdateProfileRequest data = new UpdateProfileRequest();
+
+            //Reconstruct DOB
+            String var = "";
+            if (date.getMonth() < 10) {
+                var = "0";
+            }
+
+            String dob = date.getYear() + "-" + (var + "" + date.getMonth()) + "-" + date.getDay();
+
+            data.setUsername(editEmail.getText().toString());
+            data.setFirst_name(editFirstName.getText().toString());
+            data.setLast_name(editLastName.getText().toString());
+            data.setPassword(editCurrentPassword.getText().toString());
+            data.setNewPassword(editNewPassword.getText().toString());
+            data.setTitle(editTitle.getTag().toString());
+            data.setDob(dob);
+            data.setAddress_1(editAddressLine1.getText().toString());
+            //data.setAddress_2(txtAddressLine2.getText().toString());
+            // data.setAddress_3(txtAddressLine2.getText().toString());
+            data.setAlternate_phone(editAltPhone.getText().toString());
+            data.setMobile_phone(editMobilePhone.getText().toString());
+            data.setCountry(selectedCountryCode);
+            data.setState(selectedState);
+            data.setCity(editCity.getText().toString());
+            data.setPostcode(editPostcode.getText().toString());
+            data.setFax(editFax.getText().toString());
+            data.setSignature("");
+
+            presenter.updateProfile(data);
+
+        } catch (Exception e) {
+
+        }
+    }
     //Validator Result//
     @Override
     public void onValidationSucceeded() {
-        Crouton.makeText(getActivity(), "Success", Style.CONFIRM).show();
+        Crouton.makeText(getActivity(), "Profile Successfully Updated", Style.CONFIRM).show();
         //goHomePage();
     }
 
@@ -360,49 +399,6 @@ public class UpdateProfileFragment extends BaseFragment implements
         }
     }
 
-
-
-    public void requestUpdateProfile() {
-
-        try {
-            HashMap<String, String> init = pref.getSignatureFromLocalStorage();
-            String signatureFromLocal = init.get(SharedPrefManager.SIGNATURE);
-
-            UpdateProfileRequest data = new UpdateProfileRequest();
-
-            //Reconstruct DOB
-            String var = "";
-            if (date.getMonth() < 10) {
-                var = "0";
-            }
-
-            String dob = date.getYear() + "-" + (var + "" + date.getMonth()) + "-" + date.getDay();
-
-            data.setUsername(editEmail.getText().toString());
-            data.setFirst_name(editFirstName.getText().toString());
-            data.setLast_name(editLastName.getText().toString());
-            data.setPassword(editCurrentPassword.getText().toString());
-            data.setNewPassword(editNewPassword.getText().toString());
-            data.setTitle(editTitle.getTag().toString());
-            data.setDob(dob);
-            data.setAddress_1(editAddressLine1.getText().toString());
-            //data.setAddress_2(txtAddressLine2.getText().toString());
-           // data.setAddress_3(txtAddressLine2.getText().toString());
-            data.setAlternate_phone(editAltPhone.getText().toString());
-            data.setMobile_phone(editMobilePhone.getText().toString());
-            data.setCountry(selectedCountryCode);
-            data.setState(selectedState);
-            data.setCity(editCity.getText().toString());
-            data.setPostcode(editPostcode.getText().toString());
-            data.setFax(editFax.getText().toString());
-            data.setSignature("");
-
-            presenter.updateProfile(data);
-
-        } catch (Exception e) {
-
-        }
-    }
 
 
     @Override

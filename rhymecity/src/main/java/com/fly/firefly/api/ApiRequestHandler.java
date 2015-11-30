@@ -137,9 +137,9 @@ public class ApiRequestHandler {
     @Subscribe
     public void onUpdateProfileRequest(final UpdateProfileRequest event) {
 
-        Log.e("Email", event.getEmail());
+        Log.e("Email", event.getUsername());
         Log.e("password", event.getNewPassword());
-        Log.e("new_password", event.getCurrentPassword());
+        Log.e("new_password", event.getPassword());
 
 
         initiateLoading();

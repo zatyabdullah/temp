@@ -3,7 +3,6 @@ package com.fly.firefly.ui.activity.PasswordExpired;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,11 +28,8 @@ import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Order;
 import com.mobsandgeeks.saripaar.annotation.Password;
-
 import java.util.List;
-
 import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -41,12 +37,13 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class ChangePasswordFragment extends BaseFragment implements ChangePasswordPresenter.ChangePasswordView,Validator.ValidationListener  {
 
-    // Validator Attributes
+
     private Validator mValidator;
     private Tracker mTracker;
-    @Inject
-    ChangePasswordPresenter presenter;
-
+    private AlertDialog dialog;
+    private SharedPrefManager pref;
+    private int fragmentContainerId;
+    @Inject ChangePasswordPresenter presenter;
     //@InjectView(R.id.search_edit_text) EditText searchEditText;
     @Order(1)@NotEmpty(sequence = 1)@Email(sequence = 2)@InjectView(R.id.editTextemail) EditText editTextemail;
     @Order(2)@NotEmpty (sequence = 1)@InjectView(R.id.editTextforgotPasswordCurrent) EditText editTextPasswordCurrent;
@@ -54,11 +51,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     @Order(4)@NotEmpty(sequence = 1)@ConfirmPassword(sequence = 2) @InjectView(R.id.editTextforgotPasswordNew) EditText editTextPasswordNew;
     @InjectView(R.id.btnchangepassword) Button changepasswordButton;
 
-
-    private AlertDialog dialog;
-    private SharedPrefManager pref;
-
-    private int fragmentContainerId;
 
     public static ChangePasswordFragment newInstance() {
 
@@ -97,8 +89,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
         changepasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Validate form
-                // Log.e("selectedTitle",selectedTitle);
                 mValidator.validate();
                 requestChangePassword(editTextemail.getText().toString(), editTextPasswordCurrent.getText().toString(), editTextPasswordNew.getText().toString());
 
@@ -107,6 +97,16 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
 
         return view;
     }
+
+
+    public void requestChangePassword(String username,String password ,String new_password){
+        ChangePasswordRequest data = new ChangePasswordRequest();
+        data.setEmail(username);
+        data.setNewPassword(new_password);
+        data.setCurrentPassword(password);
+        presenter.changePassword(data);
+    }
+
 
     public void goHomePage()
     {
@@ -118,7 +118,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
                 .build());
         getActivity().finish();
     }
-
 
 
     //Validator Result//
@@ -145,19 +144,6 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
             }
         }
     }
-
-
-
-    public void requestChangePassword(String username,String password ,String new_password){
-        ChangePasswordRequest data = new ChangePasswordRequest();
-        data.setEmail(username);
-        data.setNewPassword(new_password);
-        data.setCurrentPassword(password);
-        presenter.changePassword(data);
-    }
-
-
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -168,9 +154,7 @@ public class ChangePasswordFragment extends BaseFragment implements ChangePasswo
     public void onResume() {
         super.onResume();
         presenter.onResume();
-        Log.i("Page Name", "Setting screen name: " + "Change password Page");
-        mTracker.setScreenName("Login" + "B");
-        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
     }
 
     @Override

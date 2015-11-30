@@ -135,8 +135,8 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
             @Override
             public void onClick(View v) {
                 //goChangePassword();
-                //goUpdateProfile();
-                forgotPassword();
+                goUpdateProfile();
+                //forgotPassword();
             }
         });
 
@@ -184,9 +184,6 @@ public class LoginFragment extends BaseFragment implements LoginPresenter.LoginV
                 .build());
         getActivity().finish();
     }
-
-
-
 
 
 

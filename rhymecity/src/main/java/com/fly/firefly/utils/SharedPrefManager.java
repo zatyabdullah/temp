@@ -12,6 +12,8 @@ public class SharedPrefManager {
     public static final String SELECTED = "SELECTED";
 
     public static final String TITLE = "TITLE";
+    public static final String USERNAME = "USERNAME";
+
     public static final String FLIGHT = "FLIGHT";
     public static final String COUNTRY = "COUNTRY";
     public static final String ISLOGIN = "ISLOGIN";
@@ -77,6 +79,14 @@ public class SharedPrefManager {
         return init;
     }
 
+    /*Return Selected Value*/
+    public HashMap<String, String> getUsername() {
+        HashMap<String, String> init = new HashMap<String, String>();
+        init.put(USERNAME, _sharedPrefs.getString(USERNAME, null));
+        return init;
+    }
+
+
     /*Return Country Value*/
     public HashMap<String, String> getCountry() {
         HashMap<String, String> init = new HashMap<String, String>();
@@ -128,6 +138,14 @@ public class SharedPrefManager {
         _prefsEditor.apply();
     }
 
+
+    /*Set USername Value*/
+    public void setUserName(String username) {
+        _prefsEditor.putString(USERNAME, username);
+        _prefsEditor.apply();
+    }
+
+
     /*Set Airport Value*/
     public void setFlight(String flight) {
         _prefsEditor.putString(FLIGHT, flight);
@@ -170,6 +188,13 @@ public class SharedPrefManager {
     public void clearTitle() {
         // Clearing Selected
         _sharedPrefs.edit().remove(TITLE).apply();
+    }
+
+
+    /*Clear Selected Value*/
+    public void clearUsername() {
+        // Clearing Selected
+        _sharedPrefs.edit().remove(USERNAME).apply();
     }
 
     /*Clear Flight Value*/
