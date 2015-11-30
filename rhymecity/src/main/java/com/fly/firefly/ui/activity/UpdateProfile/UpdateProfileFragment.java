@@ -177,7 +177,7 @@ public class UpdateProfileFragment extends BaseFragment implements
 
 
 
-       HashMap<String, String> prefusername = pref.getUsername();
+        HashMap<String, String> prefusername = pref.getUsername();
         String email = prefusername.get(SharedPrefManager.USERNAME);
 
         editEmail.setText(email);
